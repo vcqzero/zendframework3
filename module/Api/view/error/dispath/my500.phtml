@@ -1,0 +1,18 @@
+<?php 
+use Api\Tool\MyClient;
+
+$is_mobile = MyClient::isMobile();
+$title = '服务器错误';
+$desc  = '不好意思，服务器出小差了，请稍后...';
+?>
+<?php if($is_mobile) :?>
+<?=$this->partial('error/mobile/error.phtml', [
+    'title'=>$title,
+    'desc' => $desc,
+])?>
+<?php else :?>
+<?=$this->partial('error/admin/error.phtml', [
+    'title'=>$title,
+    'desc' => $desc,
+])?>
+<?php endif;?>

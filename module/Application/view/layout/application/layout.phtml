@@ -1,0 +1,31 @@
+<html lang="en">
+	<head>
+        <?=$this->partial('layout/application/partial/head.phtml')?>
+    </head>
+     
+	<body class="page-container-bg-solid page-header-fixed page-sidebar-closed-hide-logo">
+        <!-- top -->
+     	<?=$this->partial('layout/application/partial/top.phtml')?>
+     	<div class="clearfix"> </div>
+        <div class="page-container">
+        	<!-- sidebar -->
+        	<?=$this->partial('layout/application/partial/sidebar.phtml')?>
+        	
+        	<div class="page-content-wrapper">
+                <!-- BEGIN CONTENT BODY -->
+                <div class="page-content">
+                <!-- page title -->
+                <?=$this->partial('layout/application/partial/page-title.phtml')?>
+                <!-- page-breadcrumb -->
+                <?=$this->partial('layout/application/partial/page-breadcrumb.phtml')?>
+                <!-- page-content -->
+                <?=$this->content?>
+                </div>
+             </div>
+     	</div>
+     	<!-- footer -->
+     	<?=$this->partial('layout/application/partial/footer.phtml')?>
+     </body>
+     <!-- js -->
+     <?=$this->partial('layout/application/partial/js.phtml')?>
+</html>

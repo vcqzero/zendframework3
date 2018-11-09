@@ -1,0 +1,20 @@
+<?php 
+use Api\Tool\MyClient;
+
+$is_mobile = MyClient::isMobile();
+
+$type = '404';
+$desc  = '页面不见了';
+
+?>
+<?php if($is_mobile) :?>
+<?=$this->partial('error/mobile/error.phtml', [
+    'type'=>$type,
+    'desc' => $desc,
+])?>
+<?php else :?>
+<?=$this->partial('error/application/error.phtml', [
+    'type' =>$type,
+    'desc' => $desc,
+])?>
+<?php endif;?>

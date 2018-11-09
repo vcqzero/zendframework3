@@ -1,0 +1,7 @@
+/* here you can put your own css to customize and override the theme */
+#nprogress .bar{
+	z-index: 9999;
+}
+#nprogress .spinner{
+	z-index: 9999;
+}
