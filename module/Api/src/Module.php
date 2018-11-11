@@ -41,9 +41,6 @@ class Module
         //程序启动时
         $Bootstraper = $container->get(Bootstraper::class);
         $evt->attach(MvcEvent::EVENT_DISPATCH, array($Bootstraper, 'doInit'), 100);
-        
-        //json
-//         $app->getEventManager()->attach(MvcEvent::EVENT_RENDER, [$this, 'registerJsonStrategy'], 100);
     }
     //将php原始的错误信息记录到debug中
     public function logPhpError($log_debug)

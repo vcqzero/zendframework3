@@ -3,19 +3,9 @@ namespace Application\Controller;
 
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\ViewModel;
-use Api\Service\UserManager;
 
 class UserController extends AbstractActionController
 {
-    private $UserManager;
-    
-    public function __construct(
-        UserManager $UserManager
-        )
-    {
-        $this->UserManager = $UserManager;
-    }
-    
     //go to index page
     public function indexAction()
     {

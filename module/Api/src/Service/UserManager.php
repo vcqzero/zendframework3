@@ -9,11 +9,13 @@ use Zend\Db\Sql\Where;
 use Api\Filter\FormFilter;
 use Api\Repository\PdoMysql;
 use Api\Repository\Repositories\User;
+use Api\Repository\MyTableGateway;
 
 class UserManager
 {
     public  $PdoMysql;
     public  $FormFilter;
+    public $MyTableGateway;
     
     private $super_admin_config;
     
@@ -42,13 +44,15 @@ class UserManager
     public function __construct(
         PdoMysql $PdoMysql,
         FormFilter $FormFilter,
-        $super_admin_config
+        $super_admin_config,
+        MyTableGateway $MyTableGateway
         )
     {
         $PdoMysql->setTableName(User::TABLE_NAME);
         $this->FormFilter   = $FormFilter;
         $this->PdoMysql     = $PdoMysql;
         $this->super_admin_config = $super_admin_config;
+        $this->MyTableGateway = $MyTableGateway;
     }
     
     /**

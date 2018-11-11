@@ -8,6 +8,10 @@
 return [
     // Additional modules to include when in development mode
     'modules' => [
+        'Zend\I18n',
+        'Zend\InputFilter',
+        'Zend\Filter',
+        'Zend\Hydrator',
         'Zend\Mail',
         'Zend\Paginator',
         'Zend\Serializer',

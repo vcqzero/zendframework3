@@ -19,7 +19,7 @@ return [
     //配置mysql数据库 pdo
     'db' => array(
         'driver'         => 'Pdo',
-        'dsn'            => 'mysql:dbname=xunjian;host=127.0.0.1',
+        'dsn'            => 'mysql:dbname=zendframework3;host=127.0.0.1',
         'charset'        => 'UTF8',
         'driver_options' => array(
             PDO::MYSQL_ATTR_INIT_COMMAND => 'SET NAMES \'UTF8\'',
@@ -83,7 +83,7 @@ return [
                     'name' => 'stream',
                     'priority' => Logger::DEBUG,//调试或者错误级别使用此writer
                     'options' => [
-                        'stream' => 'data/log/debug.log',
+                        'stream' => 'log/debug.log',
                         /* 'formatter' => [
                             'name' => 'MyFormatter',
                         ],
@@ -103,7 +103,7 @@ return [
                     'name' => 'stream',
                     'priority' => Logger::INFO,//调试或者错误级别使用此writer
                     'options' => [
-                        'stream' => 'data/log/log.log',
+                        'stream' => 'log/log.log',
                         /* 'formatter' => [
                             'name' => 'MyFormatter',
                         ],

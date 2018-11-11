@@ -36,14 +36,28 @@ return [
                     ],
                 ],
             ],
+            
+            'user' => [
+                'type'    => Segment::class,
+                'options' => [
+                    'route'    => '/user[/:action]',
+                    'defaults' => [
+                        'controller' => Controller\UserController::class,
+                        'action'     => 'index',
+                    ],
+                ],
+            ],
+            
         ],
     ],
     'controllers' => [
         'factories' => [
             Controller\IndexController::class => InvokableFactory::class,
             Controller\AuthController::class  => InvokableFactory::class,
+            Controller\UserController::class  => InvokableFactory::class,
         ],
     ],
+    
     'permission'=> [
         Controller\IndexController::class => [
             'allow' => [
@@ -51,6 +65,11 @@ return [
             ]
         ],
         Controller\AuthController::class => [
+            'allow' => [
+                UserManager::ROLE_GUEST,
+            ]
+        ],
+        Controller\UserController::class => [
             'allow' => [
                 UserManager::ROLE_GUEST,
             ]

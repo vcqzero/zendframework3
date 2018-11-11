@@ -1,13 +1,7 @@
-define([
-	'jquery',
-	'nprogress',
-	'blockUI',
-	'slimscroll',
-	'counterup',
-	'notify',
-], function($, NProgress) {
+define(function(require) {
+	var $ = require('jquery')
+	var jQuery = require('jquery')
 	var App = (function() {
-
 		// IE mode
 		var isRTL = false;
 		var isIE8 = false;
@@ -17,7 +11,7 @@ define([
 		var resizeHandlers = [];
 
 		var assetsPath = '/_application/';
-		
+
 		var pagePath = '/pages/';
 
 		var globalImgPath = 'img/';
@@ -479,11 +473,6 @@ define([
 			});
 		};
 
-		// Handles scrollable contents using jQuery SlimScroll plugin.
-		var handleScrollers = function() {
-			App.initSlimScroll('.scroller');
-		};
-
 		// Handles Image Preview using jQuery Fancybox plugin
 		var handleFancybox = function() {
 			if(!jQuery.fancybox) {
@@ -503,18 +492,6 @@ define([
 					}
 				});
 			}
-		};
-
-		// Handles counterup plugin wrapper
-		var handleCounterup = function() {
-			if(!$().counterUp) {
-				return;
-			}
-
-			$("[data-counter='counterup']").counterUp({
-				delay: 10,
-				time: 1000
-			});
 		};
 
 		// Fix input placeholder issue for IE8 and IE9
@@ -678,7 +655,7 @@ define([
 
 		var handlePage = function() {
 			var init_page = function(page) {
-				var name  = page.attr('data-name')
+				var name = page.attr('data-name')
 				var group = page.attr('data-group')
 				var pageName
 				if(typeof name == 'undefined' || typeof group == 'undefined') {
@@ -686,7 +663,7 @@ define([
 					return false;
 				}
 				pageName = pagePath + group + '/' + name
-				requirejs([pageName], function(pageModule) {
+				require([pageName], function(pageModule) {
 					if(typeof pageModule == 'undefined') {
 						return
 					}
@@ -722,7 +699,7 @@ define([
 				handleMaterialDesign(); // handle material design       
 				handleiCheck(); // handles custom icheck radio and checkboxes
 				handleBootstrapSwitch(); // handle bootstrap switch plugin
-				handleScrollers(); // handles slim scrolling contents 
+				//				handleScrollers(); // handles slim scrolling contents 
 				handleFancybox(); // 弹出框方式查看图片
 				handleSelect2(); // handle custom Select2 dropdowns
 				handlePortletTools(); // handles portlet action bar functionality(refresh, configure, toggle, remove)
@@ -735,7 +712,7 @@ define([
 				handleModals(); // handle modals
 				handleBootstrapConfirmation(); // handle bootstrap confirmations
 				handleTextareaAutosize(); // handle autosize textareas
-				handleCounterup(); // handle counterup instances
+				//				handleCounterup(); // handle counterup instances
 
 				//Handle group element heights
 				this.addResizeHandler(handleHeight); // handle auto calculating height on window resize
@@ -769,6 +746,18 @@ define([
 				this.initAjax();
 			},
 
+			handleCounterup: function() {
+				require(['counterup'], function() {
+					if(!$().counterUp) {
+						return;
+					}
+
+					$("[data-counter='counterup']").counterUp({
+						delay: 10,
+						time: 1000
+					});
+				})
+			},
 			//public function to remember last opened popover that needs to be closed on click
 			setLastPopedPopover: function(el) {
 				lastPopedPopover = el;
@@ -816,83 +805,87 @@ define([
 			 * @param {Object} el jQuery集合
 			 */
 			initSlimScroll: function(el) {
-				if(!$().slimScroll) {
-					return;
-				}
-
-				$(el).each(function() {
-					if($(this).attr("data-initialized")) {
-						return; // exit
+				require(['slimScroll'], function() {
+					if(!$().slimScroll) {
+						return;
 					}
 
-					var height;
-
-					if($(this).attr("data-height")) {
-						height = $(this).attr("data-height");
-					} else {
-						height = $(this).css('height');
-					}
-
-					$(this).slimScroll({
-						allowPageScroll: true, // allow page scroll when the element scroll is ended
-						size: '7px',
-						color: ($(this).attr("data-handle-color") ? $(this).attr("data-handle-color") : '#bbb'),
-						wrapperClass: ($(this).attr("data-wrapper-class") ? $(this).attr("data-wrapper-class") : 'slimScrollDiv'),
-						railColor: ($(this).attr("data-rail-color") ? $(this).attr("data-rail-color") : '#eaeaea'),
-						position: isRTL ? 'left' : 'right',
-						height: height,
-						alwaysVisible: ($(this).attr("data-always-visible") == "1" ? true : false),
-						railVisible: ($(this).attr("data-rail-visible") == "1" ? true : false),
-						disableFadeOut: true
-					});
-
-					$(this).attr("data-initialized", "1");
-				});
-			},
-
-			destroySlimScroll: function(el) {
-				if(!$().slimScroll) {
-					return;
-				}
-
-				$(el).each(function() {
-					if($(this).attr("data-initialized") === "1") { // destroy existing instance before updating the height
-						$(this).removeAttr("data-initialized");
-						$(this).removeAttr("style");
-
-						var attrList = {};
-
-						// store the custom attribures so later we will reassign.
-						if($(this).attr("data-handle-color")) {
-							attrList["data-handle-color"] = $(this).attr("data-handle-color");
+					$(el).each(function() {
+						if($(this).attr("data-initialized")) {
+							return; // exit
 						}
-						if($(this).attr("data-wrapper-class")) {
-							attrList["data-wrapper-class"] = $(this).attr("data-wrapper-class");
-						}
-						if($(this).attr("data-rail-color")) {
-							attrList["data-rail-color"] = $(this).attr("data-rail-color");
-						}
-						if($(this).attr("data-always-visible")) {
-							attrList["data-always-visible"] = $(this).attr("data-always-visible");
-						}
-						if($(this).attr("data-rail-visible")) {
-							attrList["data-rail-visible"] = $(this).attr("data-rail-visible");
+
+						var height;
+
+						if($(this).attr("data-height")) {
+							height = $(this).attr("data-height");
+						} else {
+							height = $(this).css('height');
 						}
 
 						$(this).slimScroll({
+							allowPageScroll: true, // allow page scroll when the element scroll is ended
+							size: '7px',
+							color: ($(this).attr("data-handle-color") ? $(this).attr("data-handle-color") : '#bbb'),
 							wrapperClass: ($(this).attr("data-wrapper-class") ? $(this).attr("data-wrapper-class") : 'slimScrollDiv'),
-							destroy: true
+							railColor: ($(this).attr("data-rail-color") ? $(this).attr("data-rail-color") : '#eaeaea'),
+							position: isRTL ? 'left' : 'right',
+							height: height,
+							alwaysVisible: ($(this).attr("data-always-visible") == "1" ? true : false),
+							railVisible: ($(this).attr("data-rail-visible") == "1" ? true : false),
+							disableFadeOut: true
 						});
 
-						var the = $(this);
+						$(this).attr("data-initialized", "1");
+					});
+				})
+			},
 
-						// reassign custom attributes
-						$.each(attrList, function(key, value) {
-							the.attr(key, value);
-						});
-
+			destroySlimScroll: function(el) {
+				require(['slimScroll'], function() {
+					if(!$().slimScroll) {
+						return;
 					}
-				});
+
+					$(el).each(function() {
+						if($(this).attr("data-initialized") === "1") { // destroy existing instance before updating the height
+							$(this).removeAttr("data-initialized");
+							$(this).removeAttr("style");
+
+							var attrList = {};
+
+							// store the custom attribures so later we will reassign.
+							if($(this).attr("data-handle-color")) {
+								attrList["data-handle-color"] = $(this).attr("data-handle-color");
+							}
+							if($(this).attr("data-wrapper-class")) {
+								attrList["data-wrapper-class"] = $(this).attr("data-wrapper-class");
+							}
+							if($(this).attr("data-rail-color")) {
+								attrList["data-rail-color"] = $(this).attr("data-rail-color");
+							}
+							if($(this).attr("data-always-visible")) {
+								attrList["data-always-visible"] = $(this).attr("data-always-visible");
+							}
+							if($(this).attr("data-rail-visible")) {
+								attrList["data-rail-visible"] = $(this).attr("data-rail-visible");
+							}
+
+							$(this).slimScroll({
+								wrapperClass: ($(this).attr("data-wrapper-class") ? $(this).attr("data-wrapper-class") : 'slimScrollDiv'),
+								destroy: true
+							});
+
+							var the = $(this);
+
+							// reassign custom attributes
+							$.each(attrList, function(key, value) {
+								the.attr(key, value);
+							});
+
+						}
+					});
+				})
 			},
 
 			/**
@@ -915,69 +908,73 @@ define([
 			 * @param {Object} options
 			 */
 			blockUI: function(options) {
-				options = $.extend(true, {}, options);
-				var html = '';
-				if(options.animate) {
-					html = '<div class="loading-message ' + (options.boxed ? 'loading-message-boxed' : '') + '">' + '<div class="block-spinner-bar"><div class="bounce1"></div><div class="bounce2"></div><div class="bounce3"></div></div>' + '</div>';
-				} else if(options.iconOnly) {
-					html = '<div class="loading-message ' + (options.boxed ? 'loading-message-boxed' : '') + '"><img src="' + this.getGlobalImgPath() + 'loading-spinner-grey.gif" align=""></div>';
-				} else if(options.textOnly) {
-					html = '<div class="loading-message ' + (options.boxed ? 'loading-message-boxed' : '') + '"><span>&nbsp;&nbsp;' + (options.message ? options.message : 'LOADING...') + '</span></div>';
-				} else {
-					html = '<div class="loading-message ' + (options.boxed ? 'loading-message-boxed' : '') + '"><img src="' + this.getGlobalImgPath() + 'loading-spinner-grey.gif" align=""><span>&nbsp;&nbsp;' + (options.message ? options.message : 'LOADING...') + '</span></div>';
-				}
-
-				if(options.target) { // element blocking
-					var el = $(options.target);
-					if(el.height() <= ($(window).height())) {
-						options.cenrerY = true;
+				require(['blockUI'], function() {
+					options = $.extend(true, {}, options);
+					var html = '';
+					if(options.animate) {
+						html = '<div class="loading-message ' + (options.boxed ? 'loading-message-boxed' : '') + '">' + '<div class="block-spinner-bar"><div class="bounce1"></div><div class="bounce2"></div><div class="bounce3"></div></div>' + '</div>';
+					} else if(options.iconOnly) {
+						html = '<div class="loading-message ' + (options.boxed ? 'loading-message-boxed' : '') + '"><img src="' + this.getGlobalImgPath() + 'loading-spinner-grey.gif" align=""></div>';
+					} else if(options.textOnly) {
+						html = '<div class="loading-message ' + (options.boxed ? 'loading-message-boxed' : '') + '"><span>&nbsp;&nbsp;' + (options.message ? options.message : 'LOADING...') + '</span></div>';
+					} else {
+						html = '<div class="loading-message ' + (options.boxed ? 'loading-message-boxed' : '') + '"><img src="' + this.getGlobalImgPath() + 'loading-spinner-grey.gif" align=""><span>&nbsp;&nbsp;' + (options.message ? options.message : 'LOADING...') + '</span></div>';
 					}
-					el.block({
-						message: html,
-						baseZ: options.zIndex ? options.zIndex : 1000,
-						centerY: options.cenrerY !== undefined ? options.cenrerY : false,
-						css: {
-							top: '10%',
-							border: '0',
-							padding: '0',
-							backgroundColor: 'none'
-						},
-						overlayCSS: {
-							backgroundColor: options.overlayColor ? options.overlayColor : '#555',
-							opacity: options.boxed ? 0.05 : 0.1,
-							cursor: 'wait'
+
+					if(options.target) { // element blocking
+						var el = $(options.target);
+						if(el.height() <= ($(window).height())) {
+							options.cenrerY = true;
 						}
-					});
-				} else { // page blocking
-					$.blockUI({
-						message: html,
-						baseZ: options.zIndex ? options.zIndex : 1000,
-						css: {
-							border: '0',
-							padding: '0',
-							backgroundColor: 'none'
-						},
-						overlayCSS: {
-							backgroundColor: options.overlayColor ? options.overlayColor : '#555',
-							opacity: options.boxed ? 0.05 : 0.1,
-							cursor: 'wait'
-						}
-					});
-				}
+						el.block({
+							message: html,
+							baseZ: options.zIndex ? options.zIndex : 1000,
+							centerY: options.cenrerY !== undefined ? options.cenrerY : false,
+							css: {
+								top: '10%',
+								border: '0',
+								padding: '0',
+								backgroundColor: 'none'
+							},
+							overlayCSS: {
+								backgroundColor: options.overlayColor ? options.overlayColor : '#555',
+								opacity: options.boxed ? 0.05 : 0.1,
+								cursor: 'wait'
+							}
+						});
+					} else { // page blocking
+						$.blockUI({
+							message: html,
+							baseZ: options.zIndex ? options.zIndex : 1000,
+							css: {
+								border: '0',
+								padding: '0',
+								backgroundColor: 'none'
+							},
+							overlayCSS: {
+								backgroundColor: options.overlayColor ? options.overlayColor : '#555',
+								opacity: options.boxed ? 0.05 : 0.1,
+								cursor: 'wait'
+							}
+						});
+					}
+				})
 			},
 
 			// wrApper function to  un-block element(finish loading)
 			unblockUI: function(target) {
-				if(target) {
-					$(target).unblock({
-						onUnblock: function() {
-							$(target).css('position', '');
-							$(target).css('zoom', '');
-						}
-					});
-				} else {
-					$.unblockUI();
-				}
+				require(['blockUI'], function() {
+					if(target) {
+						$(target).unblock({
+							onUnblock: function() {
+								$(target).css('position', '');
+								$(target).css('zoom', '');
+							}
+						});
+					} else {
+						$.unblockUI();
+					}
+				})
 			},
 
 			/**
@@ -1176,108 +1173,112 @@ define([
 				return sizes[size] ? sizes[size] : 0;
 			},
 
-			validator: function(page, config) {
-				if(config['enabled'] !== true) {
-					return
-				}
-
-				var forms = page.find('form')
-				if(forms.length < 1) {
-					return false;
-				}
-				var getValue = function(form_id, config, type) {
-					var formsConfig = config['forms']
-					if(formsConfig === undefined) {
-						return;
-					}
-					var _formConfig = formsConfig[form_id]
-
-					if(_formConfig === undefined) {
+			formValidator: function(page, config) {
+				require(['bootstrapvalidator'], function() {
+					if(config['enabled'] !== true) {
 						return
 					}
 
-					return _formConfig[type]
-				}
-				var initBootstrapValidator = function(form, fields, callback) {
-					form
-						.bootstrapValidator({
-							//				live: 'submitted',
-							message: '输入内容有误',
-							feedbackIcons: {
-								valid: 'glyphicon glyphicon-ok',
-								invalid: 'glyphicon glyphicon-remove',
-								validating: 'glyphicon glyphicon-refresh'
-							},
-							fields: fields
-						})
-						.on('success.form.bv', function(e, data) {
-							e.preventDefault()
-							var form = $(e.target)
-							var bootStrap = form.data('bootstrapValidator')
-							var isValid = true
-							//是否存在回调函数，如果存在，执行回调验证
-							//只有回调验证成功，才可进行提交
-							console.log('表单验证成功')
-							if($.isFunction(callback)) {
-								isValid = callback(form) === true
-							}
-							bootStrap.disableSubmitButtons(isValid)
-							if(isValid) {
-								form.trigger('myValidator:valid.success')
-							}
-							return false;
-						})
-						.on('init.form.bv', function(e, data) {
-							console.log('表单验证器设置成功')
-						})
-				}
-
-				$.each(forms, function(k, form) {
-					var form = $(this)
-					var bootstrapValidator = form.data('bootstrapValidator')
-					if(bootstrapValidator === undefined) {
-						var form_id = form.attr('id')
-						var filds = getValue(form_id, config, 'fields')
-						var callback = getValue(form_id, config, 'callback')
-						if(filds === undefined) {
-							return false
+					var forms = page.find('form')
+					if(forms.length < 1) {
+						return false;
+					}
+					var getValue = function(form_id, config, type) {
+						var formsConfig = config['forms']
+						if(formsConfig === undefined) {
+							return;
 						}
-						initBootstrapValidator(form, filds, callback)
+						var _formConfig = formsConfig[form_id]
+
+						if(_formConfig === undefined) {
+							return
+						}
+
+						return _formConfig[type]
+					}
+					var initBootstrapValidator = function(form, fields, callback) {
+						form
+							.bootstrapValidator({
+								//				live: 'submitted',
+								message: '输入内容有误',
+								feedbackIcons: {
+									valid: 'glyphicon glyphicon-ok',
+									invalid: 'glyphicon glyphicon-remove',
+									validating: 'glyphicon glyphicon-refresh'
+								},
+								fields: fields
+							})
+							.on('success.form.bv', function(e, data) {
+								e.preventDefault()
+								var form = $(e.target)
+								var bootStrap = form.data('bootstrapValidator')
+								var isValid = true
+								//是否存在回调函数，如果存在，执行回调验证
+								//只有回调验证成功，才可进行提交
+								console.log('表单验证成功')
+								if($.isFunction(callback)) {
+									isValid = callback(form) === true
+								}
+								bootStrap.disableSubmitButtons(isValid)
+								if(isValid) {
+									form.trigger('myValidator:valid.success')
+								}
+								return false;
+							})
+							.on('init.form.bv', function(e, data) {
+								console.log('表单验证器设置成功')
+							})
 					}
 
-					//设置点击reset form 按钮
-					var resetButton = form.find('button[type="reset"]')
-					resetButton.on('click', function() {
-						form.data('bootstrapValidator').resetForm();
+					$.each(forms, function(k, form) {
+						var form = $(this)
+						var bootstrapValidator = form.data('bootstrapValidator')
+						if(bootstrapValidator === undefined) {
+							var form_id = form.attr('id')
+							var filds = getValue(form_id, config, 'fields')
+							var callback = getValue(form_id, config, 'callback')
+							if(filds === undefined) {
+								return false
+							}
+							initBootstrapValidator(form, filds, callback)
+						}
+
+						//设置点击reset form 按钮
+						var resetButton = form.find('button[type="reset"]')
+						resetButton.on('click', function() {
+							form.data('bootstrapValidator').resetForm();
+						})
 					})
 				})
 			},
 
 			notify: function(type, title, message) {
-				title = '<strong>' + title + '</strong>'
-				message = typeof message == 'undefined' ? '' : message;
-				$.notify({
-					// options
-					title: title,
-					message: message
-				}, {
-					// settings
-					type: type,
-					allow_dismiss: false,
-					newest_on_top: true,
-					offset: {
-						y: 1
-					},
+				require(['notify'], function() {
+					title = '<strong>' + title + '</strong>'
+					message = typeof message == 'undefined' ? '' : message;
+					$.notify({
+						// options
+						title: title,
+						message: message
+					}, {
+						// settings
+						type: type,
+						allow_dismiss: false,
+						newest_on_top: true,
+						offset: {
+							y: 1
+						},
 
-					placement: {
-						from: 'top', //top bottom
-						align: 'center',
-					},
-					delay: 500
-				});
+						placement: {
+							from: 'top', //top bottom
+							align: 'center',
+						},
+						delay: 500
+					});
+				})
 			},
 
-			result: function() {
+			submitResult: function() {
 				if(config['enabled'] !== true) {
 					return
 				}
@@ -1346,6 +1347,5 @@ define([
 		} //end return
 
 	})()
-
 	return App
 })

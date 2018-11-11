@@ -3,15 +3,8 @@ namespace Application\Controller;
 
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\ViewModel;
-use Api\Service\UserManager;
-/**
- * @name 控制台管理
- * @desc 管理控制台页面
- */
 class IndexController extends AbstractActionController
 {
-    private $UserManager;
-    
     /**
     * 主页
     * 
@@ -21,18 +14,15 @@ class IndexController extends AbstractActionController
     */
     public function indexAction()
     {
-        return new ViewModel();
-    }
-    
-    /**
-    * 主页
-    * 
-    * @desc 显示主页2
-    * @param  
-    * @return        
-    */
-    public function index2Action()
-    {
+        // DEBUG INFORMATION START
+        echo '------debug start------<br/>';
+        echo "<pre>";
+        var_dump(__METHOD__ . ' on line: ' . __LINE__);
+        var_dump();
+        echo "</pre>";
+        exit('------debug end------');
+        // DEBUG INFORMATION END
+        
         return new ViewModel();
     }
 }
