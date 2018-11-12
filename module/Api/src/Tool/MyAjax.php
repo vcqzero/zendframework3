@@ -3,6 +3,8 @@ namespace Api\Tool;
 
 class MyAjax
 {
+    const KEY_SUCCESS = 'success';
+    const KEY_MSG     = 'msg';
     /**
     * 关闭ajax连接，可执行其他后台程序
     * 

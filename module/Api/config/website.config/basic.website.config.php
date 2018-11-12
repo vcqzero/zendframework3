@@ -1,5 +1,5 @@
 <?php
 return array(
-    'website_record' => 'sdfsdsddfgfdfg',
-    'website_title' => 'sfsdadasdfssfssf',
+    'website_record' => '备案信息',
+    'website_title' => '我的zendframework3',
 );

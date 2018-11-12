@@ -1346,28 +1346,42 @@ define(function(require) {
 
 			editable: function(page, config) {
 				require(['editable'], function() {
-					if (typeof config === 'undefined') {
+					if(typeof config === 'undefined') {
 						return
 					}
 					for(var table_id in config) {
 						var table = page.find('#' + table_id)
 						var _config = config[table_id]
 						var mode = _config['mode'] ? _config['mode'] : 'inline'
-						var _url  = _config['url']
-						if (table.length < 1) {
+						var _url = _config['url']
+						if(table.length < 1) {
 							continue
 						}
-						$.fn.editable.defaults.url = _url;
-						$.fn.editable.defaults.mode = mode;
+						table.find('.editable').editable({
+							mode: mode,
+							url: _url,
+							emptytext: '未设置',
+							success: function(response, newValue) {
+								var success = response.success
+								if(success !== true) {
+									return response.msg
+								}
+							},
+							error: function(response, newValue) {
+								if(response.status === 500) {
+									return '服务器错误';
+								} else {
+									return response.responseText;
+								}
+							},
+							
+							validate: function(value) {
+								if($.trim(value) == '') {
+									return '不可为空';
+								}
+							},
+						})
 					}
-					
-					$.fn.editable.defaults.success = function(response, newValue) {
-						var success = response.success
-						if(success !== true) {
-							return response.msg
-						}
-					}
-					$('.editable').editable()
 				})
 			},
 

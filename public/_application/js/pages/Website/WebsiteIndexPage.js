@@ -1,9 +1,6 @@
 define(
-	['jquery', 'App', 'require'],
-	function($, App, require) {
-		var editable = function() {
-			App.editable('/api/website/edit')
-		}
+	['jquery', 'App'],
+	function($, App) {
 		var editableConfig = {
 			"websiteTable" : {
 				url : '/api/website/edit',
@@ -13,7 +10,7 @@ define(
 		
 		return {
 			init: function(pageName, page) {
-				editable()
+				App.editable(page, editableConfig)
 			}
 		}
 	})
