@@ -1,2 +1,0 @@
-2018-11-11T22:45:20+08:00 WARN (4): var_dump() expects at least 1 parameter, 0 given {"errno":2,"file":"D:\\workSpace\\zendframework3\\module\\Application\\src\\Controller\\UserController.php","line":17}
-2018-11-11T22:46:27+08:00 WARN (4): var_dump() expects at least 1 parameter, 0 given {"errno":2,"file":"D:\\workSpace\\zendframework3\\module\\Application\\src\\Controller\\UserController.php","line":17}
