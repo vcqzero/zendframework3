@@ -5,9 +5,8 @@ use Interop\Container\ContainerInterface;
 use Zend\ServiceManager\Factory\FactoryInterface;
 use Api\Service\UserManager;
 use Api\Filter\FormFilter;
-use Api\Repository\PdoMysql;
 use Api\Repository\MyTableGateway;
-use Api\Repository\Repositories\User;
+use Api\Repository\Table\User;
 
 /**
  * This is the factory for IndexController. Its purpose is to instantiate the
@@ -17,24 +16,16 @@ class UserManagerFactory implements FactoryInterface
 {
     public function __invoke(ContainerInterface $container, $requestedName, array $options = null)
     {
+        //MyTableGateway
         $DbAdapter = $container->get('Zend\Db\Adapter\Adapter');
-        
-        $PdoMysql = $container->get(PdoMysql::class);
-        
+        $TableGateway = new MyTableGateway(User::TABLE_NAME, $DbAdapter);
         //FormFilter
-        $FormFilter = $container->get(FormFilter::class);
-        $FormFilter ->setRules(include 'module/Api/src/Filter/rules/User.php');
-        
+        $rules      = include 'module/Api/src/Filter/rules/User.php';
+        $FormFilter = new FormFilter($rules);
         //super admin config
         $config = $container->get('config');
         $super_admin_config = $config['super_admin'];
-        $UserManager = new UserManager(
-            $PdoMysql,
-            $FormFilter,
-            $super_admin_config,
-            new MyTableGateway(User::TABLE_NAME, $DbAdapter)
-            );
-        
-        return  $UserManager;
+        return $UserManager = new UserManager(
+            $FormFilter, $super_admin_config, $TableGateway);
     }
 }

@@ -1,0 +1,10 @@
+<?php 
+$pageGroup = $this->pageGroup;
+$pageName  = $this->pageName;
+$pageTitle = $this->pageTitle;
+$pageContent= $this->pageContent;
+$this->headtitle($pageTitle);//网页标题栏中的title
+?>
+<div class="my-main-page" data-name="<?=$pageName?>" data-group="<?=$pageGroup?>">
+<?=$pageContent?>
+</div>

@@ -9,7 +9,7 @@ use Zend\View\Model\ViewModel;
 */
 class WebsiteController extends AbstractActionController
 {
-    public function basicAction()
+    public function indexAction()
     {
         return new ViewModel();
     }

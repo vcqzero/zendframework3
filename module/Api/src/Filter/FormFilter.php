@@ -2,28 +2,12 @@
 namespace Api\Filter;
 
 use Zend\InputFilter\InputFilter;
-/**
-* @desc 数据表验证
-*/
 class FormFilter
 {
     private $rules;
-    private $excuted;
     private $isValid  = false;
     private $filteredValues = [];
     private $invalidMessage;
-
-    /**
-     * @return the $rules
-     */
-    public function getRules()
-    {
-        if (empty($this->rules))
-        {
-            throw new \Exception('请设置过滤规则');
-        }
-        return $this->rules;
-    }
 
     /**
      * 
@@ -46,8 +30,9 @@ class FormFilter
         return $this->invalidMessage;
     }
     
-    public final function __construct()
+    public final function __construct(array $rules)
     {
+        $this->setRules($rules);
     }
     
     /**
@@ -78,9 +63,6 @@ class FormFilter
         $values         = $InputFilter->getValues();
         $values         = $this->deleteNull($values);
         $this->filteredValues = $values;
-        
-        //set is excuted
-        $this->excuted = true;
     }
     
     /**

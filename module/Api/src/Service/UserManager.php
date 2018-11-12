@@ -8,14 +8,13 @@ namespace Api\Service;
 use Zend\Db\Sql\Where;
 use Api\Filter\FormFilter;
 use Api\Repository\PdoMysql;
-use Api\Repository\Repositories\User;
+use Api\Repository\Table\User;
 use Api\Repository\MyTableGateway;
 
 class UserManager
 {
-    public  $PdoMysql;
     public  $FormFilter;
-    public $MyTableGateway;
+    public  $MyTableGateway;
     
     private $super_admin_config;
     
@@ -42,15 +41,12 @@ class UserManager
     const ROLE_GUEST = 'GUSET';
 
     public function __construct(
-        PdoMysql $PdoMysql,
         FormFilter $FormFilter,
         $super_admin_config,
         MyTableGateway $MyTableGateway
         )
     {
-        $PdoMysql->setTableName(User::TABLE_NAME);
         $this->FormFilter   = $FormFilter;
-        $this->PdoMysql     = $PdoMysql;
         $this->super_admin_config = $super_admin_config;
         $this->MyTableGateway = $MyTableGateway;
     }
@@ -133,7 +129,8 @@ class UserManager
         $where = [
             User::FILED_USERNAME => $name
         ];
-        if (!empty($this->PdoMysql->count($where))) 
+        
+        if (!empty($this->MyTableGateway->count($where))) 
         {
             return;    
         }
@@ -154,7 +151,7 @@ class UserManager
             User::FILED_ROLE    => self::ROLE_SUPER_ADMIN,
             User::FILED_WORKYARD_ID => 0,
         ];
-        $this->MyOrm->insert($values);
+        $this->MyTableGateway->insert($values);
     }
     
     private function getSuperAdminName()

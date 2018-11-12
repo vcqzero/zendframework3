@@ -13,6 +13,40 @@ class MyTableGateway extends TableGateway
     const ITEM_COUNT_PER_PAGE = 9;
     
     /**
+    * 从本数据表中查询一条数据
+    * 
+    * @param int|array|Where $id_or_where 
+    * @return array        
+    */
+    public function selectOne($id_or_where)
+    {
+        $select = $this->getSql()->select();
+        $select ->limit(1);
+        if (is_array($id_or_where) || $id_or_where instanceof Where) {
+            $where = $id_or_where;
+        }else {
+            $id = $id_or_where;
+            $where = ['id' => $id ];
+        }
+        //do select
+        $res = $this->selectWith($select);
+        //get the first as array
+        $res = $res->current()->getArrayCopy();
+        return $res;
+    }
+    
+    /**
+    * 查询数量
+    * 
+    * @param array $where
+    * @return int $count       
+    */
+    public function count($where=[])
+    {
+        $count = $this->select($where)->count();
+        return $count;
+    }
+    /**
     * 获取当前table的分页数据
     * 
     * @param int $page  

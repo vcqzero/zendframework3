@@ -1,0 +1,78 @@
+<?php 
+$title  = $this->Website()->getTitle();
+$record = $this->Website()->getRecord();
+?>
+<?php $this->placeholder('pageContent')->captureStart();?>
+<div class="note note-info">
+	<p>A black page template with a minimal dependency assets to use as a
+		base for any custom page you create</p>
+</div>
+<div class="portlet light portlet-fit bordered">
+	<div class="portlet-title">
+		<div class="caption">
+			<i class="icon-settings font-dark"></i> <span
+				class="caption-subject font-dark sbold uppercase">Editable Form</span>
+		</div>
+		<div class="actions">
+			<div class="btn-group btn-group-devided" data-toggle="buttons">
+				<label
+					class="btn btn-transparent dark btn-outline btn-circle btn-sm active">
+					<input type="radio" name="options" class="toggle" id="option1">关闭编辑
+				</label> <label
+					class="btn btn-transparent dark btn-outline btn-circle btn-sm"> <input
+					type="radio" name="options" class="toggle" id="option2">开启编辑
+				</label>
+			</div>
+		</div>
+	</div>
+	<div class="portlet-body">
+		<div class="row">
+			<div class="col-md-12">
+				<table id="websiteTable" class="table table-bordered table-striped">
+					<tbody>
+						<tr>
+							<td style="width: 15%">站点标题</td>
+							<td style="width: 50%">
+							<a 
+							href="javascript:;" 
+							id="website_title"
+							data-pk="1"
+							data-type="text" 
+							data-original-title="站点标题"
+							data-emptytext="未设置"
+							class="editable editable-click editable-disabled" tabindex="-1"
+							style="display: inline;"><?=$title?></a>
+							</td>
+							<td style="width: 35%">
+							<span class="text-muted">Simple textfield </span>
+							</td>
+						</tr>
+						<tr>
+							<td>备案信息</td>
+							<td>
+							<a href="javascript:;" 
+							data-name="website_record"
+							data-type="text"
+							data-pk="1"
+							data-placement="right" 
+							data-placeholder="请输入站点备案信息"
+							data-original-title="备案信息"
+							class="editable editable-click editable-disabled" tabindex="-1"><?=$record?></a>
+							</td>
+							<td><span class="text-muted"> Required text field, originally
+									empty </span></td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+		</div>
+	</div>
+</div>
+<?php $this->placeholder('pageContent')->captureEnd() ?>
+
+<?=$this->partial('partial/application/page/page/basic-page.phtml', [
+    'pageGroup' => 'Website',
+    'pageName' => 'WebsiteIndexPage',
+    'pageTitle' => '站点设置',
+    'pageContent' => $this->placeholder('pageContent'),
+])?>

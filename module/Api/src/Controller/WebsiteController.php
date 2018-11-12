@@ -4,6 +4,8 @@ namespace Api\Controller;
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\Mvc\MvcEvent;
 use Api\Service\WebsiteManager;
+use Zend\View\Model\JsonModel;
+use Zend\Config\Config;
 
 class WebsiteController extends AbstractActionController
 {
@@ -31,18 +33,22 @@ class WebsiteController extends AbstractActionController
     }
     
     //edit the website infomation
-    public function editBasicAction()
+    public function editAction()
     {
-        $token  = $this->params()->fromQuery('token');
-        if (!$this->Token()->isValid($token))
-        {
-            $this->ajax()->success(false);
-        }
         //获取用户提交表单
-        $values = $this->params()->fromPost();
+        $name = $this->params()->fromPost('name');
+        $value = $this->params()->fromPost('value');
+        // DEBUG INFORMATION END
+        $config = include WebsiteManager::PATH_BASIC_WEBSITE_CONFIG;
+        $config[$name] = $value;
         $writer = new \Zend\Config\Writer\PhpArray();
-        $writer->toFile(WebsiteManager::PATH_BASIC_WEBSITE_CONFIG, $values);
-        $this->ajax()->success(true);
+        $writer->toFile(WebsiteManager::PATH_BASIC_WEBSITE_CONFIG, $config);
+        $view = new JsonModel();
+        $view->setVariables([
+            'success'=> false,
+            'msg' => '错误'
+        ]);
+        return $view;
     }
     
 //     public function editEmailAction()

@@ -158,18 +158,14 @@ return [
         
         'aliases' => [
             'Token'      => Controller\Plugin\TokenPlugin::class,
+            'Auth'       => Controller\Plugin\AuthPlugin::class,
         ],
     ],
     //service_manager
     'service_manager' => [
         'factories' => [
             //Controller\Plugin
-            Controller\Plugin\AuthPlugin::class   => Controller\Plugin\Factory\AuthPluginFactory::class,
             Controller\Plugin\TokenPlugin::class => Controller\Plugin\Factory\TokenPluginFactory::class,
-            
-            Repository\PdoMysql::class => Repository\Factory\PdoMysqlFactory::class,
-            //Filter
-            Filter\FormFilter::class => Filter\Factory\FormFilterFactory::class,
             //Server
             Service\Weixiner::class   => Service\Factory\WeixinerFactory::class,
             Service\AclPermissioner::class => Service\Factory\AclPermissionerFactory::class,
@@ -180,8 +176,6 @@ return [
         ],
         
         'shared' => [
-            // Specify here which services must be non-shared
-            Repository\PdoMysql::class   => false,
             Filter\FormFilter::class     =>false,
         ]
     ],

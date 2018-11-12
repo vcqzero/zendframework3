@@ -1,5 +1,5 @@
 <?php
-namespace Api\Repository\Repositories;
+namespace Api\Repository\Table;
 
 class User
 {

@@ -27,6 +27,8 @@ requirejs.config({
 		moment : 'https://cdn.bootcss.com/bootstrap-daterangepicker/3.0.3/moment.min',
 		//daterangepicker
 		daterangepicker : 'https://cdn.bootcss.com/bootstrap-daterangepicker/3.0.3/daterangepicker.min',
+		//editable
+		editable : '//cdnjs.cloudflare.com/ajax/libs/x-editable/1.5.0/bootstrap3-editable/js/bootstrap-editable.min',
 	},
 
 	map: { //map告诉RequireJS在任何模块之前，都先载入这个模块
@@ -66,17 +68,24 @@ requirejs.config({
 				'css!https://cdn.bootcss.com/bootstrap-daterangepicker/3.0.3/daterangepicker.min',
 			],
 		},
+		
+		editable: {
+			deps: [
+				'bootstrap',
+				'css!//cdnjs.cloudflare.com/ajax/libs/x-editable/1.5.0/bootstrap3-editable/css/bootstrap-editable',
+			],
+		},
 	},
 });
 
 // Start the main app 
 requirejs(
-	['jquery', 'bootstrap', ],
+	['jquery', 'bootstrap'],
 	function($) {
 		requirejs(['App'], function(App) {
 			App.init()
 		})
-		requirejs(['layout'], function(Layout) {
+		requirejs(['Layout'], function(Layout) {
 			Layout.init()
 		})
 	});

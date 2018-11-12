@@ -48,6 +48,17 @@ return [
                 ],
             ],
             
+            'website' => [
+                'type'    => Segment::class,
+                'options' => [
+                    'route'    => '/website[/:action]',
+                    'defaults' => [
+                        'controller' => Controller\WebsiteController::class,
+                        'action'     => 'index',
+                    ],
+                ],
+            ],
+            
         ],
     ],
     'controllers' => [
@@ -55,6 +66,7 @@ return [
             Controller\IndexController::class => InvokableFactory::class,
             Controller\AuthController::class  => InvokableFactory::class,
             Controller\UserController::class  => InvokableFactory::class,
+            Controller\WebsiteController::class  => InvokableFactory::class,
         ],
     ],
     
@@ -73,6 +85,21 @@ return [
             'allow' => [
                 UserManager::ROLE_GUEST,
             ]
+        ],
+        Controller\WebsiteController::class => [
+            'allow' => [
+                UserManager::ROLE_GUEST,
+            ]
+        ],
+    ],
+    
+    'view_helpers' => [
+        'factories' => [
+            View\Helper\MenuHelper::class => InvokableFactory::class,
+        ],
+        
+        'aliases' => [
+            'Menu' => View\Helper\MenuHelper::class,
         ],
     ],
     

@@ -59,10 +59,29 @@ class AuthController extends AbstractActionController
     public function loginPageAction()
     {
         //dispath by pc or mobile
+        
+        // DEBUG INFORMATION START
+        echo '------debug start------<br/>';
+        echo "<pre>";
+        var_dump(__METHOD__ . ' on line: ' . __LINE__);
+        var_dump();
+        echo "</pre>";
+        exit('------debug end------');
+        // DEBUG INFORMATION END
+        
     }
     
     public function noPermissionPageAction()
     {
         //dispath by pc or mobile
+        
+        // DEBUG INFORMATION START
+        echo '------debug start------<br/>';
+        echo "<pre>";
+        var_dump(__METHOD__ . ' on line: ' . __LINE__);
+        var_dump();
+        echo "</pre>";
+        exit('------debug end------');
+        // DEBUG INFORMATION END
     }
 }

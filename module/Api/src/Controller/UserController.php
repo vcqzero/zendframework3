@@ -9,15 +9,12 @@ use Api\Repository\Repositories\User;
 class UserController extends AbstractActionController
 {
     private $UserManager;
-    private $AjaxPlugin;
     
     public function __construct(
-        UserManager $UserManager,
-        AjaxPlugin $AjaxPlugin
+        UserManager $UserManager
         )
     {
         $this->UserManager  = $UserManager;
-        $this->AjaxPlugin   = $AjaxPlugin;
     }
     
     public function validNameAction()

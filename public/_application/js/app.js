@@ -12,7 +12,7 @@ define(function(require) {
 
 		var assetsPath = '/_application/';
 
-		var pagePath = '/pages/';
+		var pagePath = '/_application/js/pages/';
 
 		var globalImgPath = 'img/';
 
@@ -662,7 +662,7 @@ define(function(require) {
 					console.log('page-> 未加载页面 ，页面名称未定义')
 					return false;
 				}
-				pageName = pagePath + group + '/' + name
+				pageName = pagePath + group + '/' + name + '.js'
 				require([pageName], function(pageModule) {
 					if(typeof pageModule == 'undefined') {
 						return
@@ -675,7 +675,7 @@ define(function(require) {
 			}
 
 			$(function() {
-				var page = $('body').find('div.page').first()
+				var page = $('body').find('div.my-main-page').first()
 				init_page(page)
 			})
 
@@ -1343,6 +1343,33 @@ define(function(require) {
 					return
 				})
 			}, //end result
+
+			editable: function(page, config) {
+				require(['editable'], function() {
+					if (typeof config === 'undefined') {
+						return
+					}
+					for(var table_id in config) {
+						var table = page.find('#' + table_id)
+						var _config = config[table_id]
+						var mode = _config['mode'] ? _config['mode'] : 'inline'
+						var _url  = _config['url']
+						if (table.length < 1) {
+							continue
+						}
+						$.fn.editable.defaults.url = _url;
+						$.fn.editable.defaults.mode = mode;
+					}
+					
+					$.fn.editable.defaults.success = function(response, newValue) {
+						var success = response.success
+						if(success !== true) {
+							return response.msg
+						}
+					}
+					$('.editable').editable()
+				})
+			},
 
 		} //end return
 

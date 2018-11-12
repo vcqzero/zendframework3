@@ -40,7 +40,7 @@ class Module
         
         //程序启动时
         $Bootstraper = $container->get(Bootstraper::class);
-        $evt->attach(MvcEvent::EVENT_DISPATCH, array($Bootstraper, 'doInit'), 100);
+//         $evt->attach(MvcEvent::EVENT_DISPATCH, array($Bootstraper, 'doInit'), 100);
     }
     //将php原始的错误信息记录到debug中
     public function logPhpError($log_debug)
@@ -78,32 +78,4 @@ class Module
         $vm = $e->getViewModel();
         $vm->setTemplate('layout/blank');
     }
-    
-    /**
-     * @param  MvcEvent $e The MvcEvent instance
-     * @return void
-     */
-    public function registerJsonStrategy(MvcEvent $e)
-    {
-        $matches    = $e->getRouteMatch();
-        $controller = $matches->getParam('controller');
-        if (false === strpos($controller, __NAMESPACE__)) {
-            // not a controller from this module
-            return;
-        }
-        
-        // Potentially, you could be even more selective at this point, and test
-        // for specific controller classes, and even specific actions or request
-        // methods.
-        
-        // Set the JSON strategy when controllers from this module are selected
-        $app          = $e->getTarget();
-        $locator      = $app->getServiceManager();
-        $view         = $locator->get('Zend\View\View');
-        $jsonStrategy = $locator->get('ViewJsonStrategy');
-        
-        // Attach strategy, which is a listener aggregate, at high priority
-        $view->getEventManager()->attach($jsonStrategy, 100);
-    }
-    
 }
