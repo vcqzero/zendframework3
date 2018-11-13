@@ -11,7 +11,6 @@ use Api\Controller\Plugin\TokenPlugin;
 class TokenHelper extends AbstractHelper 
 {
     private $TokenPlugin;
-    const TOKEN_INPUT_NAME = 'my_token_json';
     
     public function __construct(
         TokenPlugin $TokenPlugin

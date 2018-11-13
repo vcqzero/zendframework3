@@ -1,6 +1,6 @@
 define(
-	['jquery', 'myResult', 'myValidator'],
-	function($, myResult, myValidator) {
+	['jquery', 'App'],
+	function($, App) {
 		var myResultConfig = {
 			enabled: true,
 			forms: {
@@ -21,7 +21,6 @@ define(
 		}
 		return {
 			init: function(pageName, page) {
-				myResult.init(page, myResultConfig)
 			}
 		}
 	})

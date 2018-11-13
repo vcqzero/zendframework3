@@ -1,5 +1,8 @@
+<?php
+$title = $this->Website()->getTitle();
+?>
 <meta charset="utf-8" />
-<?= $this->headTitle('ZF Skeleton Application')->setSeparator(' - ')->setAutoEscape(false) ?>
+<?= $this->headTitle($title)->setSeparator(' - ')->setAutoEscape(false) ?>
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta content="width=device-width, initial-scale=1" name="viewport" />
 <meta content="" name="description" />

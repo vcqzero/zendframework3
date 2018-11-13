@@ -19,6 +19,8 @@ define(function(require) {
 		var globalPluginsPath = 'global/plugins/';
 
 		var globalCssPath = 'css/';
+		
+		var mainPageClass = 'main-page'
 
 		// theme layout color set
 
@@ -659,7 +661,7 @@ define(function(require) {
 				var group = page.attr('data-group')
 				var pageName
 				if(typeof name == 'undefined' || typeof group == 'undefined') {
-					console.log('page-> 未加载页面 ，页面名称未定义')
+					console.log('未加载页面 ，页面名称未定义')
 					return false;
 				}
 				pageName = pagePath + group + '/' + name + '.js'
@@ -670,12 +672,12 @@ define(function(require) {
 					if($.isFunction(pageModule['init'])) {
 						pageModule.init(pageName, page)
 					}
-					console.log('PAGE-> 加载页面完成：' + pageName)
+					console.log('加载页面完成：' + pageName)
 				})
 			}
 
 			$(function() {
-				var page = $('body').find('div.my-main-page').first()
+				var page = $('body').find('div.' + mainPageClass).first()
 				init_page(page)
 			})
 

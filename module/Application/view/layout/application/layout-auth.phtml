@@ -1,0 +1,27 @@
+<?php 
+$record = $this->Website()->getRecord();
+?>
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <?=$this->partial('layout/application/partial/head.phtml')?>
+        <link href="/_application/css/login-3.css" rel="stylesheet">
+    </head>
+    <!-- END HEAD -->
+
+    <body class=" login">
+        <!-- BEGIN LOGO -->
+        <div class="logo">
+        <img src="/_application/img/logo-big.png" alt="" />
+        </div>
+        <div class="content">
+            <?=$this->content?>
+            <!-- footer -->
+			<div class="muted">
+        		<?=$record?>
+        	</div>
+        </div>
+    </body>
+	<!-- js -->
+    <?=$this->partial('layout/application/partial/js.phtml')?>
+</html>

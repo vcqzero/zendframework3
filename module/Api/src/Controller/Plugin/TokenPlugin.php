@@ -5,9 +5,11 @@ use Zend\Mvc\Controller\Plugin\AbstractPlugin;
 
 class TokenPlugin extends AbstractPlugin
 {
-    private $mySession;
+    const TOKEN_ERROR_MSG   = '非法访问';
     
-    const TOKEN_SEPERATE = '_this_is_my_token_';
+    private $mySession;
+    private $token_seperate = '_this_is_my_token_';
+    
     public function __construct(
         $mySession
         )
@@ -29,7 +31,7 @@ class TokenPlugin extends AbstractPlugin
         $tokenName  = $this->getTokenName();
         $tokenString= $this->getTokenString();
         
-        $token      = $tokenName . self::TOKEN_SEPERATE . $tokenString;
+        $token      = $tokenName . $this->token_seperate . $tokenString;
         //将tokenName拼接到token中
         //保存session
         $this->mySession->$tokenName = $tokenString;
@@ -78,7 +80,7 @@ class TokenPlugin extends AbstractPlugin
             return false;
         }
         try{
-            $tokenArray  = explode(self::TOKEN_SEPERATE, $token);
+            $tokenArray  = explode($this->token_seperate, $token);
             $tokenName   = $tokenArray[0];
             $tokenString = $tokenArray[1];
             $tokenInSession = $this->mySession->$tokenName;

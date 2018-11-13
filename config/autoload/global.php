@@ -28,6 +28,7 @@ return [
     
     //配置session
     'session_config' => [
+        'name' => 'main-session-manager',
         'cookie_lifetime'     =>  7 * 24 * 60 * 60 , // 默认浏览器关闭时将客户端cookie设置为失效
         'gc_maxlifetime'      => 60 * 60 * 10, // How long to store session data on server (for 30 days).
     ],
@@ -37,6 +38,12 @@ return [
     ],
     'session_containers' => [
         'mySession',//定义session container 
+    ],
+    'session_manager' => [
+        'validators' => [
+//             RemoteAddr::class,
+//             HttpUserAgent::class,
+        ],
     ],
     
     'caches'=>[

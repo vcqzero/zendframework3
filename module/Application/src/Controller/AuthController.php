@@ -10,7 +10,7 @@ class AuthController extends AbstractActionController
     public function indexAction()
     {
         $View = new ViewModel();
-        $View->setTerminal(true);
+        $this->layout('layout/application/layout-auth');
         return $View;
     }
     

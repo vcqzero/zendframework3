@@ -6,7 +6,7 @@ use Zend\Authentication\Result;
 use Zend\Authentication\AuthenticationService;
 use Zend\Authentication\Adapter\DbTable\CallbackCheckAdapter as AuthAdapter;
 use Api\Service\UserManager;
-use Api\Repository\Repositories\User;
+use Api\Repository\Table\User;
 
 class AuthPlugin extends AbstractPlugin
 {
