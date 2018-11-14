@@ -1,3 +1,8 @@
+/**
+ * 框架文件
+ * 不涉及模板
+ * 
+ */
 define(function(require) {
 	var $ = require('jquery')
 	var jQuery = require('jquery')
@@ -19,7 +24,7 @@ define(function(require) {
 		var globalPluginsPath = 'global/plugins/';
 
 		var globalCssPath = 'css/';
-		
+
 		var mainPageClass = 'main-page'
 
 		// theme layout color set
@@ -574,84 +579,17 @@ define(function(require) {
 		}
 
 		var handleForm = function() {
-			var EVENT_BEFORE = 'form-ajax-submit:before'
-			var EVENT_COMPLETE = 'form-ajax-submit:complete'
-			var CLASS_AJAX_FORM = 'form-ajax-submit'
-
-			var getActionUrl = function(form) {
-				return form.attr('action')
-			}
-
-			var hasData = function(form) {
-				var datas = form.serializeArray()
-				var hasData = false
-				for(var key in datas) {
-					var data = datas[key]
-					if(data['value'].length > 0) {
-						hasData = true
-						break
-					}
-				}
-
-				return hasData
-			}
-
-			var doSubmit = function(form) {
-				var url = getActionUrl(form)
-				var data = form.serialize()
-				$.ajax({
-					type: "post",
-					data: data,
-					url: url,
-					async: true,
-					beforeSend: function() {
-						if(hasData(form) !== true) {
-							console.log('form is empty do not need submit')
-							return false;
-						} else {
-							console.log('The form is submitting on ajax')
-							form.trigger(EVENT_BEFORE)
-							disabledSubmitButton(form, true)
-						}
-					},
-
-					error: function() {
-						alert('请求失败')
-						location.reload()
-					},
-
-				}).done(function(res) {
-					var resObj = JSON.parse(res)
-					form.trigger(EVENT_COMPLETE, {
-						'resObj': resObj
-					})
-				});
-			}
-
-			var disabledSubmitButton = function(form, disabled) {
-				var submitButton = form.find('button[type="submit"]')
-				submitButton.text('处理中...')
-				form.find('button').attr('disabled', disabled === true)
-			}
-
+			var CLASS_AJAX_FORM = 'my-form-ajax-submit'
 			$('body').on('submit', 'form.' + CLASS_AJAX_FORM, function(e) {
+				e.preventDefault()
 				var form = $(this)
 				if(form.hasClass(CLASS_AJAX_FORM) == false) {
 					return false;
 				}
-				e.preventDefault()
-
-				//判断是否是需要验证的表单
-				//表单有bv-form的class代表是需要验证的表单
-				if(form.hasClass('bv-form')) {
-					return
+				if (form.data('data-ignore') == 'ignore') {
+					return false;
 				}
-				doSubmit(form)
-			})
-
-			$('body').on('myValidator:valid.success', 'form.' + CLASS_AJAX_FORM, function(e) {
-				var form = $(this)
-				doSubmit(form)
+				App.ajaxSubmit(form)
 			})
 		}
 
@@ -741,6 +679,24 @@ define(function(require) {
 				handlePopovers(); // handles bootstrap popovers
 				handleAccordions(); //handles accordions 
 				handleBootstrapConfirmation(); // handle bootstrap confirmations
+			},
+
+			/**
+			 * 
+			 * 
+			 * @param {Object} $button
+			 * @param {Object} loading
+			 */
+			loadingButtion: function($button, loading) {
+				require(['ladda'], function(Ladda) {
+					var _ladda = Ladda.create($button[0])
+					if(loading) {
+						_ladda.start()
+					} else {
+						_ladda.stop()
+						_ladda.remove()
+					}
+				})
 			},
 
 			//init main components 
@@ -911,16 +867,20 @@ define(function(require) {
 			 */
 			blockUI: function(options) {
 				require(['blockUI'], function() {
-					options = $.extend(true, {}, options);
+					_options = {
+						//						animate : true,
+						////						boxed :true,
+					}
+					options = $.extend(true, _options, options);
 					var html = '';
 					if(options.animate) {
 						html = '<div class="loading-message ' + (options.boxed ? 'loading-message-boxed' : '') + '">' + '<div class="block-spinner-bar"><div class="bounce1"></div><div class="bounce2"></div><div class="bounce3"></div></div>' + '</div>';
 					} else if(options.iconOnly) {
-						html = '<div class="loading-message ' + (options.boxed ? 'loading-message-boxed' : '') + '"><img src="' + this.getGlobalImgPath() + 'loading-spinner-grey.gif" align=""></div>';
+						html = '<div class="loading-message ' + (options.boxed ? 'loading-message-boxed' : '') + '"><img src="' + App.getGlobalImgPath() + 'loading-spinner-grey.gif" align=""></div>';
 					} else if(options.textOnly) {
 						html = '<div class="loading-message ' + (options.boxed ? 'loading-message-boxed' : '') + '"><span>&nbsp;&nbsp;' + (options.message ? options.message : 'LOADING...') + '</span></div>';
 					} else {
-						html = '<div class="loading-message ' + (options.boxed ? 'loading-message-boxed' : '') + '"><img src="' + this.getGlobalImgPath() + 'loading-spinner-grey.gif" align=""><span>&nbsp;&nbsp;' + (options.message ? options.message : 'LOADING...') + '</span></div>';
+						html = '<div class="loading-message ' + (options.boxed ? 'loading-message-boxed' : '') + '"><img src="' + App.getGlobalImgPath() + 'loading-spinner-grey.gif" align=""><span>&nbsp;&nbsp;' + (options.message ? options.message : '提交数据...') + '</span></div>';
 					}
 
 					if(options.target) { // element blocking
@@ -990,7 +950,7 @@ define(function(require) {
 					$('body').append('<div class="page-spinner-bar"><div class="bounce1"></div><div class="bounce2"></div><div class="bounce3"></div></div>');
 				} else {
 					$('.page-loading').remove();
-					$('body').append('<div class="page-loading"><img src="' + this.getGlobalImgPath() + 'loading-spinner-grey.gif"/>&nbsp;&nbsp;<span>' + (options && options.message ? options.message : 'Loading...') + '</span></div>');
+					$('body').append('<div class="page-loading"><img src="' + App.getGlobalImgPath() + 'loading-spinner-grey.gif"/>&nbsp;&nbsp;<span>' + (options && options.message ? options.message : 'Loading...') + '</span></div>');
 				}
 			},
 
@@ -1254,91 +1214,202 @@ define(function(require) {
 				})
 			},
 
-			notify: function(type, title, message) {
-				require(['notify'], function() {
-					title = '<strong>' + title + '</strong>'
-					message = typeof message == 'undefined' ? '' : message;
-					$.notify({
-						// options
-						title: title,
-						message: message
-					}, {
-						// settings
-						type: type,
-						allow_dismiss: false,
-						newest_on_top: true,
-						offset: {
-							y: 1
-						},
-
-						placement: {
-							from: 'top', //top bottom
-							align: 'center',
-						},
-						delay: 500
-					});
+			toastr: function(type, title, message, _option) {
+				require(['toastr'], function(toastr) {
+					var options = {
+						"closeButton": true,
+						"debug": false,
+						"positionClass": "toast-top-center",
+						"onclick": null,
+						"showDuration": "800",
+						"hideDuration": "500",
+						"timeOut": "1000",
+						"extendedTimeOut": "1000", //用户鼠标over时多久自动消失
+						"showEasing": "swing",
+						"hideEasing": "linear",
+						"showMethod": "fadeIn",
+						"hideMethod": "fadeOut"
+					}
+					$.extend(true, options, _option);
+					toastr.options = options
+					switch(type) {
+						case 'success':
+							toastr.success(message, title)
+							break
+						case 'warning':
+							toastr.warning(message, title)
+							break
+						case 'info':
+							toastr.info(message, title)
+							break
+						case 'error':
+							toastr.error(message, title)
+							break
+					}
 				})
 			},
 
-			submitResult: function() {
+			ajaxSubmit: function(form) {
+				var EVENT_COMPLETE = 'form-ajax-submit:done'
+				
+				var getActionUrl = function(form) {
+					return form.attr('action')
+				}
+				
+				var doSubmit = function(form) {
+					var url = getActionUrl(form)
+					var token = form.attr('data-token')
+					var data = form.serialize()
+					url = url + '?token=' + token
+					$.ajax({
+						type: "post",
+						data: data,
+						dataType: 'json',
+						url: url,
+						async: true,
+						beforeSend: function(xhr, settings) {
+							//do something 
+							loadingButton(form, true)
+						},
+
+						error: function() {
+							alert('请求失败,请重试')
+							location.reload()
+						},
+
+					}).done(function(resObj) {
+						//将按钮设置为非加载状态
+						loadingButton(form, false)
+						form.trigger(EVENT_COMPLETE, {
+							'resObj': resObj
+						})
+					});
+				}
+
+				var loadingButton = function(form, loading) {
+					var submitButton = form.find('button[type="submit"]')
+					App.loadingButtion(submitButton, loading)
+				}
+				
+				doSubmit(form)
+			},
+
+			validate: function(page, config) {
+				require(['jqueryValidate'], function() {
+					var init_validate = function(form, rules, messages) {
+						var error2 = $('.alert-danger', form);
+						var success2 = $('.alert-success', form);
+						var validator = form.validate({
+							debug: false,
+							onsubmit: true, //当点击submit时进行验证
+							onfocusout: function(element) {
+								$(element).valid();
+							}, //对应input元素，当失去焦点时进行验证
+							onkeyup: function(element) {
+								$(element).valid();
+							}, //当键盘按键按下
+							onclick: false,
+							focusInvalid: false, // 
+							focusCleanup: true, //
+							errorElement: 'span', //default input error message container
+							errorClass: 'help-block help-block-error', // default input error message class
+							validClass: 'valid',
+							ignore: ":hidden", // validate all fields including form hidden input
+							rules: rules,
+							messages: messages,
+
+							invalidHandler: function(event, validator) { //display error alert on form submit              
+								success2.hide();
+								error2.show();
+								App.scrollTo(error2, -200);
+							},
+							errorPlacement: function(error, element) { // render error placement for each input type
+								var icon = $(element).parent('.input-icon').children('i');
+								icon.removeClass('fa-check').addClass("fa-warning");
+								icon.attr("data-original-title", error.text()).tooltip({
+									'container': 'body'
+								});
+							},
+							highlight: function(element) { // hightlight error inputs
+								$(element)
+									.closest('.form-group').removeClass("has-success").addClass('has-error'); // set error class to the control group   
+							},
+
+							unhighlight: function(element) { // revert the change done by hightlight
+
+							},
+							success: function(label, element) {
+								var icon = $(element).parent('.input-icon').children('i');
+								$(element).closest('.form-group').removeClass('has-error').addClass('has-success'); // set success class to the control group
+								icon.removeClass("fa-warning").addClass("fa-check");
+							},
+
+							submitHandler: function(form) {
+								success2.show();
+								error2.hide();
+								console.log(form)
+								App.ajaxSubmit($(form))
+							}
+						});
+						
+						form.attr('data-igonre', 'ignore')
+//						console.log('validate success', form, rules, messages)
+					}
+
+					if(config['enabled'] !== true) {
+						return
+					}
+
+					var forms = config['forms']
+					if(forms.length < 1) {
+						return false;
+					}
+					$.each(forms, function(form_id, formConfig) {
+						var form = $('#' + form_id)
+						var rules = formConfig['rules'] ? formConfig['rules'] : {}
+						var messages = formConfig['messages'] ? formConfig['messages'] : {}
+						if(form.length < 1) {
+							return false
+						}
+						if($.isEmptyObject(rules)) {
+							return false
+						}
+
+						init_validate(form, rules, messages)
+					});
+
+				})
+			},
+
+			submitResult: function(page, config) {
 				if(config['enabled'] !== true) {
 					return
 				}
-
 				var isModal = function(page) {
 					return page.hasClass('modal')
 				}
 
 				var doResult = function(resObj, _config) {
-					var isSuccess = resObj['success']
-					var resultName = isSuccess ? 'success' : 'error'
-					var resultConfig = _config[resultName]
-					var callback = resultConfig['callback']
-					var toast = resultConfig['toast']
-					var route = resultConfig['route']
-
-					//do callback 
+					var success = resObj['success']
+					var callback
+					if(success) {
+						callback = _config['success']
+					} else {
+						callback = _config['error']
+					}
 					if($.isFunction(callback)) {
 						callback(resObj)
 						return
 					}
-
-					//show toast
-					if(isSuccess) {
-						this.notify('success', toast)
-					} else {
-						this.notify('error', toast)
-					}
-					setTimeout(
-						function() {
-							if(route == 'reload') {
-								location.reload()
-								return
-							}
-							if(route == 'back') {
-								history.back()
-								return
-							}
-							location = route
-						},
-						1200
-					)
 				}
 
-				$('body').on('form-ajax-submit:complete', 'form', function(e) {
+				$('body').on('form-ajax-submit:done', 'form', function(e) {
 					var resObj = arguments[1]['resObj']
 					var form = $(e.currentTarget)
 					var form_id = form.attr('id')
 					var _config = config['forms'][form_id]
 					if(_config) {
-						if(isModal(page)) {
-							page.modal('hide')
-							page.on('hidden.bs.modal', function() {
-								doResult(resObj, _config)
-							})
-						} else {
-							doResult(resObj, _config)
-						}
+						doResult(resObj, _config)
 					} else {
 						console.log('ERROR 未找到表单提交之后执行的配置文件信息，请确保已配置')
 					}
@@ -1376,7 +1447,7 @@ define(function(require) {
 									return response.responseText;
 								}
 							},
-							
+
 							validate: function(value) {
 								if($.trim(value) == '') {
 									return '不可为空';

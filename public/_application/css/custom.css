@@ -5,3 +5,8 @@
 #nprogress .spinner{
 	z-index: 9999;
 }
+
+.toast {
+	box-shadow: none !important;
+	-webkit-box-shadow: none !important;
+}

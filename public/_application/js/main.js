@@ -15,10 +15,11 @@ requirejs.config({
 		'bootstrap-hover-dropdown': 'https://cdn.bootcss.com/bootstrap-hover-dropdown/2.2.1/bootstrap-hover-dropdown.min',
 		slimScroll: 'https://cdn.bootcss.com/jQuery-slimScroll/1.3.8/jquery.slimscroll.min',
 		counterup: 'https://cdn.bootcss.com/Counter-Up/1.0.0/jquery.counterup.min',
-		notify: 'https://cdn.bootcss.com/mouse0270-bootstrap-notify/3.1.7/bootstrap-notify.min',
+		toastr: 'https://cdn.bootcss.com/toastr.js/latest/js/toastr.min',
 		blockUI: 'https://cdn.bootcss.com/jquery.blockUI/2.70.0-2014.11.23/jquery.blockUI.min',
 		//表单验证
 		bootstrapvalidator: 'https://cdnjs.cloudflare.com/ajax/libs/jquery.bootstrapvalidator/0.5.3/js/bootstrapValidator.min',
+		jqueryValidate: 'https://cdn.bootcss.com/jquery-validate/1.18.0/jquery.validate.min',
 		//select2
 		select2 : 'https://cdn.bootcss.com/select2/4.0.6-rc.1/js/select2.min',
 		//icheck
@@ -29,6 +30,8 @@ requirejs.config({
 		daterangepicker : 'https://cdn.bootcss.com/bootstrap-daterangepicker/3.0.3/daterangepicker.min',
 		//editable
 		editable : '//cdnjs.cloudflare.com/ajax/libs/x-editable/1.5.0/bootstrap3-editable/js/bootstrap-editable.min',
+		ladda : 'https://cdn.bootcss.com/Ladda/1.0.6/ladda.min',
+		spin : 'https://cdn.bootcss.com/Ladda/1.0.6/spin.min',
 	},
 
 	map: { //map告诉RequireJS在任何模块之前，都先载入这个模块
@@ -68,11 +71,22 @@ requirejs.config({
 				'css!https://cdn.bootcss.com/bootstrap-daterangepicker/3.0.3/daterangepicker.min',
 			],
 		},
-		
 		editable: {
 			deps: [
 				'bootstrap',
 				'css!//cdnjs.cloudflare.com/ajax/libs/x-editable/1.5.0/bootstrap3-editable/css/bootstrap-editable',
+			],
+		},
+		ladda: {
+			deps: [
+				'spin',
+				'css!https://cdn.bootcss.com/Ladda/1.0.6/ladda-themeless.min',
+			],
+		},
+		toastr: {
+			deps: [
+				'jquery',
+				'css!https://cdn.bootcss.com/toastr.js/latest/css/toastr.min',
 			],
 		},
 	},

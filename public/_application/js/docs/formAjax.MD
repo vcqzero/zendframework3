@@ -1,7 +1,21 @@
-define(
-	['jquery', 'App'],
-	function($, App) {
-		var result = {
+#formAjax使用
+application启动时会将class如下的form设置为ajax提交
+class : 'my-form-ajax-submit'
+
+##配置说明
+只要将需要ajax提交的form加上class即可
+
+##事件
+当ajax提交成功之后，会触发form上的form-ajax-submit:done事件
+$('form').on('form-ajax-submit:done', function() {
+	//do something
+})
+当然本框架自动带有监听方法
+
+#submitResult
+##方法
+App.submitResult: function(page, config)
+var config = {
 			enabled: true,
 			forms: {
 				'form-login': {
@@ -35,38 +49,6 @@ define(
 							//						icon : 'fa fa-warning' // put icon class before the message 
 						})
 					},
-				},
-			}
-		}
-
-		var validator = {
-			enabled: true,
-			forms: {
-				'form-login': {
-					rules: {
-						username: {
-							required: true
-						},
-						password: {
-							required: true,
-						},
-					},
-
-					messages: {
-						username: {
-							required: '请输入用户名'
-						},
-						password: {
-							required: '请输入密码',
-						},
-					}
 				}
 			}
 		}
-		return {
-			init: function(pageName, page) {
-				App.submitResult(page, result)
-				App.validate(page, validator)
-			},
-		} //end return
-	})

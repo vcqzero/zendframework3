@@ -6,7 +6,6 @@ use Zend\View\Model\ViewModel;
 
 class AuthController extends AbstractActionController
 {
-    
     public function indexAction()
     {
         $View = new ViewModel();
