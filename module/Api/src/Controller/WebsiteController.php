@@ -31,12 +31,12 @@ class WebsiteController extends AbstractActionController
             $writer = new \Zend\Config\Writer\PhpArray();
             $writer->toFile(WebsiteManager::PATH_BASIC_WEBSITE_CONFIG, $config);
             $res = [
-                MyAjax::KEY_SUCCESS=> true,
+                MyAjax::SUBMIT_SUCCESS=> true,
             ];
         }catch (\Exception $e ){
             $res = [
-                MyAjax::KEY_SUCCESS=> true,
-                MyAjax::KEY_MSG => '保存失败',
+                MyAjax::SUBMIT_SUCCESS=> true,
+                MyAjax::SUBMIT_MSG => '保存失败',
             ];
         }
         $view = new JsonModel($res);

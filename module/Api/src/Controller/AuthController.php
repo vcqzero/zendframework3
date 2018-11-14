@@ -18,8 +18,8 @@ class AuthController extends AbstractActionController
         if (!$this->Token()->isValid($token))
         {
             $view->setVariables([
-                MyAjax::KEY_SUCCESS => false,
-                MyAjax::KEY_MSG     => TokenPlugin::TOKEN_ERROR_MSG
+                MyAjax::SUBMIT_SUCCESS => false,
+                MyAjax::SUBMIT_MSG     => TokenPlugin::TOKEN_ERROR_MSG
             ]);
             return $view;
         }
@@ -31,9 +31,61 @@ class AuthController extends AbstractActionController
         $error    = $this->Auth()->getError();
         
         $view->setVariables([
-            MyAjax::KEY_SUCCESS => $isLogin,
-            MyAjax::KEY_MSG     => $error
+            MyAjax::SUBMIT_SUCCESS => $isLogin,
+            MyAjax::SUBMIT_MSG     => $error
         ]);
+        //如果登录成功，则验证是否记住我
+        $remember = $this->params()->fromPost('remember');
+        if ($isLogin && $remember == 'true') {
+            $this->Auth()->remember($username);
+        }
+        return $view;
+    }
+    
+    //loginOnRemember
+    public function loginOnRememberAction()
+    {
+        $view   = new JsonModel();
+        $token  = $this->params()->fromQuery('token');
+        if (!$this->Token()->isValid($token))
+        {
+            $view->setVariables([
+                MyAjax::SUBMIT_SUCCESS => false,
+                MyAjax::SUBMIT_MSG     => TokenPlugin::TOKEN_ERROR_MSG
+            ]);
+            return $view;
+        }
+        
+        //验证是否正处于记住状态 
+        $username = $this->params()->fromPost('username');
+        //如果不是记住状态，需要通过用户输入密码验证
+        if (empty($this->Auth()->isRemember($username)))
+        {
+            $password = $this->params()->fromPost('password');
+            $isLogin  = $this->Auth()->login($username, $password);
+            $error    = $this->Auth()->getError();
+            $view->setVariables([
+                MyAjax::SUBMIT_SUCCESS => false,
+                MyAjax::SUBMIT_MSG     => TokenPlugin::TOKEN_ERROR_MSG
+            ]);
+            //强制设置不记录
+            $this->Auth()->forget($username);
+            return $view;
+        }
+        
+        //如果是记住状态，需要通过其他方式验证
+        $isLogin  = $this->Auth()->login($username, '545', true);
+        $error    = $this->Auth()->getError();
+        $view->setVariables([
+            MyAjax::SUBMIT_SUCCESS => false,
+            MyAjax::SUBMIT_MSG     => TokenPlugin::TOKEN_ERROR_MSG
+        ]);
+        
+        //如果登录成功，则验证是否不用记住我
+        $remember = $this->params()->fromPost('remember');
+        if ($isLogin && $remember != 'true') {
+            $this->Auth()->forget($username);
+        }
         return $view;
     }
     

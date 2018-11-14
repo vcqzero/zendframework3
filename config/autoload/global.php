@@ -57,11 +57,35 @@ return [
                     /**
                     * 失效判断原则：
                     * cache保存到文件中会带有创建时间
-                    * 读取时根据这里的有效期和创建时间作比较
-                    * 也就是不同cache根据业务逻辑应该有不同的有效期
-                    * 这里默认设置为一天
                     */
-                    'ttl' => 24 * 60 * 60,
+                    'ttl' => 24 * 60 * 60 * 30,
+                ],
+            ],
+            'plugins' => [
+                // Don't throw exceptions on cache errors
+                'exception_handler' => 
+                [
+                    'throw_exceptions' => false,
+                ],
+                // We store database rows on filesystem so we need to serialize them
+                [
+                    'name' => 'serializer',
+                    'options' => [
+                    ],
+                ],
+            ],
+        ],
+        
+        'UserCache'=>[
+            'adapter' => [
+                'name'    => 'filesystem',
+                'options' => [
+                    'cache_dir' => './data/cache/user',
+                    /**
+                    * 失效判断原则：
+                    * cache保存到文件中会带有创建时间
+                    */
+                    'ttl' => 24 * 60 * 60 * 12,
                 ],
             ],
             'plugins' => [

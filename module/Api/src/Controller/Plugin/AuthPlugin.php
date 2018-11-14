@@ -5,15 +5,14 @@ use Zend\Mvc\Controller\Plugin\AbstractPlugin;
 use Zend\Authentication\Result;
 use Zend\Authentication\AuthenticationService;
 use Zend\Authentication\Adapter\DbTable\CallbackCheckAdapter as AuthAdapter;
-use Api\Service\UserManager;
 use Api\Repository\Table\User;
+use Zend\Cache\Storage\Adapter\Filesystem;
 
 class AuthPlugin extends AbstractPlugin
 {
     private $authAdapter;
-    private $UserManager;
     private $AuthServer;
-    
+    private $UserCache;
     private $error;//登录验证时的错误信息
     //登录验证信息
     const LOGIN_SUCCESS       = "登录成功";
@@ -21,6 +20,8 @@ class AuthPlugin extends AbstractPlugin
     const PASSWORD_IS_WRONG   = "密码错误";
     const LOGIN_FAIL          = "登录失败";
     
+    //remember
+    const COOKIE_KEY_IDENTITY = 'identity';
     /**
      * 返回登录验证的错误信息，默认为null
      *
@@ -33,12 +34,12 @@ class AuthPlugin extends AbstractPlugin
     
     public function __construct(
         AuthAdapter $authAdapter,
-        UserManager $UserManager
+        Filesystem $UserCache
         )
     {
         $this->authAdapter = $authAdapter;
-        $this->UserManager = $UserManager;
         $this->AuthServer= new AuthenticationService();
+        $this->UserCache= $UserCache;
     }
     
     /**
@@ -46,11 +47,12 @@ class AuthPlugin extends AbstractPlugin
      *
      * @param string $username
      * @param string $password
+     * @param bool   $remember
      * @return bool true if success or false
      */
-    public function login($username, $password)
+    public function login($username, $password, $remember=false)
     {
-        if (empty($username) || empty($password))
+        if (empty($username))
         {
             return false;
         }
@@ -67,6 +69,11 @@ class AuthPlugin extends AbstractPlugin
         $validationCallback=function($hash, $password){
             return password_verify($password, $hash);
         };
+        if ($remember) {
+            $validationCallback=function($hash, $password){
+                return true;
+            };
+        }
         $authAdapter->setCredentialValidationCallback($validationCallback);
         
         //传入验证的用户名和密码
@@ -82,6 +89,37 @@ class AuthPlugin extends AbstractPlugin
         $this  ->mapErrorWithCode($code);
         $valid = $result->isValid();
         return $valid;
+    }
+    
+    public function remember($username)
+    {
+        $Cache = $this->UserCache;
+        $ttl   = $Cache ->getOptions()->getTtl();
+        if (!$Cache->hasItem($username)) {
+            $value = [
+                'username'=> $username,
+                'created' => date('Y-m-d H:i:s'),
+            ];
+            $Cache->setItem($username, $value);
+            //set cookie
+            setcookie(self::COOKIE_KEY_IDENTITY, $username, time() + $ttl, '/auth');
+        }
+    }
+    
+    public function forget($username)
+    {
+        $Cache = $this->UserCache;
+        $ttl   = $Cache ->getOptions()->getTtl();
+        if ($Cache->hasItem($username)) {
+            $Cache->removeItem($username);
+        }
+        setcookie(self::COOKIE_KEY_IDENTITY, $username, time() - 1);
+    }
+    
+    public function isRemember($username)
+    {
+        $Cache = $this->UserCache;
+        return $Cache->hasItem($username);
     }
     
     /**

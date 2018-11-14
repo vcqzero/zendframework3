@@ -6,7 +6,6 @@ use Zend\ServiceManager\Factory\FactoryInterface;
 use Api\Controller\Plugin\AuthPlugin;
 use Zend\Db\Adapter\Adapter;
 use Zend\Authentication\Adapter\DbTable\CallbackCheckAdapter;
-use Api\Service\UserManager;
 
 /**
  * This is the factory for IndexController. Its purpose is to instantiate the
@@ -17,9 +16,10 @@ class AuthPluginFactory implements FactoryInterface
     public function __invoke(ContainerInterface $container, $requestedName, array $options = null)
     {
         $dbAdapter      = $container->get(Adapter::class);
+        $UserCache      = $container->get('UserCache');
         return new AuthPlugin(
-            new CallbackCheckAdapter($dbAdapter), 
-            $container->get(UserManager::class)
+            new CallbackCheckAdapter($dbAdapter),
+            $UserCache
             );
     }
 }

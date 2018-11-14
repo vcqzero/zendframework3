@@ -7,6 +7,12 @@ namespace Api\Tool;
  */
 class MyClient
 {
+    public static function getCookie($key)
+    {
+        $cookies = $_COOKIE;
+        $cookie  = $cookies[$key] ?? '';
+        return $cookie;
+    }
     /**
     * 判断用户请求是不是来自手机端
     * 
