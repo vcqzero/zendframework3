@@ -1,25 +1,26 @@
 <?php
-namespace Api\Controller\Plugin\Factory;
+namespace Api\Service\Factory;
 
 use Interop\Container\ContainerInterface;
 use Zend\ServiceManager\Factory\FactoryInterface;
-use Api\Controller\Plugin\AuthPlugin;
 use Zend\Db\Adapter\Adapter;
 use Zend\Authentication\Adapter\DbTable\CallbackCheckAdapter;
+use Api\Service\Auther;
+use Zend\Session\SessionManager;
 
 /**
  * This is the factory for IndexController. Its purpose is to instantiate the
  * controller and inject dependencies into it.
  */
-class AuthPluginFactory implements FactoryInterface
+class AutherFactory implements FactoryInterface
 {
     public function __invoke(ContainerInterface $container, $requestedName, array $options = null)
     {
         $dbAdapter      = $container->get(Adapter::class);
-        $UserCache      = $container->get('UserCache');
-        return new AuthPlugin(
+        $SessionManager = $container->get(SessionManager::class);
+        return new Auther(
             new CallbackCheckAdapter($dbAdapter),
-            $UserCache
+            $SessionManager
             );
     }
 }

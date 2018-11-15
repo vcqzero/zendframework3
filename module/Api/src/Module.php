@@ -9,6 +9,7 @@ namespace Api;
 
 use Zend\Mvc\MvcEvent;
 use Api\Service\Bootstraper;
+use Zend\Session\SessionManager;
 
 class Module
 {
@@ -31,6 +32,11 @@ class Module
         $container  = $app->getServiceManager();
         $this->container = $container;
         $log_debug  = $container->get('MyLoggerDebug');
+        
+        // The following line instantiates the SessionManager and automatically
+        // makes the SessionManager the 'default' one.
+        $sessionManager = $container->get(SessionManager::class);
+        $sessionManager->start();
         //关于错误信息处理
         //处理php原生错误信息
         $this->logPhpError($log_debug);
@@ -42,6 +48,7 @@ class Module
         $Bootstraper = $container->get(Bootstraper::class);
 //         $evt->attach(MvcEvent::EVENT_DISPATCH, array($Bootstraper, 'doInit'), 100);
     }
+    
     //将php原始的错误信息记录到debug中
     public function logPhpError($log_debug)
     {

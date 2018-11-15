@@ -15,17 +15,8 @@ class TestControllerFactory implements FactoryInterface
 {
     public function __invoke(ContainerInterface $container, $requestedName, array $options = null)
     {
-        $UserCache = $container->get('UserCache');
+//         $UserCache = $container->get('UserCache');
         $filesystem= $container->get('filesystem');
-        
-        // DEBUG INFORMATION START
-        echo '------debug start------<br/>';
-        echo "<pre>";
-        var_dump(__METHOD__ . ' on line: ' . __LINE__);
-        var_dump($UserCache);
-        echo "</pre>";
-        exit('------debug end------');
-        // DEBUG INFORMATION END
         
         return new TestController(
             $container->get(UserManager::class),

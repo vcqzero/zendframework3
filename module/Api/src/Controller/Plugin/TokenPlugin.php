@@ -7,14 +7,14 @@ class TokenPlugin extends AbstractPlugin
 {
     const TOKEN_ERROR_MSG   = '非法访问';
     
-    private $mySession;
+    private $TokenSession;
     private $token_seperate = '_this_is_my_token_';
     
     public function __construct(
-        $mySession
+        $TokenSession
         )
     {
-        $this->mySession   = $mySession;
+        $this->TokenSession   = $TokenSession;
     }
     
     /**
@@ -34,7 +34,7 @@ class TokenPlugin extends AbstractPlugin
         $token      = $tokenName . $this->token_seperate . $tokenString;
         //将tokenName拼接到token中
         //保存session
-        $this->mySession->$tokenName = $tokenString;
+        $this->TokenSession->$tokenName = $tokenString;
         
         return  $token;
     }
@@ -83,7 +83,7 @@ class TokenPlugin extends AbstractPlugin
             $tokenArray  = explode($this->token_seperate, $token);
             $tokenName   = $tokenArray[0];
             $tokenString = $tokenArray[1];
-            $tokenInSession = $this->mySession->$tokenName;
+            $tokenInSession = $this->TokenSession->$tokenName;
             $res = $tokenString == $tokenInSession;
         }catch (\Exception $e ){
             $res = false;
