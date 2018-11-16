@@ -29,7 +29,7 @@ class Bootstraper
     * @param  
     * @return        
     */
-    public function doInit(MvcEvent $e)
+    public function onDispath(MvcEvent $e)
     {
         $this->initSuperUser();
         $this->checkPermission($e);
