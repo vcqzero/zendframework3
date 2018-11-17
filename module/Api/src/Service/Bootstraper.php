@@ -2,23 +2,22 @@
 namespace Api\Service;
 
 use Zend\Mvc\MvcEvent;
-use Zend\Authentication\AuthenticationService;
 use Api\Controller\AuthController;
 
 class Bootstraper
 {
     private $UserManager;
     private $AclPermissioner;
-    private $AuthenticationService;
+    private $Auther;
     public function __construct(
         UserManager $UserManager,
         AclPermissioner $AclPermissioner,
-        AuthenticationService $AuthenticationService
+        Auther $Auther
         )
     {
         $this->UserManager = $UserManager;
         $this->AclPermissioner = $AclPermissioner;
-        $this->AuthenticationService = $AuthenticationService;
+        $this->Auther= $Auther;
     }
     
     /**
@@ -30,7 +29,7 @@ class Bootstraper
     * @param  
     * @return        
     */
-    public function doInit(MvcEvent $e)
+    public function onDispath(MvcEvent $e)
     {
         $this->initSuperUser();
         $this->checkPermission($e);
@@ -44,7 +43,7 @@ class Bootstraper
     
     private function checkPermission(MvcEvent $e)
     {
-        $Auth   = $this->AuthenticationService;
+        $Auther = $this->Auther;
         $Acl    = $this->AclPermissioner->getAcl();
         $routeMatch = $e->getRouteMatch();
         //默认角色
@@ -57,14 +56,14 @@ class Bootstraper
             return ;
         }
         //如果默认角色没有权限，则判断是否登录
-        if (empty($Auth->hasIdentity())) {
+        if (empty($Auther->isLogin())) {
             //go to login
             $routeMatch ->setParam('controller', AuthController::class)
                         ->setParam('action', 'loginPage');
             return ;
         }else {
             //已登录->获取角色->验证权限
-            $identity = $Auth->getIdentity();
+            $identity = $Auther->getIdentity();
             $User = $this->UserManager->findUserByIdentity($identity);
             $role = $User->getRole();
             if ($Acl->isAllowed($role, $controller)) {

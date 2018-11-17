@@ -5,23 +5,30 @@ class MyAjax
 {
     const SUBMIT_SUCCESS = 'success';
     const SUBMIT_MSG     = 'msg';
+    
     /**
-    * 关闭ajax连接，可执行其他后台程序
+    * 返回ajax，并可在返回之后执行后台程序
     * 
-    * @param  
+    * @param bool $success  
+    * @param string $message  
     * @return        
     */
-    public static function close()
+    public function close($success, $msg = null)
     {
+        $responce = [
+            self::AJAX_RESULT_SUCCESS => $success === true,
+            self::AJAX_RESULT_MESSAGE => $msg,
+        ];
+        echo json_encode($responce);
+        
         // get the size of the output
         $size = ob_get_length();
         // send headers to tell the browser to close the connection
         header("Content-Length: $size");
         header('Connection: close');
-        ob_end_flush();
         ob_flush();
         flush();
-        
+        ob_end_flush();
         /******** background process starts here ********/
         ignore_user_abort(true);//在关闭连接后，继续运行php脚本
         /******** background process ********/

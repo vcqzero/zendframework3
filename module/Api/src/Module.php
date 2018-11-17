@@ -9,6 +9,7 @@ namespace Api;
 
 use Zend\Mvc\MvcEvent;
 use Api\Service\Bootstraper;
+use Zend\Session\SessionManager;
 
 class Module
 {
@@ -26,32 +27,57 @@ class Module
     */
     public function onBootstrap(MvcEvent $e)
     {
+        $this->initHandleError($e);
+        $this->initSession($e);
+        $this->initMkdir($e);
+        $this->initUser($e);
+    }
+    
+    private function initUser(MvcEvent $e)
+    {
         $app        = $e->getApplication();
         $evt        = $app->getEventManager();
         $container  = $app->getServiceManager();
-        $this->container = $container;
-        $log_debug  = $container->get('MyLoggerDebug');
-        //关于错误信息处理
-        //处理php原生错误信息
-        $this->logPhpError($log_debug);
-        //处理本框架错误信息
-        $evt->attach(MvcEvent::EVENT_DISPATCH_ERROR, array($this, 'logDispatchError'), 100);
-        $evt->attach(MvcEvent::EVENT_RENDER_ERROR, array($this, 'logDispatchError'), 100);
-        
-        //程序启动时
         $Bootstraper = $container->get(Bootstraper::class);
-//         $evt->attach(MvcEvent::EVENT_DISPATCH, array($Bootstraper, 'doInit'), 100);
+        //         $evt->attach(MvcEvent::EVENT_DISPATCH, array($Bootstraper, 'onDispath'), 100);
     }
-    //将php原始的错误信息记录到debug中
-    public function logPhpError($log_debug)
+    private function initHandleError(MvcEvent $e)
     {
+        $app        = $e->getApplication();
+        $container  = $app->getServiceManager();
+        $log_debug  = $container->get('MyLoggerDebug');
+        $evt        = $app->getEventManager();
+        
         \Zend\Log\Logger::registerErrorHandler($log_debug);
         \Zend\Log\Logger::registerExceptionHandler($log_debug);
         \Zend\Log\Logger::registerFatalErrorShutdownFunction($log_debug);
+        
+        //处理本框架错误信息
+        $evt->attach(MvcEvent::EVENT_DISPATCH_ERROR, array($this, 'logFrameworkError'), 100);
+        $evt->attach(MvcEvent::EVENT_RENDER_ERROR, array($this, 'logFrameworkError'), 100);
     }
-    
+    private function initSession(MvcEvent $e)
+    {
+        $ServerManager  = $e->getApplication()->getServiceManager();
+        $sessionManager = $ServerManager->get(SessionManager::class);
+        $sessionManager->start();
+    }
+    private function initMkdir(MvcEvent $e)
+    {
+        $dirs = [
+            'data/cache',
+        ];
+        foreach ($dirs as $dir)
+        {
+            
+            if (!file_exists($dir))
+            {
+                mkdir($dir);
+            }
+        }
+    }
     //当发生404或500错误时,记录错误信息到error中
-    public function logDispatchError(MvcEvent $e)
+    private function logFrameworkError(MvcEvent $e)
     {
         $exception      = $e->getParam('exception');
         //不记录404级别错误

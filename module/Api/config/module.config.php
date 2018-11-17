@@ -3,6 +3,7 @@ namespace Api;
 
 use Zend\Router\Http\Segment;
 use Api\Service\UserManager;
+use Zend\ServiceManager\Factory\InvokableFactory;
 // use Zend\Router\Http\Literal;
 // use Zend\Router\Http\Hostname;
 
@@ -153,22 +154,23 @@ return [
     'controller_plugins' => [
         'factories' => [
             Controller\Plugin\TokenPlugin::class  => Controller\Plugin\Factory\TokenPluginFactory::class,
-            Controller\Plugin\AuthPlugin::class   => Controller\Plugin\Factory\AuthPluginFactory::class,
         ],
         
         'aliases' => [
             'Token'      => Controller\Plugin\TokenPlugin::class,
-            'Auth'       => Controller\Plugin\AuthPlugin::class,
         ],
     ],
     //service_manager
     'service_manager' => [
         'factories' => [
+            //不可删除AuthenticationService
+            \Zend\Authentication\AuthenticationService::class => InvokableFactory::class,
             //Controller\Plugin
             Controller\Plugin\TokenPlugin::class => Controller\Plugin\Factory\TokenPluginFactory::class,
             //Server
             Service\Weixiner::class   => Service\Factory\WeixinerFactory::class,
             Service\AclPermissioner::class => Service\Factory\AclPermissionerFactory::class,
+            Service\Auther::class => Service\Factory\AutherFactory::class,
             //TableManager
             Service\Bootstraper::class       => Service\Factory\BootstraperFactory::class,
             Service\UserManager::class      => Service\Factory\UserManagerFactory::class,
