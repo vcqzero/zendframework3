@@ -9,15 +9,15 @@ use Zend\Session\SessionManager;
 
 class Auther
 {
-    private $AuthAdapter;
-    private $AuthService;
+    public $AuthAdapter;
+    public $AuthService;
     private $SessionManager;
     private $error;
     
     /**
      * @param \Zend\Authentication\Adapter\DbTable\CallbackCheckAdapter $AuthAdapter
      */
-    public function setAuthAdapter($AuthAdapter)
+    private function setAuthAdapter($AuthAdapter)
     {
         //设置要验证的数据表和username和password字段名称
         $tableName      = User::TABLE_NAME;
@@ -85,14 +85,24 @@ class Auther
         
         //如果登录成功重新生成sessionid
         if ($valid) {
+            $user = $AuthAdapter->getResultRowObject(['username', 'status', 'role']);
+            //默认情况下，identity为username，、
+            //这里增加以上信息到identity中，方便以后获取
+            $AuthService->getStorage()->write($user);
             $this->SessionManager->regenerateId();
         }
         return $valid;
+        
     }
     
     public function remember($ttl)
     {
         $this->SessionManager->rememberMe($ttl);
+    }
+    
+    public function forget()
+    {
+        $this->SessionManager->forgetMe();
     }
     
     /**
@@ -130,15 +140,20 @@ class Auther
     }
     
     /**
-    * 获取登录凭证，一般为username
+    * get current user info
     * 
-    * @param  
-    * @return string $username       
+    * @param  void
+    * @return \stdClass 
     */
-    public function getIdentity()
+    public function getUser()
     {
-        $username = $this->AuthService->getIdentity();
-        return $username;
+        return $this->AuthService->getIdentity();
+    }
+    
+    public function getRole()
+    {
+        $user = $this->getUser();
+        return $user->role;
     }
     
     /**
@@ -148,10 +163,11 @@ class Auther
      */
     public function logout()
     {
+        $this->AuthService->clearIdentity();
         $Manager = $this->SessionManager;
-        $Manager->start();
-        //session cookie 和 storage 全部删除
+        $Manager->forgetMe();
         $Manager->destroy();
+        $Manager->regenerateId();
         return ;
     }
 }

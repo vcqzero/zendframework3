@@ -102,4 +102,7 @@ requirejs(
 		requirejs(['Layout'], function(Layout) {
 			Layout.init()
 		})
+		
+		//预加载
+		requirejs(['blockUI'], function() {})
 	});

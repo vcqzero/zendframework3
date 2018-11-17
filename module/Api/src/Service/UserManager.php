@@ -23,7 +23,7 @@ class UserManager
     /**
     * @var 超级管理员 
     */
-    const ROLE_SUPER_ADMIN = 'SUPER_ADMIN';
+    const ROLE_SUPER_USER = 'SUPER_USER';
     
     /**
     * @var 工地管理员
@@ -148,7 +148,7 @@ class UserManager
             User::FILED_USERNAME => $name,
             User::FILED_PASSWORD => $password,
             User::FILED_STATUS   => self::STATUS_ENABLED,
-            User::FILED_ROLE    => self::ROLE_SUPER_ADMIN,
+            User::FILED_ROLE    => self::ROLE_SUPER_USER,
             User::FILED_WORKYARD_ID => 0,
         ];
         $this->MyTableGateway->insert($values);

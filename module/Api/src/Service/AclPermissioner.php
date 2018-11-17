@@ -76,9 +76,7 @@ class AclPermissioner
     {
         $roles = [
             UserManager::ROLE_GUEST,
-            UserManager::ROLE_SUPER_ADMIN,
-            UserManager::ROLE_WORKYARD_ADMIN,
-            UserManager::ROLE_WORKYARD_GUARD,
+            UserManager::ROLE_SUPER_USER,
         ];
         return $roles;
     }

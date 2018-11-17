@@ -72,7 +72,7 @@ return [
     'permission'=> [
         Controller\IndexController::class => [
             'allow' => [
-                UserManager::ROLE_GUEST,
+                UserManager::ROLE_SUPER_USER,
             ]
         ],
         Controller\AuthController::class => [
@@ -82,12 +82,12 @@ return [
         ],
         Controller\UserController::class => [
             'allow' => [
-                UserManager::ROLE_GUEST,
+                UserManager::ROLE_SUPER_USER,
             ]
         ],
         Controller\WebsiteController::class => [
             'allow' => [
-                UserManager::ROLE_GUEST,
+                UserManager::ROLE_SUPER_USER,
             ]
         ],
     ],

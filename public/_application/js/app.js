@@ -591,6 +591,9 @@ define(function(require) {
 				}
 				App.ajaxSubmit(form)
 			})
+			
+			//form表单的submit按钮默认为disabled 
+			//当页面加载完成请设置为enabled或者等有数据填充时
 		}
 
 		var handlePage = function() {
@@ -1288,6 +1291,7 @@ define(function(require) {
 
 				var loadingButton = function(form, loading) {
 					var submitButton = form.find('button[type="submit"]')
+					submitButton.prop('disabled', loading === true)
 					App.loadingButtion(submitButton, loading)
 				}
 				
@@ -1352,7 +1356,10 @@ define(function(require) {
 							}
 						});
 						
+						//将默认的ajax submit监听去掉
 						form.attr('data-igonre', 'ignore')
+						//将submit按钮enable
+						form.find('button').prop('disabled', false)
 //						console.log('validate success', form, rules, messages)
 					}
 

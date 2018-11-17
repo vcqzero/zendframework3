@@ -7,15 +7,10 @@ define(
 				'form-login': {
 					//成功
 					success: function() {
-						var resObj = arguments[0]
-						var title = '操作成功'
-						var message
-						var toastr_option = {
-							onHidden: function() {
-								location = '/'
-							}
-						}
-						App.toastr('success', title, message, toastr_option)
+						App.blockUI({
+							'animate' : true
+						})
+						location = '/'
 					},
 
 					//失败

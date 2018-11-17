@@ -8,8 +8,11 @@
 namespace Api;
 
 use Zend\Mvc\MvcEvent;
-use Api\Service\Bootstraper;
 use Zend\Session\SessionManager;
+use Api\Service\UserManager;
+use Api\Service\Auther;
+use Api\Service\AclPermissioner;
+use Api\Controller\AuthController;
 
 class Module
 {
@@ -30,7 +33,8 @@ class Module
         $this->initHandleError($e);
         $this->initSession($e);
         $this->initMkdir($e);
-        $this->initUser($e);
+//         $this->initUser($e);
+        $this->initPermission($e);
     }
     
     private function initUser(MvcEvent $e)
@@ -38,8 +42,15 @@ class Module
         $app        = $e->getApplication();
         $evt        = $app->getEventManager();
         $container  = $app->getServiceManager();
-        $Bootstraper = $container->get(Bootstraper::class);
-        //         $evt->attach(MvcEvent::EVENT_DISPATCH, array($Bootstraper, 'onDispath'), 100);
+        $UserManager= $container->get(UserManager::class);
+        $UserManager->createSuperAdmin();
+    }
+    private function initPermission(MvcEvent $e)
+    {
+        $app        = $e->getApplication();
+        $evt        = $app->getEventManager();
+        $container  = $app->getServiceManager();
+        $evt->attach(MvcEvent::EVENT_DISPATCH, array($this, 'checkPermission'), 100);
     }
     private function initHandleError(MvcEvent $e)
     {
@@ -77,7 +88,7 @@ class Module
         }
     }
     //当发生404或500错误时,记录错误信息到error中
-    private function logFrameworkError(MvcEvent $e)
+    public function logFrameworkError(MvcEvent $e)
     {
         $exception      = $e->getParam('exception');
         //不记录404级别错误
@@ -103,5 +114,45 @@ class Module
         //当发生错误时，直接显示404或500错误页面，不用layout
         $vm = $e->getViewModel();
         $vm->setTemplate('layout/blank');
+    }
+    
+    public function checkPermission(MvcEvent $e)
+    {
+        $app        = $e->getApplication();
+        $routeMatch = $e->getRouteMatch();
+        $container  = $app->getServiceManager();
+        
+        $Auther = $container->get(Auther::class);
+        $AclPermission    = $container->get(AclPermissioner::class);
+        $Acl              = $AclPermission->getAcl();
+        //默认角色
+        $role       = UserManager::ROLE_GUEST;
+        $controller = $routeMatch->getParam('controller');
+        
+        //先判断默认角色是否有权限
+        if ($Acl->isAllowed($role, $controller)) {
+            //do nothing
+            return ;
+        }
+        //如果默认角色没有权限，则判断是否登录
+        if (empty($Auther->isLogin())) {
+            //go to login
+            $routeMatch ->setParam('controller', AuthController::class)
+            ->setParam('action', 'loginPage');
+            return ;
+        }else {
+            //已登录->获取角色->验证权限
+            $role= $Auther->getRole();
+            if ($Acl->isAllowed($role, $controller)) {
+                //is alllowed
+                //do nothing
+                return ;
+            }
+            //is not allowed
+            //go to no permission page
+            $routeMatch ->setParam('controller', AuthController::class)
+            ->setParam('action', 'noPermissionPage');
+            return ;
+        }
     }
 }

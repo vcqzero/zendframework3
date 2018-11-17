@@ -124,29 +124,23 @@ return [
         ],
         Controller\UserController::class => [
             'allow'=> [
-                UserManager::ROLE_SUPER_ADMIN,
-                UserManager::ROLE_WORKYARD_ADMIN,
-                UserManager::ROLE_WORKYARD_GUARD,
+                UserManager::ROLE_SUPER_USER,
             ],
         ],
         Controller\AuthController::class => [
             'allow'=> [
-                UserManager::ROLE_SUPER_ADMIN,
-                UserManager::ROLE_WORKYARD_ADMIN,
-                UserManager::ROLE_WORKYARD_GUARD,
+                UserManager::ROLE_SUPER_USER,
                 UserManager::ROLE_GUEST,
             ],
         ],
         Controller\WebsiteController::class => [
             'allow'=> [
-                UserManager::ROLE_SUPER_ADMIN,
+                UserManager::ROLE_SUPER_USER,
             ],
         ],
         Controller\WeixinController::class => [
             'allow'=> [
-                UserManager::ROLE_SUPER_ADMIN,
-                UserManager::ROLE_WORKYARD_ADMIN,
-                UserManager::ROLE_WORKYARD_GUARD,
+                UserManager::ROLE_SUPER_USER,
             ],
         ],
     ],
@@ -172,7 +166,6 @@ return [
             Service\AclPermissioner::class => Service\Factory\AclPermissionerFactory::class,
             Service\Auther::class => Service\Factory\AutherFactory::class,
             //TableManager
-            Service\Bootstraper::class       => Service\Factory\BootstraperFactory::class,
             Service\UserManager::class      => Service\Factory\UserManagerFactory::class,
             Service\WebsiteManager::class   => Service\Factory\WebsiteManagerFactory::class,
         ],

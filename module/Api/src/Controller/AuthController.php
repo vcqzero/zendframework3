@@ -6,6 +6,7 @@ use Zend\View\Model\JsonModel;
 use Api\Tool\MyAjax;
 use Api\Controller\Plugin\TokenPlugin;
 use Api\Service\Auther;
+use Zend\Mvc\Console\View\ViewModel;
 
 class AuthController extends AbstractActionController
 {
@@ -44,6 +45,8 @@ class AuthController extends AbstractActionController
         $remember = $this->params()->fromPost('remember');
         if ($login && $remember == 'true') {
             $this->Auther->remember(self::TTL_REMEMBER);
+        }else {
+            $this->Auther->forget();
         }
         return $view;
     }
@@ -52,23 +55,14 @@ class AuthController extends AbstractActionController
     public function logoutAction()
     {
         $this->Auther->logout();
-        echo "<script>location='/'</script>";
-        exit();
+        $this->redirect()->toRoute('auth');
+        return $this->getResponse();//disable return view 
     }
     
     public function loginPageAction()
     {
-        //dispath by pc or mobile
-        
-        // DEBUG INFORMATION START
-        echo '------debug start------<br/>';
-        echo "<pre>";
-        var_dump(__METHOD__ . ' on line: ' . __LINE__);
-        var_dump();
-        echo "</pre>";
-        exit('------debug end------');
-        // DEBUG INFORMATION END
-        
+        $this->redirect()->toRoute('auth');
+        return $this->getResponse();
     }
     
     public function noPermissionPageAction()
@@ -83,5 +77,36 @@ class AuthController extends AbstractActionController
         echo "</pre>";
         exit('------debug end------');
         // DEBUG INFORMATION END
+    }
+    
+    public function testAction()
+    {
+//         $this->Auther->AuthService->clearIdentity();
+//         // DEBUG INFORMATION START
+//         echo '------debug start------<br/>';
+//         echo "<pre>";
+//         var_dump(__METHOD__ . ' on line: ' . __LINE__);
+//         var_dump($this->identity()->username);
+//         echo "</pre>";
+//         exit('------debug end------');
+        // DEBUG INFORMATION END
+        
+        $auth = $this->Auther->AuthService;
+        $username = 'admin';
+        $password = 'admin888';
+        $this->Auther->login($username, $password);
+        $result = $this->Auther->AuthAdapter->getResultRowObject(['username', 'status', 'role']);
+        $auth->getStorage()->write($result);
+        $result = $auth->getStorage()->read();
+        // DEBUG INFORMATION START
+        echo '------debug start------<br/>';
+        echo "<pre>";
+        var_dump(__METHOD__ . ' on line: ' . __LINE__);
+//         var_dump($result);
+        var_dump($this->Auther->AuthService->getStorage()->read());
+        echo "</pre>";
+        exit('------debug end------');
+        // DEBUG INFORMATION END
+        
     }
 }
