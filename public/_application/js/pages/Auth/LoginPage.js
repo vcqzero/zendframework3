@@ -7,9 +7,7 @@ define(
 				'form-login': {
 					//成功
 					success: function() {
-						App.blockUI({
-							'animate' : true
-						})
+						App.pageLoaging.start(true)
 						location = '/'
 					},
 
@@ -60,8 +58,8 @@ define(
 		}
 		return {
 			init: function(pageName, page) {
-				App.submitResult(page, result)
-				App.validate(page, validator)
+				App.form.submitResult(page, result)
+				App.form.validate(page, validator)
 			},
 		} //end return
 	})
