@@ -1,0 +1,62 @@
+<?php 
+$pageGroup = $this->pageGroup;
+$pageName  = $this->pageName;
+$pageTitle = $this->pageTitle;
+$table     = $this->table;
+?>
+<?php $this->placeholder('pageContent')->captureStart();?>
+<div class="portlet light portlet-fit portlet-datatable bordered">
+	<div class="portlet-title">
+        <div class="caption font-dark">
+            <i class="icon-list font-dark"></i>
+            <span class="caption-subject bold uppercase">列表</span>
+        </div>
+        <div class="tools">
+            <a href="javascript:;" class="collapse" data-original-title="" title=""> </a>
+            <a href="" class="fullscreen" data-original-title="" title=""> </a>
+        </div>
+    </div>
+    
+	<div class="portlet-body">
+		<div class="table-toolbar">
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="btn-group">
+                        <button id="sample_editable_1_new" class="btn sbold green"> Add New
+                            <i class="fa fa-plus"></i>
+                        </button>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="btn-group pull-right">
+                        <button class="btn green  btn-outline dropdown-toggle" data-toggle="dropdown" aria-expanded="false">Tools
+                            <i class="fa fa-angle-down"></i>
+                        </button>
+                        <ul class="dropdown-menu pull-right">
+                            <li>
+                                <a href="javascript:;">
+                                    <i class="fa fa-print"></i> Print </a>
+                            </li>
+                            <li>
+                                <a href="javascript:;">
+                                    <i class="fa fa-file-pdf-o"></i> Save as PDF </a>
+                            </li>
+                            <li>
+                                <a href="javascript:;">
+                                    <i class="fa fa-file-excel-o"></i> Export to Excel </a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+		<?=$table?>
+	</div>
+</div>
+<?php $this->placeholder('pageContent')->captureEnd() ?>
+<?= $this->partial('partial/application/page/page/basic-page.phtml', [
+    'pageGroup' => $this->pageGroup,
+    'pageName'  => $this->pageName,
+    'pageTitle' => $this->pageTitle,
+    'pageContent'=> $this->placeholder('pageContent'),
+])?>

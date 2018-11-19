@@ -13,6 +13,7 @@ use Api\Service\UserManager;
 use Api\Service\Auther;
 use Api\Service\AclPermissioner;
 use Api\Controller\AuthController;
+use Zend\Cache\PatternFactory;
 
 class Module
 {
@@ -33,8 +34,9 @@ class Module
         $this->initHandleError($e);
         $this->initSession($e);
         $this->initMkdir($e);
-//         $this->initUser($e);
+        $this->initUser($e);
         $this->initPermission($e);
+        
     }
     
     private function initUser(MvcEvent $e)
@@ -43,7 +45,7 @@ class Module
         $evt        = $app->getEventManager();
         $container  = $app->getServiceManager();
         $UserManager= $container->get(UserManager::class);
-        $UserManager->createSuperAdmin();
+        $evt->attach(MvcEvent::EVENT_DISPATCH, array($UserManager, 'createSuperUser'), 100);
     }
     private function initPermission(MvcEvent $e)
     {
@@ -122,13 +124,22 @@ class Module
         $routeMatch = $e->getRouteMatch();
         $container  = $app->getServiceManager();
         
-        $Auther = $container->get(Auther::class);
+        //通过缓存处理acl
         $AclPermission    = $container->get(AclPermissioner::class);
-        $Acl              = $AclPermission->getAcl();
+        $storage          = $container->get('main-cache');
+        $AclCached = PatternFactory::factory('object', [
+            'object'  => $AclPermission,
+            'storage' => $storage,
+            'object_key' => 'AclPermission',
+            'cache_output' => false,
+        ]);
+        $Acl = $AclCached->getAclObject();
+        
         //默认角色
         $role       = UserManager::ROLE_GUEST;
         $controller = $routeMatch->getParam('controller');
         
+        $Auther = $container->get(Auther::class);
         //先判断默认角色是否有权限
         if ($Acl->isAllowed($role, $controller)) {
             //do nothing

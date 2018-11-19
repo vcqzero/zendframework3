@@ -3,7 +3,6 @@ namespace Api\Service;
 
 use Zend\Permissions\Acl\Acl;
 use Api\Service\UserManager;
-use Zend\Cache\Storage\Adapter\Filesystem;
 
 class AclPermissioner
 {
@@ -12,16 +11,13 @@ class AclPermissioner
     * @var Acl  
     */
     private $Acl;
-    private $Cache;
     private $resources;
     private $permission;
     
     public function __construct(
-        Filesystem $Cache,
         $resources, 
         $permission)
     {
-        $this->Cache = $Cache;
         $this->resources = $resources;
         $this->permission= $permission;
     }
@@ -30,24 +26,15 @@ class AclPermissioner
     * 
     * @return Acl       
     */
-    public function getAcl()
+    public function getAclObject()
     {
-        $Cache = $this->Cache;
-        if (!$Cache->hasItem(self::CACHE_KEY_ACL))
-        {
-            $this->Acl = new Acl();
-            //add resources
-            $this->addResources();
-            //add roles
-            $this->addRoles();
-            //config resoureces and roles
-            $this->allow();
-            $this->Cache->setItem(self::CACHE_KEY_ACL, $this->Acl);
-        }else {
-            $acl_serialize = $Cache->getItem(self::CACHE_KEY_ACL);
-            $this->Acl = $acl_serialize;
-        }
-        
+        $this->Acl = new Acl();
+        //add resources
+        $this->addResources();
+        //add roles
+        $this->addRoles();
+        //config resoureces and roles
+        $this->allow();
         return $this->Acl;
     }
     

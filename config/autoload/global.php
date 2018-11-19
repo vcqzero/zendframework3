@@ -78,7 +78,7 @@ return [
     'caches'=>[
         
         //将缓存内容保存到文件中
-        'filesystem'=>[
+        'main-cache'=>[
             'adapter' => [
                 'name'    => 'filesystem',
                 'options' => [

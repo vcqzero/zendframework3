@@ -24,8 +24,8 @@ class UserManagerFactory implements FactoryInterface
         $FormFilter = new FormFilter($rules);
         //super admin config
         $config = $container->get('config');
-        $super_admin_config = $config['super_admin'];
+        $super_user = $config['super_user'];
         return $UserManager = new UserManager(
-            $FormFilter, $super_admin_config, $TableGateway);
+            $FormFilter, $TableGateway, $super_user);
     }
 }

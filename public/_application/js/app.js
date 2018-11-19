@@ -1324,6 +1324,20 @@ define(function(require) {
 					})
 				},
 			},
+			
+			table : {
+				dataTable : function(page, config) {
+					require(['datatables.net', 'dataTablesBootstrap'], function() {
+						if (typeof config == 'undefined') return
+						for (var table_id in config) {
+							var table_options = config[table_id]
+							var table = $('#' + table_id)
+							if (table.length < 1) return
+							table.DataTable()
+						}
+					})
+				},
+			},
 
 			editable: function(page, config) {
 				require(['editable'], function() {

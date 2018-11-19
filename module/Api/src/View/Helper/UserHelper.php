@@ -18,4 +18,16 @@ class UserHelper extends AbstractHelper
     {
         $this->UserManager   = $UserManager;
     }
+    
+    /**
+    * 
+    * 
+    * @param  
+    * @return array       
+    */
+    public function findAll()
+    {
+        $Users = $this->UserManager->MyTableGateway->select();
+        return $Users;
+    }
 }

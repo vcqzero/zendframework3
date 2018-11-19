@@ -13,12 +13,8 @@ class AclPermissionerFactory implements FactoryInterface
 {
     public function __invoke(ContainerInterface $container, $requestedName, array $options = null)
     {
-        $cache      = $container->get('filesystem');
         $resources  = $container->get('config')['controllers']['factories'];
         $permission = $container->get('config')['permission'];
-        return new AclPermissioner(
-            $cache,
-            $resources, 
-            $permission);
+        return new AclPermissioner($resources, $permission);
     }
 }

@@ -7,7 +7,6 @@ namespace Api\Service;
 
 use Zend\Db\Sql\Where;
 use Api\Filter\FormFilter;
-use Api\Repository\PdoMysql;
 use Api\Repository\Table\User;
 use Api\Repository\MyTableGateway;
 
@@ -15,56 +14,22 @@ class UserManager
 {
     public  $FormFilter;
     public  $MyTableGateway;
-    
-    private $super_admin_config;
+    private $super_user;
     
     const STATUS_ENABLED    = 'ENABLED';
     
-    /**
-    * @var 超级管理员 
-    */
     const ROLE_SUPER_USER = 'SUPER_USER';
-    
-    /**
-    * @var 工地管理员
-    */
-    const ROLE_WORKYARD_ADMIN = 'WORKYARD_ADMIN';
-    
-    /**
-    * @var 巡检员
-    */
-    const ROLE_WORKYARD_GUARD = 'WORKYARD_GUARD';
-    
-    /**
-    * @var 未登录 游客身份
-    */
-    const ROLE_GUEST = 'GUSET';
+    const ROLE_GUEST      = 'GUEST';
 
     public function __construct(
         FormFilter $FormFilter,
-        $super_admin_config,
-        MyTableGateway $MyTableGateway
+        MyTableGateway $MyTableGateway,
+        $super_user =[]
         )
     {
-        $this->FormFilter   = $FormFilter;
-        $this->super_admin_config = $super_admin_config;
-        $this->MyTableGateway = $MyTableGateway;
-    }
-    
-    /**
-    * 
-    * 
-    * @param  string $identity
-    * @return UserEntity       
-    */
-    public function findUserByIdentity($identity)
-    {
-        $filed_username = User::FILED_USERNAME;
-        $where  = [
-            $filed_username => $identity
-        ];
-        $user = $this->PdoMysql->findOne($where);
-        return $user;
+        $this->FormFilter       = $FormFilter;
+        $this->MyTableGateway   = $MyTableGateway;
+        $this->super_user       = $super_user;
     }
     
     /**
@@ -116,61 +81,30 @@ class UserManager
         return password_verify($password, $hash);
     }
     
-    public function createSuperAdmin()
+    public function createSuperUser()
     {
-        //如果用户不存在则创建
-        $name = $this->getSuperAdminName();
+        //get the info of super user
+        $superUser = $this->super_user;
+        $username  = $superUser['username'] ?? '';
+        $password  = $superUser['password'] ?? '';
         
-        if (empty($name))
-        {
-            return ;
-        }
-        
+        if (empty($username) || empty($password)) return ;
+        //check whether exist
         $where = [
-            User::FILED_USERNAME => $name
+            User::FILED_USERNAME => $username
         ];
+        //if exist
+        if (!empty($this->MyTableGateway->count($where))) return ;
         
-        if (!empty($this->MyTableGateway->count($where))) 
-        {
-            return;    
-        }
-        
-        //进行新增
-        $password = $this->getSuperAdminPassword();
-        
-        if (empty($password))
-        {
-            return ;
-        }
-        
+        //if not exist
         $password = $this->password_hash($password);
         $values= [
-            User::FILED_USERNAME => $name,
+            User::FILED_USERNAME => $username,
             User::FILED_PASSWORD => $password,
             User::FILED_STATUS   => self::STATUS_ENABLED,
-            User::FILED_ROLE    => self::ROLE_SUPER_USER,
-            User::FILED_WORKYARD_ID => 0,
+            User::FILED_ROLE     => self::ROLE_SUPER_USER,
         ];
         $this->MyTableGateway->insert($values);
-    }
-    
-    private function getSuperAdminName()
-    {
-        $config = $this->super_admin_config;
-        
-        if(isset($config['username']))
-        {
-            return $config['username'];
-        }
-    }
-    
-    private function getSuperAdminPassword()
-    {
-        $config = $this->super_admin_config;
-        if(isset($config['password']))
-        {
-            return $config['password'];
-        }
     }
 }
 

@@ -152,7 +152,7 @@ class Auther
     
     public function getRole()
     {
-        $user = $this->getUser();
+        $user = $this->AuthService->getIdentity();
         return $user->role;
     }
     
