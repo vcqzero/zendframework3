@@ -32,9 +32,6 @@ requirejs.config({
 		editable : '//cdnjs.cloudflare.com/ajax/libs/x-editable/1.5.0/bootstrap3-editable/js/bootstrap-editable.min',
 		ladda : 'https://cdn.bootcss.com/Ladda/1.0.6/ladda.min',
 		spin : 'https://cdn.bootcss.com/Ladda/1.0.6/spin.min',
-		//jquery-datatables
-		'datatables.net' : 'https://cdn.bootcss.com/datatables/1.10.19/js/jquery.dataTables.min',
-		dataTablesBootstrap : 'https://cdn.bootcss.com/datatables/1.10.19/js/dataTables.bootstrap.min',
 		
 	},
 
@@ -93,13 +90,6 @@ requirejs.config({
 				'css!https://cdn.bootcss.com/toastr.js/latest/css/toastr.min',
 			],
 		},
-		'datatables.net': {
-			deps: [
-				'jquery',
-				'css!https://cdn.bootcss.com/datatables/1.10.19/css/jquery.dataTables.min',
-				'css!https://cdn.bootcss.com/datatables/1.10.19/css/dataTables.bootstrap.min',
-			],
-		},
 	},
 });
 
@@ -116,4 +106,5 @@ requirejs(
 		
 		//预加载
 		requirejs(['blockUI'], function() {})
+//		requirejs(['dataTablesBootstrap'], function() {})
 	});

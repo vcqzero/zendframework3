@@ -40,7 +40,7 @@ return [
             'user' => [
                 'type'    => Segment::class,
                 'options' => [
-                    'route'    => '/user[/:action]',
+                    'route'    => '/user[/:action][/:page][/:id]',
                     'defaults' => [
                         'controller' => Controller\UserController::class,
                         'action'     => 'index',

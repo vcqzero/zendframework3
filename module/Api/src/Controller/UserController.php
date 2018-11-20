@@ -4,7 +4,8 @@ namespace Api\Controller;
 use Zend\Mvc\Controller\AbstractActionController;
 use Api\Service\UserManager;
 use Api\Controller\Plugin\AjaxPlugin;
-use Api\Repository\Repositories\User;
+use Api\Repository\Table\User;
+use Zend\View\Model\JsonModel;
 
 class UserController extends AbstractActionController
 {
@@ -109,5 +110,13 @@ class UserController extends AbstractActionController
         
         $res = $this->UserManager->MyOrm->update($userID, $values);
         $this->AjaxPlugin->success($res);
+    }
+    
+    public function ajaxAction() 
+    {
+        $users = $this->UserManager->MyTableGateway->select()->toArray();
+        $view = new JsonModel();
+        $view->setVariable('data', $users);
+        return $view;
     }
 }

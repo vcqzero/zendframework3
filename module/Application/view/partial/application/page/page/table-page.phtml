@@ -3,6 +3,8 @@ $pageGroup = $this->pageGroup;
 $pageName  = $this->pageName;
 $pageTitle = $this->pageTitle;
 $table     = $this->table;
+$query     = $this->query;
+$paginator = $this->paginator;
 ?>
 <?php $this->placeholder('pageContent')->captureStart();?>
 <div class="portlet light portlet-fit portlet-datatable bordered">
@@ -50,7 +52,19 @@ $table     = $this->table;
                 </div>
             </div>
         </div>
+        <div class="table-responsive">
 		<?=$table?>
+		<?php if (empty(count($paginator))):?>
+		<p>未查询到数据!</p>
+		<?php else :?>
+		<?= $this->paginationControl(
+    	    $paginator,
+            'Sliding',
+            'partial/application/paginator/my_pagination_control.phtml',
+		    ['query' => $query]
+        ) ?>
+		<?php endif;?>
+		</div>
 	</div>
 </div>
 <?php $this->placeholder('pageContent')->captureEnd() ?>

@@ -922,7 +922,7 @@ define(function(require) {
 				start: function(withBlockUI) {
 					if(withBlockUI) {
 						App.blockUI.block({
-							animate :true
+							animate: true
 						})
 					} else {
 						$('.page-spinner-bar').remove();
@@ -935,9 +935,9 @@ define(function(require) {
 				 * 
 				 */
 				stop: function(withBlockUI, target) {
-					if (withBlockUI) {
+					if(withBlockUI) {
 						App.blockUI.unBlock(target)
-					}else {
+					} else {
 						$('.page-loading, .page-spinner-bar').remove();
 					}
 				},
@@ -1324,20 +1324,76 @@ define(function(require) {
 					})
 				},
 			},
-			
-			table : {
-				dataTable : function(page, config) {
-					require(['datatables.net', 'dataTablesBootstrap'], function() {
-						if (typeof config == 'undefined') return
-						for (var table_id in config) {
-							var table_options = config[table_id]
-							var table = $('#' + table_id)
-							if (table.length < 1) return
-							table.DataTable()
-						}
-					})
-				},
-			},
+
+//			table: {
+//				dataTable: function(page, config) {
+//					require(['dataTablesBootstrap', 'dataTables.select'], function() {
+//						if(typeof config == 'undefined') return
+//						for(var table_id in config) {
+//							var table_option = config[table_id]
+//							var table = $('#' + table_id)
+//							if(table.length < 1) return
+//							var _option = defaultOption()
+//							$.extend(true, _option, table_option);
+//							initDataTables(table, _option)
+//						}
+//					})
+//					var defaultOption = function() {
+//						var _option = {
+//							//								"autoWidth": false,
+//							processing: true, //show or hide processing
+//							orderClasses: false, //高亮可排序的列
+//							language: {
+//								search: '搜索：',
+//								lengthMenu: " _MENU_ 每页显示",
+//								zeroRecords: "无数据",
+//								loadingRecords: "数据加载中...",
+//								processing: "处理中...",
+//								info: "第  _PAGE_ 页，共  _PAGES_ 页",
+//								infoEmpty: "",
+//								infoFiltered: " - 从 _MAX_ 记录中过滤",
+//								//pageing
+//								paginate: {
+//									first: '首页',
+//									last: '尾页',
+//									previous: '上一页',
+//									next: '下一页',
+//								},
+//								select: {
+//									rows: {
+//										_: "已选择  %d 行",
+//									}
+//								},
+//							},
+//						}
+//
+//						return _option
+//					}
+//
+//					var initDataTables = function(table, _option) {
+//						var _DataTable = table.DataTable(_option)
+//						table.css('width', '100%')
+//						_DataTable.on('deselect', function(e, dt, type, indexes) {
+//							console.log('deselect')
+//							//							if(type === 'row') {
+//							//								console.log(indexes)
+//							//								var row = _DataTable.row(indexes)
+//							//								
+//							//								console.log(row)
+//							//							}
+//						});
+//						_DataTable.on('select', function(e, dt, type, indexes) {
+//							console.log('select')
+//							//							if(type === 'row') {
+//							//								console.log(indexes)
+//							//								var row = _DataTable.row(indexes)
+//							//								
+//							//								console.log(row)
+//							//							}
+//						});
+//					}
+//				},
+//			},
 
 			editable: function(page, config) {
 				require(['editable'], function() {

@@ -1,31 +1,59 @@
 <?php 
 use Api\Repository\Table\User;
 
-$users = $this->User()->findAll();
+$users = $this->User()->getPaginator(1, []);
 
 ?>
 <?php $this->placeholder('table')->captureStart();?>
-<table
-	class="table table-striped table-bordered table-hover table-checkable order-column"
-	id="table_user">
-	<thead>
-		<tr>
-			<th>
-                <label class="mt-checkbox mt-checkbox-single mt-checkbox-outline">
-                    <input type="checkbox" class="group-checkable" data-set="#sample_1 .checkboxes" />
-                    <span></span>
-                </label>
-            </th>
-			<td>用户名</td>
-			<td>真实姓名</td>
-			<td>真实姓名</td>
-		</tr>
-	</thead>
-</table>
+
+    <table
+    	class="table table-striped table-bordered table-hover table-checkable no-footer"
+    	id="table_user">
+    	<thead>
+    		<tr>
+    			<th class="column_checkbox">
+                    <label class="mt-checkbox mt-checkbox-single mt-checkbox-outline">
+                        <input type="checkbox" class="group-checkable" data-set="" />
+                        <span></span>
+                    </label>
+                </th>
+    			<th>用户名</th>
+    			<th>真实姓名</th>
+    			<th>真实姓名</th>
+    			<th>操作</th>
+    		</tr>
+    	</thead>
+    	<tbody>
+    		<?php foreach ($users as $user):?>
+    		<tr>
+    			<td>1</td>
+    			<td><?=$user[User::FILED_USERNAME]?></td>
+    			<td><?=$user[User::FILED_REALNAME]?></td>
+    			<td>4</td>
+    			<td>5</td>
+    		</tr>
+    		<?php endforeach;?>
+    	</tbody>
+    	<tfoot>
+    		<tr>
+    			<th class="column_checkbox">
+                    <label class="mt-checkbox mt-checkbox-single mt-checkbox-outline">
+                        <input type="checkbox" class="group-checkable" data-set="" />
+                        <span></span>
+                    </label>
+                </th>
+    			<th>用户名</th>
+    			<th>真实姓名</th>
+    			<th>真实姓名</th>
+    			<th>操作</th>
+    		</tr>
+    	</tfoot>
+    </table>
 <?php $this->placeholder('table')->captureEnd() ?>
 <?= $this->partial('partial/application/page/page/table-page.phtml', [
     'pageGroup' => 'User',
     'pageName'  => 'UserListPage',
     'pageTitle' => '用户管理',
+    'paginator' => $users,
     'table'=> $this->placeholder('table'),
 ])?>

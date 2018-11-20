@@ -46,7 +46,6 @@ define([
 						}
 					}
 					content.css('min-height', height);
-					sidebar.css('min-height', height);
 					
 				}
 			};

@@ -88,7 +88,7 @@ class MenuHelper extends AbstractHelper
                         'submenus' => [
                             'submenu-1'=>[
                                 'icon' => '',
-                                'href' => '/user',
+                                'href' => '/user/index',
                                 'title' => '用户管理',
                                 'allow' => [
                                     UserManager::ROLE_GUEST

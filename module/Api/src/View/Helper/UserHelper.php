@@ -19,15 +19,8 @@ class UserHelper extends AbstractHelper
         $this->UserManager   = $UserManager;
     }
     
-    /**
-    * 
-    * 
-    * @param  
-    * @return array       
-    */
-    public function findAll()
+    public function getPaginator($page, $where)
     {
-        $Users = $this->UserManager->MyTableGateway->select();
-        return $Users;
+        return $this->UserManager->MyTableGateway->paginator($page, $where);
     }
 }
