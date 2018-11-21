@@ -32,7 +32,8 @@ requirejs.config({
 		editable : '//cdnjs.cloudflare.com/ajax/libs/x-editable/1.5.0/bootstrap3-editable/js/bootstrap-editable.min',
 		ladda : 'https://cdn.bootcss.com/Ladda/1.0.6/ladda.min',
 		spin : 'https://cdn.bootcss.com/Ladda/1.0.6/spin.min',
-		
+		//dropzone
+		dropzone : 'https://cdn.bootcss.com/dropzone/5.5.1/min/dropzone.min',
 	},
 
 	map: { //map告诉RequireJS在任何模块之前，都先载入这个模块
@@ -88,6 +89,12 @@ requirejs.config({
 			deps: [
 				'jquery',
 				'css!https://cdn.bootcss.com/toastr.js/latest/css/toastr.min',
+			],
+		},
+		dropzone: {
+			deps: [
+				'jquery',
+				'css!https://cdn.bootcss.com/dropzone/5.5.1/min/dropzone.min',
 			],
 		},
 	},

@@ -1340,12 +1340,6 @@ define(function(require) {
 					return queryStr
 				},
 			},
-			
-			table : {
-				paginator : function() {
-					
-				},
-			},
 
 			table: {
 				container: undefined,
@@ -1390,19 +1384,18 @@ define(function(require) {
 						var pagination = _this.filter('.pagination-control')
 						var itemsCount = parseInt(tbody.attr('data-item-count'))
 						table.find('tbody').replaceWith(tbody)
-						
+
 						/*如果没有查询到数据*/
-						if (itemsCount < 1) {
+						if(itemsCount < 1) {
 							table.next().remove()
 							container.append("<p class='text-center'>没有查询到数据！</p>")
 							return
 						}
-						
-						if(table.next().length < 1) {
-							container.append(pagination)
-						} else {
-							table.next().replaceWith(pagination)
-						}
+
+						//paginator
+						var paginatorContainer = container.find('.pagination-control')
+						paginatorContainer.children().remove()
+						paginatorContainer.append(pagination)
 					})
 				},
 
@@ -1413,7 +1406,9 @@ define(function(require) {
 						var page = _a.attr('data-page')
 						var countPerPage = $('.pagination-control span.count-per-page').text()
 						if(_a.parent().hasClass('disabled')) return
-						App.table.doAjax(page, '', countPerPage)
+						var form = container.find('from')
+						var query = App.form.getSerialize(form)
+						App.table.doAjax(page, query, countPerPage)
 					})
 
 					container.on('click', '.pagination-control ul.control-count-per-page a', function() {
@@ -1421,7 +1416,9 @@ define(function(require) {
 						var countPerPage = _a.attr('data-conut-per-page')
 						var currtenCountPerPage = $('.pagination-control span.count-per-page').text()
 						if(countPerPage == currtenCountPerPage) return
-						App.table.doAjax(1, '', countPerPage)
+						var form = container.find('from')
+						var query = App.form.getSerialize(form)
+						App.table.doAjax(1, query, countPerPage)
 					})
 				},
 
@@ -1431,7 +1428,7 @@ define(function(require) {
 						e.preventDefault()
 						var form = $(this)
 						var query = App.form.getSerialize(form)
-						if (query.length < 1) return
+						if(query.length < 1) return
 						App.table.doAjax(1, query)
 						//enable reset button
 						var resetButton = container.find('button[type="reset"]')
@@ -1555,7 +1552,29 @@ define(function(require) {
 					}
 				})
 			},
-
+			
+			dropzone : function(config){
+				var getOption = function() {
+					return {
+						addRemoveLinks :true,
+						dictDefaultMessage : '上传文件',
+						dictFileTooBig :'文件不能超过{{maxFilesize}}',
+					}
+				}
+				var init = function(target, url) {
+					var _option = getOption()
+					_option['url'] = url
+					target.dropzone(_option)
+				}
+				require(['dropzone'], function() {
+					for (var key in config) {
+						var _config = config[key]
+						var target  = _config['target']
+						var url     = _config['url']
+						init(target, url)
+					}
+				})
+			},
 		} //end return
 
 	})()

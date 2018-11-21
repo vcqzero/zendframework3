@@ -3,7 +3,6 @@
 <?php $this->placeholder('buttons')->captureEnd() ?>
 
 <?php $this->placeholder('table')->captureStart();?>
-<div class="table-responsive table-container">
 	<table
 	class="table table-striped table-bordered table-hover table-checkable "
 	id="table_user">
@@ -15,7 +14,9 @@
 					type="checkbox" class="group-checkable" data-set="" /> <span></span>
 				</label>
 			</th>
-			<th class="th_15">用户名</th>
+			<th class="th_15">
+			用户名
+			</th>
 			<th class="th_15">真实姓名</th>
 			<th class="th_15">电话</th>
 			<th class="column_status">状态</th>
@@ -26,8 +27,7 @@
 	</thead>
 	<tbody>
     </tbody>
-</table>
-</div>
+	</table>
 <?php $this->placeholder('table')->captureEnd() ?>
 <?= $this->partial('partial/application/page/page/table-page.phtml', [
     'pageGroup' => 'User',

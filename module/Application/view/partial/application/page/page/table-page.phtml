@@ -4,6 +4,7 @@ $pageName  = $this->pageName;
 $pageTitle = $this->pageTitle;
 $buttons   = $this->buttons;
 $table     = $this->table;
+$tableToolbar= $this->tableToolbar;
 ?>
 <?php $this->placeholder('pageContent')->captureStart();?>
 <div class="portlet light portlet-fit portlet-datatable bordered">
@@ -19,6 +20,7 @@ $table     = $this->table;
     </div>
     
 	<div class="portlet-body">
+		<?php if ($tableToolbar !== false):?>
 		<div class="table-toolbar">
             <div class="row">
                 <div class="col-md-6 col-sm-6 col-xs-6">
@@ -50,7 +52,11 @@ $table     = $this->table;
                 </div>
             </div>
         </div>
+        <?php endif;?>
+        <div class="table-responsive table-container">
         <?=$table?>
+        <div class="pagination-control"></div>
+        </div>
 	</div>
 </div>
 <?php $this->placeholder('pageContent')->captureEnd() ?>

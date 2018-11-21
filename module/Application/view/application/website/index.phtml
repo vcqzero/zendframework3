@@ -2,57 +2,54 @@
 $title  = $this->Website()->getTitle();
 $record = $this->Website()->getRecord();
 ?>
-<?php $this->placeholder('pageContent')->captureStart();?>
-<div class="portlet light portlet-fit bordered">
-	<div class="portlet-title">
-		<div class="caption">
-			<i class="icon-settings font-dark"></i>
-            <span class="caption-subject bold uppercase"> Managed Table</span>
-		</div>
-	</div>
-	<div class="portlet-body">
-		<div class="row">
-			<div class="col-md-12">
-				<table id="websiteTable" class="table table-bordered table-striped">
-					<tbody>
-						<tr>
-							<td style="width: 10%">站点标题</td>
-							<td style="width: 90%">
-							<a 
-							href="javascript:;" 
-							id="website_title"
-							data-pk="1"
-							data-type="text" 
-							data-original-title="站点标题"
-							data-emptytext="未设置"
-							class="editable editable-click editable-disabled" tabindex="-1"
-							style="display: inline;width: 90%"><?=$title?></a>
-							</td>
-						</tr>
-						<tr>
-							<td>备案信息</td>
-							<td>
-							<a href="javascript:;" 
-							data-name="website_record"
-							data-type="text"
-							data-pk="1"
-							data-placement="right" 
-							data-placeholder="请输入站点备案信息"
-							data-original-title="备案信息"
-							class="editable editable-click editable-disabled" tabindex="-1"><?=$record?></a>
-							</td>
-						</tr>
-					</tbody>
-				</table>
-			</div>
-		</div>
-	</div>
-</div>
-<?php $this->placeholder('pageContent')->captureEnd() ?>
+<?php $this->placeholder('table')->captureStart();?>
+<table id="websiteTable" class="table table-bordered table-striped">
+	<tbody>
+		<tr>
+			<td style="width: 10%">站点标题</td>
+			<td style="width: 90%">
+			<a 
+			href="javascript:;" 
+			id="website_title"
+			data-pk="1"
+			data-type="text" 
+			data-original-title="站点标题"
+			data-emptytext="未设置"
+			class="editable editable-click" tabindex="-1"
+			style="display: inline;width: 90%"><?=$title?></a>
+			</td>
+		</tr>
+		<tr>
+			<td>备案信息</td>
+			<td>
+			<a href="javascript:;" 
+			data-name="website_record"
+			data-type="text"
+			data-pk="1"
+			data-placement="right" 
+			data-placeholder="请输入站点备案信息"
+			data-original-title="备案信息"
+			class="editable editable-click" tabindex="-1"><?=$record?></a>
+			</td>
+		</tr>
+		<tr>
+			<td>logo</td>
+			<td>
+                <div 
+                class="fileinput-preview  dropzone" 
+                data-trigger="fileinput" 
+                style="width: 200px; line-height: 150px;"> 
+                </div>
+			</td>
+		</tr>
+	</tbody>
+</table>
+<?php $this->placeholder('table')->captureEnd() ?>
 
-<?=$this->partial('partial/application/page/page/basic-page.phtml', [
+<?=$this->partial('partial/application/page/page/table-page.phtml', [
     'pageGroup' => 'Website',
     'pageName' => 'WebsiteIndexPage',
     'pageTitle' => '站点设置',
-    'pageContent' => $this->placeholder('pageContent'),
+    'tableToolbar' => false,
+    'table' => $this->placeholder('table'),
 ])?>

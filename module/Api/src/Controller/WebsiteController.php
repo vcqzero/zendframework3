@@ -42,4 +42,18 @@ class WebsiteController extends AbstractActionController
         $view = new JsonModel($res);
         return $view;
     }
+    
+    public function logoAction()
+    {
+        
+        // DEBUG INFORMATION START
+        echo '------debug start------<br/>';
+        echo "<pre>";
+        var_dump(__METHOD__ . ' on line: ' . __LINE__);
+        var_dump(';');
+        echo "</pre>";
+        exit('------debug end------');
+        // DEBUG INFORMATION END
+        
+    }
 }
