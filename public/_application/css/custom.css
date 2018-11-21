@@ -31,20 +31,6 @@
 }
 
 /*dropzone*/
-.dropzone {
-	min-height: auto !important;
-	padding: 0 !important;
-}
-.dz-image-preview {
-	width: 100% !important;
-	margin: 0px !important;
-}
-.dropzone .dz-preview .dz-image {
-	width: 100% !important;
-}
-.dropzone .dz-preview .dz-image img{
-	width: 100% !important;
-}
-.dropzone .dz-message{
-	margin: 0 !important;
+.dropzone .dz-remove {
+	line-height: initial !important;
 }

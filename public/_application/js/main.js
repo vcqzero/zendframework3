@@ -94,7 +94,7 @@ requirejs.config({
 		dropzone: {
 			deps: [
 				'jquery',
-				'css!https://cdn.bootcss.com/dropzone/5.5.1/min/dropzone.min',
+//				'css!https://cdn.bootcss.com/dropzone/5.5.1/min/dropzone.min',
 			],
 		},
 	},
