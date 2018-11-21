@@ -1,0 +1,32 @@
+<?php
+use Api\Repository\Table\User;
+
+$page = $this->page;
+$countPerPage = $this->countPerPage;
+$query = $this->query;
+
+$users = $this->User()->getPaginator($page, $query, $countPerPage);
+$itemCount = $users->getTotalItemCount();
+?>
+<table>
+	<tbody data-item-count="<?=$itemCount?>">
+    		<?php foreach ($users as $user):?>
+    		<tr>
+			<td><label class="mt-checkbox mt-checkbox-single mt-checkbox-outline">
+					<input type="checkbox" class="group-checkable" data-set="" /> <span></span>
+			</label></td>
+			<td><?=$user[User::FILED_USERNAME]?></td>
+			<td><?=$user[User::FILED_REALNAME]?></td>
+			<td><?=$user[User::FILED_TEL]?></td>
+			<td><?=$user[User::FILED_STATUS]?></td>
+			<td><?=$user[User::FILED_ROLE]?></td>
+			<td>
+			<?=$this->partial('partial/application/button/outline-sm/view.phtml')?>
+			<?=$this->partial('partial/application/button/outline-sm/edit.phtml')?>
+			<?=$this->partial('partial/application/button/outline-sm/delete.phtml')?>
+			</td>
+		</tr>
+    		<?php endforeach;?>
+    	</tbody>
+ </table>
+<?=$this->partial('partial/application/paginator/paginationControl.phtml', ['paginator' => $users])?>

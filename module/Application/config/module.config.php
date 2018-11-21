@@ -44,6 +44,7 @@ return [
                     'defaults' => [
                         'controller' => Controller\UserController::class,
                         'action'     => 'index',
+                        'page'       => 1,
                     ],
                 ],
             ],

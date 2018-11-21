@@ -1,0 +1,19 @@
+<?php 
+$title = $this->title;
+$type  = $this->type;
+switch ($type){
+    case 'success' :
+        $class = 'label-success';
+        break;
+    case 'info' :
+        $class = 'label-info';
+        break;
+    case 'warning' :
+        $class = 'label-warning';
+        break;
+    case 'danger' :
+        $class = 'label-danger';
+        break;
+}
+?>
+<span class="label label-sm <?=$class?>"><?=$title?></span>

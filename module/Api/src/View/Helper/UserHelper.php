@@ -19,8 +19,33 @@ class UserHelper extends AbstractHelper
         $this->UserManager   = $UserManager;
     }
     
-    public function getPaginator($page, $where)
+    public function getPaginator($page=1, $query =[], $countPerPage=null)
     {
-        return $this->UserManager->MyTableGateway->paginator($page, $where);
+        if (count($query)) {
+            $query = $this->UserManager->FormFilter->filter($query);
+        }
+        $paginator = $this->UserManager->MyTableGateway->paginator($page, $query);
+        if(!empty($countPerPage)) $paginator->setItemCountPerPage($countPerPage);
+        return $paginator;
+    }
+    
+    public function formateRole($role)
+    {
+        
+    }
+    
+    public function getRoles()
+    {
+        return [
+           UserManager::ROLE_GUEST => '游客', 
+           UserManager::ROLE_SUPER_USER => '超级管理员', 
+        ];
+    }
+    
+    public function getStatus()
+    {
+        return [
+           UserManager::STATUS_ENABLED => '正常', 
+        ];
     }
 }

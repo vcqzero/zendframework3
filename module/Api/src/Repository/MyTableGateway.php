@@ -10,7 +10,7 @@ use Zend\Console\Prompt\Select;
 
 class MyTableGateway extends TableGateway
 {
-    const ITEM_COUNT_PER_PAGE = 9;
+    const ITEM_COUNT_PER_PAGE = 10;
     
     /**
     * 从本数据表中查询一条数据

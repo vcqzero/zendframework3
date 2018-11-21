@@ -47,7 +47,7 @@ class FormFilter
     {
         //获取$InputFilter并设置好验证规则
         $InputFilter = new InputFilter();
-        $rules       = $this->getRules();
+        $rules       = $this->rules;
         foreach ($rules as $key=>$rule)
         {
             $InputFilter ->add($rule);
@@ -78,12 +78,12 @@ class FormFilter
     }
     
     /**
-    * 获取经过过滤的数据
+    * 过滤数据
     * 
     * @param  void
     * @return array       
     */
-    public function getFilterValues($values)
+    public function filter($values)
     {
         $this->excute($values);
         return $this->filteredValues;

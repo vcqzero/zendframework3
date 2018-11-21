@@ -1,0 +1,45 @@
+<?php 
+$roles  = $this->User()->getRoles();
+$statuses = $this->User()->getStatus();
+?>
+<form class="form-search">
+	<tr>
+		<th class="column_checkbox"></th>
+		<th><input type="text" class="form-control form-filter input-sm"
+			placeholder="搜索" name="username"></th>
+		<th>
+		<input type="text" class="form-control form-filter input-sm"
+			name="realname">
+		</th>
+			
+		<th>
+		<input type="text" class="form-control form-filter input-sm"
+			placeholder="手机号" name="tel">
+		</th>
+			
+		<th class="" role="search-status">
+    		<select name="status"
+    			class="form-control form-filter input-sm">
+    				<option value="">全部</option>
+    				<?php foreach ($statuses as $status=>$statusTitle):?>
+    				<option value="<?=$status?>"><?=$statusTitle?></option>
+    				<?php endforeach;?>
+    		</select>
+		</th>
+		
+		<th role="search-role">
+			<select name="role"
+    			class="form-control form-filter input-sm">
+    				<option value="">全部</option>
+    				<?php foreach ($roles as $role=>$roleTitle):?>
+    				<option value="<?=$role?>"><?=$roleTitle?></option>
+    				<?php endforeach;?>
+    		</select>
+		</th>
+		
+		<th>
+		<?=$this->partial('partial/application/button/outline-sm/search.phtml')?>
+		<?=$this->partial('partial/application/button/outline-sm/search-cancel.phtml')?>
+		</th>
+	</tr>
+</form>

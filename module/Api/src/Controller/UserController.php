@@ -61,7 +61,7 @@ class UserController extends AbstractActionController
         //获取用户提交表单
         $values = $this->params()->fromPost();
         //处理表单数据
-        $values = $this->UserManager->FormFilter->getFilterValues($values);
+        $values = $this->UserManager->FormFilter->filter($values);
         //执行增加操作
         $res = $this->UserManager->MyOrm->update($userID, $values);
         $this->AjaxPlugin->success($res);

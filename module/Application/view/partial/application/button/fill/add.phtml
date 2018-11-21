@@ -1,0 +1,10 @@
+<?php
+$modal = $this->modal === true;
+$href  = $this->href;
+$href  = $modal ? 'javascript:;' : $href;
+$class = $modal ? 'btn-open-modal' : '';
+?>
+<a href="<?=$href?>" 
+class="btn blue <?=$class?> sbold "
+>
+<i class="fa fa-plus"></i> 新增</a>
