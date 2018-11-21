@@ -1,0 +1,8 @@
+<?php
+use Zend\Paginator\Paginator;
+
+$paginator = $this->paginator;
+?>
+<?php if ($paginator instanceof Paginator && count($paginator)):?>
+<?=$this->paginationControl($paginator, 'Sliding', 'partial/application/paginator/my_pagination_control.phtml')?>
+<?php endif;?>

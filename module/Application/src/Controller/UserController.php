@@ -9,10 +9,18 @@ class UserController extends AbstractActionController
     //go to index page
     public function indexAction()
     {
-        return new ViewModel([
-            'where' => $this->params()->fromQuery(),
-            'page'  => $this->params()->fromQuery('page', 1),
-        ]);
+        return new ViewModel();
+    }
+    
+    public function tableAction()
+    {
+        $post  = $this->params()->fromPost();
+        $query = [
+            'query'=>$this->params()->fromQuery()
+        ];
+        $view = new ViewModel(array_merge($post, $query));
+        $view ->setTerminal(true);
+        return $view;
     }
     
     //goto add page

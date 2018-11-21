@@ -2,9 +2,8 @@
 $pageGroup = $this->pageGroup;
 $pageName  = $this->pageName;
 $pageTitle = $this->pageTitle;
+$buttons   = $this->buttons;
 $table     = $this->table;
-$query     = $this->query;
-$paginator = $this->paginator;
 ?>
 <?php $this->placeholder('pageContent')->captureStart();?>
 <div class="portlet light portlet-fit portlet-datatable bordered">
@@ -22,49 +21,36 @@ $paginator = $this->paginator;
 	<div class="portlet-body">
 		<div class="table-toolbar">
             <div class="row">
-                <div class="col-md-6">
+                <div class="col-md-6 col-sm-6 col-xs-6">
                     <div class="btn-group">
-                        <button id="sample_editable_1_new" class="btn sbold green"> Add New
-                            <i class="fa fa-plus"></i>
-                        </button>
+                    	<?=$buttons?>
                     </div>
                 </div>
-                <div class="col-md-6">
+                <div class="col-md-6 col-sm-6 col-xs-6">
                     <div class="btn-group pull-right">
-                        <button class="btn green  btn-outline dropdown-toggle" data-toggle="dropdown" aria-expanded="false">Tools
-                            <i class="fa fa-angle-down"></i>
-                        </button>
+                        <button 
+                        class="btn green  btn-outline dropdown-toggle" 
+                        data-toggle="dropdown" 
+                        aria-expanded="false">导出 <i class="fa fa-angle-down"></i></button>
                         <ul class="dropdown-menu pull-right">
                             <li>
                                 <a href="javascript:;">
-                                    <i class="fa fa-print"></i> Print </a>
+                                    <i class="fa fa-print"></i> 打印 </a>
                             </li>
                             <li>
                                 <a href="javascript:;">
-                                    <i class="fa fa-file-pdf-o"></i> Save as PDF </a>
+                                    <i class="fa fa-file-pdf-o"></i> 保存为PDF </a>
                             </li>
                             <li>
                                 <a href="javascript:;">
-                                    <i class="fa fa-file-excel-o"></i> Export to Excel </a>
+                                    <i class="fa fa-file-excel-o"></i> 保存为EXCEL </a>
                             </li>
                         </ul>
                     </div>
                 </div>
             </div>
         </div>
-        <div class="table-responsive">
-		<?=$table?>
-		<?php if (empty(count($paginator))):?>
-		<p>未查询到数据!</p>
-		<?php else :?>
-		<?= $this->paginationControl(
-    	    $paginator,
-            'Sliding',
-            'partial/application/paginator/my_pagination_control.phtml',
-		    ['query' => $query]
-        ) ?>
-		<?php endif;?>
-		</div>
+        <?=$table?>
 	</div>
 </div>
 <?php $this->placeholder('pageContent')->captureEnd() ?>

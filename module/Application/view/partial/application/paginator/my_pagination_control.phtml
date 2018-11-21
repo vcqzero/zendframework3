@@ -1,62 +1,36 @@
-<?php 
-$query = $this->query;
-$action = $this->action;
-$action = $action ?? 'index';
-?>
-<div class="" style="width: 100%">
+<div class="pagination-control" style="width: 100%">
 	<div class="pull-left">
-		<div 
-		class="paginator-detail" 
-		>当前 <?=$this->currentItemCount?> 条数据，共  <?=$this->totalItemCount?> 条数据</div>
+		<span>当前显示 <?=$this->currentItemCount?> 条，</span>
+	   	<span>共  <?=$this->totalItemCount?> 条数据，</span>
+	   	<span>每页</span>
+		<div class="dropup" style="display: inline-flex">
+          	<button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <span class="count-per-page"><?=$this->itemCountPerPage?></span>
+            <span class="caret"></span>
+          </button>
+          <ul class="dropdown-menu control-count-per-page" aria-labelledby="dropdownMenu2">
+            <li><a href="javascript:;"data-conut-per-page="10">10</a></li>
+            <li><a href="javascript:;"data-conut-per-page="25">25</a></li>
+            <li><a href="javascript:;"data-conut-per-page="50">50</a></li>
+            <li><a href="javascript:;"data-conut-per-page="100">100</a></li>
+          </ul>
+        </div>
+        <span>/共 <?=$this->pageCount?>页</span>
 	</div>
 	<div class="pull-right">
-		<div class="dataTables_paginate paging_simple_numbers"
-			aria-label="Page navigation">
-			<ul class="pagination" style="margin: auto">
+		<nav>
+		<ul class="control-page pagination" style="margin: auto">
             <!-- 上一页 -->
-            <?php if (isset($this->previous)): ?>
-                <li class="">
-                    <a 
-                    href="<?= $this->url($this->route,['action'=>$action, 'page'=>$page],['query'=>$query],true); ?>"
-                    >上一页</a>
-                </li> 
-            <?php else: ?>
-           	 	<li class="disabled"><a href="javascrip:;">上一页</a></li>
-            <?php endif; ?>
+            <li class="<?=$this->previous ? "" : 'disabled' ?>"><a data-page=<?=$this->previous?>>上一页</a></li> 
             
             <!-- 页码 -->
             <?php foreach ($this->pagesInRange as $page): ?>
-				<?php if ($page != $this->current): ?>
-                    <li class="">
-                    	<a href="<?= 
-                    	$this->url(
-                    	    'user', 
-                    	    ['action'=>'test', 'page'=>$page], 
-                    	    ['query'=>$query], false); ?>"
-                    	><?= $page; ?></a>
-                    </li>
-				<?php else: ?>
-				    <!-- 当前页面 -->
-					<li class="disabled"><a><?= $page; ?></a></li>
-				<?php endif; ?>
+            	<li class="<?= $page == $this->current ? "disabled" : '' ?>"><a data-page=<?=$page?>><?=$page?></a></li> 
 			<?php endforeach; ?>
+			
             <!-- 下一页 -->
-			<?php if (isset($this->next)): ?>
-				<li class="">
-					<a href="<?= 
-					$this->url(
-					    $this->route,
-					    ['page'=>$page, 'action'=>$action],
-					    ['query'=>$query],
-                    	    true); ?>"
-					>
-						<span>下一页</span>
-					</a>
-				</li>	
-			<?php else: ?>
-			<li class="disabled"><a href="javascrip:;">下一页</a></li>
-			<?php endif; ?>
+            <li class="<?=$this->next? "" : 'disabled' ?>"><a data-page=<?=$this->next?>>下一页</a></li> 
         </ul>
-		</div>
+        </nav>
 	</div>
 </div>
