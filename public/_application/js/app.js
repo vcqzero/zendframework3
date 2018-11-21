@@ -1324,6 +1324,12 @@ define(function(require) {
 					})
 				},
 			},
+			
+			table : {
+				paginator : function() {
+					
+				},
+			},
 
 //			table: {
 //				dataTable: function(page, config) {
