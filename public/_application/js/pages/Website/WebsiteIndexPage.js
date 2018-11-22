@@ -10,13 +10,33 @@ define(
 
 		var dropzone = [{
 			target: $('.dropzone'),
-			url : '/api/website/logo',
+			option: {
+				url: '/api/website/upload',
+				paramName : 'ico',
+				maxFilesize: '0.1',//以m为单位
+				acceptedFiles : 'image/x-icon',//image
+				dictInvalidFileType: '请上传ico文件',
+				createImageThumbnails: true,
+				clickable: '.upload-file',
+				params : {'type' : 'ico'},
+				success : function() {
+					var file = arguments[0]
+					var res  = arguments[1]
+					var success = res['success']
+					var url     = res['url']
+					if (url) {
+						$('#img_ico').attr('src', url)
+					}else {
+						
+					}
+				},
+			}
 		}, ]
 
 		return {
 			init: function(pageName, page) {
 				App.editable(page, editableConfig)
-				App.dropzone(dropzone)
+				App.upload.dropzone(dropzone)
 			}
 		}
 	})

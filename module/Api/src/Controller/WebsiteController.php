@@ -6,6 +6,7 @@ use Api\Service\WebsiteManager;
 use Zend\View\Model\JsonModel;
 use Zend\Config\Config;
 use Api\Tool\MyAjax;
+use Api\Uploader\ImageUploader;
 
 class WebsiteController extends AbstractActionController
 {
@@ -21,39 +22,34 @@ class WebsiteController extends AbstractActionController
     public function editAction()
     {
         //获取用户提交表单
-        $name = $this->params()->fromPost('name');
+        $name  = $this->params()->fromPost('name');
         $value = $this->params()->fromPost('value');
-        //website config
-        try{
-            $config_path = WebsiteManager::PATH_BASIC_WEBSITE_CONFIG;
-            $config = include $config_path;
-            $config[$name] = $value;
-            $writer = new \Zend\Config\Writer\PhpArray();
-            $writer->toFile(WebsiteManager::PATH_BASIC_WEBSITE_CONFIG, $config);
-            $res = [
-                MyAjax::SUBMIT_SUCCESS=> true,
-            ];
-        }catch (\Exception $e ){
-            $res = [
-                MyAjax::SUBMIT_SUCCESS=> true,
-                MyAjax::SUBMIT_MSG => '保存失败',
-            ];
-        }
+        $res   = $this->WebsiteManager->edit($name, $value);
         $view = new JsonModel($res);
         return $view;
     }
     
-    public function logoAction()
+    //上传logo
+    public function uploadAction()
     {
-        
-        // DEBUG INFORMATION START
-        echo '------debug start------<br/>';
-        echo "<pre>";
-        var_dump(__METHOD__ . ' on line: ' . __LINE__);
-        var_dump(';');
-        echo "</pre>";
-        exit('------debug end------');
-        // DEBUG INFORMATION END
-        
+        $files = $this->params()->fromFiles();
+        $type  = $this->params()->fromPost('type');
+        switch ($type) {
+            case 'ico' :
+                $target = 'public/_application/upload/ico/ico';
+                break;
+            case 'logo' :
+                $target = 'public/_application/upload/logo/logo';
+                break;
+            default:
+                $target = '';
+        }
+        $Uploader = new ImageUploader();
+        $Uploader->upload($files, $target, true);
+        $url = $Uploader->getUrl();
+        $res  = $this->WebsiteManager->edit($type, $url);
+        $res['url'] = $url;
+        $view = new JsonModel($res);
+        return $view;
     }
 }

@@ -23,7 +23,7 @@ class AccountController extends AbstractActionController
     * @param  
     * @return     
     */
-    public function changePasswordAction()
+    public function passwordAction()
     {
         return new ViewModel([
         ]);

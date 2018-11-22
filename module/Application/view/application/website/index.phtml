@@ -1,6 +1,7 @@
 <?php 
 $title  = $this->Website()->getTitle();
 $record = $this->Website()->getRecord();
+$ico    = $this->Website()->getIco();
 ?>
 <?php $this->placeholder('table')->captureStart();?>
 <table id="websiteTable" class="table table-bordered table-striped">
@@ -33,14 +34,14 @@ $record = $this->Website()->getRecord();
 			</td>
 		</tr>
 		<tr>
-			<td>logo</td>
+			<td>ico</td>
 			<td>
-                <div 
-                class="dropzone dropzone-file-area dz-clickable dz-started" 
-                data-trigger="fileinput" 
-                style="width: 100%; max-height:200px; line-height: 150px;">
-                <div ></div>
-                </div>
+    		<div class="thumbnail dropzone-previews" style="width: 120px; height: 120px; margin-bottom: 10px">
+    		<img src="<?=$ico?>" alt="ico" id="img_ico">
+    		</div>
+    		<a href="javascript:;" class="btn red btn-outline upload-file">选择文件</a>
+    		<span>请上传ico图标文件，100k以内</span>
+			<div class="dropzone hide"></div>
 			</td>
 		</tr>
 	</tbody>

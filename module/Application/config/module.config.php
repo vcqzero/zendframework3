@@ -59,6 +59,17 @@ return [
                     ],
                 ],
             ],
+            
+            'account' => [
+                'type'    => Segment::class,
+                'options' => [
+                    'route'    => '/account[/:action]',
+                    'defaults' => [
+                        'controller' => Controller\AccountController::class,
+                        'action'     => 'index',
+                    ],
+                ],
+            ],
         ],
     ],
     'controllers' => [
@@ -67,6 +78,7 @@ return [
             Controller\AuthController::class  => InvokableFactory::class,
             Controller\UserController::class  => InvokableFactory::class,
             Controller\WebsiteController::class  => InvokableFactory::class,
+            Controller\AccountController::class  => InvokableFactory::class,
         ],
     ],
     
@@ -87,6 +99,11 @@ return [
             ]
         ],
         Controller\WebsiteController::class => [
+            'allow' => [
+                UserManager::ROLE_SUPER_USER,
+            ]
+        ],
+        Controller\AccountController::class => [
             'allow' => [
                 UserManager::ROLE_SUPER_USER,
             ]

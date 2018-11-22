@@ -1,8 +1,13 @@
+<?php 
+$title = $this->headTitle()->renderTitle();
+$title = explode('-', $title);
+$title = current($title);
+?>
 <div class="page-head">
 	<!-- BEGIN PAGE TITLE -->
 	<div class="page-title">
 		<h1>
-			Blank Page Layout <small>blank page layout</small>
+			<?=$title?><small></small>
 		</h1>
 	</div>
 	<!-- END PAGE TITLE -->

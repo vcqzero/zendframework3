@@ -47,4 +47,11 @@ class UserController extends AbstractActionController
             'userID' => $userID,
         ]);
     }
+    
+    public function modalAction()
+    {
+        $view = new ViewModel();
+        $view ->setTerminal(true);
+        return $view;
+    }
 }

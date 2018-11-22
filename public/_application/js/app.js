@@ -379,12 +379,42 @@ define(function(require) {
 			// fix page scrollbars issue
 			$('body').on('hidden.bs.modal', '.modal', function() {
 				$('body').removeClass("modal-open-noscroll");
+				$(this).remove()
 			});
 
 			// remove ajax content and remove cache on modal closed 
 			$('body').on('hidden.bs.modal', '.modal:not(.modal-cached)', function() {
 				$(this).removeData('bs.modal');
 			});
+
+			$('body').on('click', 'a.click-open-modal', function(e) {
+				e.preventDefault()
+				var _this = $(this)
+				var _url = _this.attr('href')
+				if(typeof _url == 'undefined') return
+				$.ajax({
+					type: "get",
+					url: _url,
+					async: true,
+					beforeSend: function() {
+						App.modalLoading.start()
+					},
+
+					error: function() {
+						App.modalLoading.stop()
+						alert('服务器错误')
+					},
+
+				}).done(function(modal) {
+					App.modalLoading.stop()
+					var modal = $(modal)
+					if(modal.hasClass('modal') == false) return
+					$('body').append(modal)
+					modal.modal('show')
+					modal.trigger('bs.modal.load', [modal])
+				})
+			})
+
 		};
 
 		// Handles Bootstrap Tooltips.
@@ -604,7 +634,7 @@ define(function(require) {
 				init_page(page)
 			})
 
-			$(document).on('myModal:init', function(e, page) {
+			$(document).on('bs.modal.load', function(e, page) {
 				init_page(page)
 			})
 		}
@@ -941,6 +971,34 @@ define(function(require) {
 						$('.page-loading, .page-spinner-bar').remove();
 					}
 				},
+			},
+
+			modalLoading: {
+				start: function() {
+					var modal = $('<div class="modal modal-loading"  tabindex="-1" role="dialog">' +
+						'<div class="modal-dialog modal-sm" role="document">' +
+						'<div class="modal-content">' +
+						'<div class="modal-header">' +
+						'<h4 class="modal-title">加载中...</h4>' +
+						'</div>' +
+						'<div class="modal-body">' +
+						'<div class="progress progress-striped active" style="margin-bottom:0;"><div class="progress-bar" style="width: 100%"></div></div>' +
+						'</div>' +
+						'<div class="modal-footer">' +
+						'</div>' +
+						'</div>' +
+						'</div>' +
+						'</div>')
+					$('body').append(modal)
+					modal.modal('show', {
+						backdrop: 'static',
+						keyboard: false,
+					})
+				},
+				
+				stop : function() {
+					$('.modal-loading').modal('hide')
+				}
 			},
 
 			/**
@@ -1442,75 +1500,6 @@ define(function(require) {
 					})
 				},
 			},
-			//			table: {
-			//				dataTable: function(page, config) {
-			//					require(['dataTablesBootstrap', 'dataTables.select'], function() {
-			//						if(typeof config == 'undefined') return
-			//						for(var table_id in config) {
-			//							var table_option = config[table_id]
-			//							var table = $('#' + table_id)
-			//							if(table.length < 1) return
-			//							var _option = defaultOption()
-			//							$.extend(true, _option, table_option);
-			//							initDataTables(table, _option)
-			//						}
-			//					})
-			//					var defaultOption = function() {
-			//						var _option = {
-			//							//								"autoWidth": false,
-			//							processing: true, //show or hide processing
-			//							orderClasses: false, //高亮可排序的列
-			//							language: {
-			//								search: '搜索：',
-			//								lengthMenu: " _MENU_ 每页显示",
-			//								zeroRecords: "无数据",
-			//								loadingRecords: "数据加载中...",
-			//								processing: "处理中...",
-			//								info: "第  _PAGE_ 页，共  _PAGES_ 页",
-			//								infoEmpty: "",
-			//								infoFiltered: " - 从 _MAX_ 记录中过滤",
-			//								//pageing
-			//								paginate: {
-			//									first: '首页',
-			//									last: '尾页',
-			//									previous: '上一页',
-			//									next: '下一页',
-			//								},
-			//								select: {
-			//									rows: {
-			//										_: "已选择  %d 行",
-			//									}
-			//								},
-			//							},
-			//						}
-			//
-			//						return _option
-			//					}
-			//
-			//					var initDataTables = function(table, _option) {
-			//						var _DataTable = table.DataTable(_option)
-			//						table.css('width', '100%')
-			//						_DataTable.on('deselect', function(e, dt, type, indexes) {
-			//							console.log('deselect')
-			//							//							if(type === 'row') {
-			//							//								console.log(indexes)
-			//							//								var row = _DataTable.row(indexes)
-			//							//								
-			//							//								console.log(row)
-			//							//							}
-			//						});
-			//						_DataTable.on('select', function(e, dt, type, indexes) {
-			//							console.log('select')
-			//							//							if(type === 'row') {
-			//							//								console.log(indexes)
-			//							//								var row = _DataTable.row(indexes)
-			//							//								
-			//							//								console.log(row)
-			//							//							}
-			//						});
-			//					}
-			//				},
-			//			},
 
 			editable: function(page, config) {
 				require(['editable'], function() {
@@ -1552,29 +1541,60 @@ define(function(require) {
 					}
 				})
 			},
-			
-			dropzone : function(config){
-				var getOption = function() {
-					return {
-						addRemoveLinks :true,
-						dictDefaultMessage : '上传文件',
-						dictFileTooBig :'文件不能超过{{maxFilesize}}',
+
+			upload: {
+				/**
+				 * 通过Dropzone的方式上传文件
+				 * 
+				 * @param {Object} config
+				 */
+				dropzone: function(config) {
+					require(['dropzone'], function() {
+						for(var key in config) {
+							var _config = config[key]
+							var target = _config['target']
+							var option = _config['option']
+							var _option = getOption(option);
+							target.dropzone(_option)
+						}
+					})
+
+					var getOption = function(option) {
+						var success = option['success']
+						delete option['success']
+						var _option = {
+							addRemoveLinks: true,
+							thumbnailWidth: 120, //预览图片宽度
+							thumbnailHeight: null,
+							//翻译
+							dictDefaultMessage: '点击上传文件',
+							dictFallbackText: '点击上传文件',
+							dictFileTooBig: '文件大小不能超过{{maxFilesize}}M',
+							dictRemoveFile: '删除',
+							dictCancelUpload: '取消上传',
+							dictMaxFilesExceeded: '仅可上传{{maxFiles}}个文件',
+							dictInvalidFileType: '文件类型错误',
+							//add event
+							init: function() {
+								this.on("error", function(file, msg) {
+									App.toastr('error', msg)
+									this.removeFile(file)
+								})
+								this.on("success", function(file, res) {
+									if($.isFunction(success)) {
+										success(file, res)
+									}
+								})
+							},
+						}
+
+						$.extend(true, _option, option);
+
+						return _option
 					}
-				}
-				var init = function(target, url) {
-					var _option = getOption()
-					_option['url'] = url
-					target.dropzone(_option)
-				}
-				require(['dropzone'], function() {
-					for (var key in config) {
-						var _config = config[key]
-						var target  = _config['target']
-						var url     = _config['url']
-						init(target, url)
-					}
-				})
+				},
 			},
+
 		} //end return
 
 	})()

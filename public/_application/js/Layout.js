@@ -475,7 +475,14 @@ define([
 				});
 			};
 			//* END:CORE HANDLERS *//
-
+			
+			var handleBreadcrumb = function() {
+				var nav = $('.page-sidebar-menu')
+				var li_active = nav.find('.nav-item.start.active').first()
+				var title = li_active.find('.title').first().text()
+				$('.breadcrumb').find('a.nav-title').text(title)
+			}
+			
 			return {
 
 				// Main init methods to initialize the layout
@@ -511,6 +518,7 @@ define([
 					this.initSidebar();
 					this.initFooter();
 //					this.HeaderSearch();//顶部搜索框 禁用
+					handleBreadcrumb()
 				},
 
 				//public function to fix the sidebar and content height accordingly

@@ -24,11 +24,10 @@ class WebsiteHelper extends AbstractHelper
         return $this->WebsiteManager->getBasicParam('website_record');
     }
     
-//     public function getIcoUrl()
-//     {
-//         $config = $this->WebsiteManager->getConfig();
-//         return $config->get('ico_url');
-//     }
+    public function getIco()
+    {
+         return $this->WebsiteManager->getBasicParam('ico');
+    }
     
     public function getTitle()
     {

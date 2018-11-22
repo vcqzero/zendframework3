@@ -83,7 +83,7 @@ class MenuHelper extends AbstractHelper
                 'section-title' => '用户',
                 'menus' => [
                     'menu-1' =>  [
-                        'icon'  => 'icon-user',
+                        'icon'  => 'fa fa-users',
                         'title' =>'用户管理',
                         'submenus' => [
                             'submenu-1'=>[
@@ -111,9 +111,42 @@ class MenuHelper extends AbstractHelper
                                 'href' => '/website',
                                 'title' => '站点设置',
                                 'allow' => [
+                                    UserManager::ROLE_GUEST,
+                                    UserManager::ROLE_SUPER_USER,
+                                ],
+                            ],
+                        ],//end submenus
+                    ],
+                ],//end menus
+            ],
+            
+            '账户中心' => [
+                'section-title' => '账户中心',
+                'menus' => [
+                    'menu-1' =>  [
+                        'icon'  => 'fa fa-user',
+                        'title' =>'我的账户',
+                        'submenus' => [
+                            'submenu-1'=>[
+                                'icon' => '',
+                                'href' => '/account',
+                                'title' => '个人中心',
+                                'allow' => [
+                                    UserManager::ROLE_SUPER_USER,
                                     UserManager::ROLE_GUEST
                                 ],
                             ],
+                            
+                            'submenu-2'=>[
+                                'icon' => '',
+                                'href' => '/account/password',
+                                'title' => '修改密码',
+                                'allow' => [
+                                    UserManager::ROLE_SUPER_USER,
+                                    UserManager::ROLE_GUEST,
+                                ],
+                            ],
+                            
                         ],//end submenus
                     ],
                 ],//end menus

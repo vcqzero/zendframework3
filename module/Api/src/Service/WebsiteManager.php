@@ -2,6 +2,7 @@
 namespace Api\Service;
 
 use Zend\Config\Config;
+use Api\Tool\MyAjax;
 
 /**
 * 所有的配置信息，都从此读取
@@ -44,6 +45,35 @@ class WebsiteManager
 
     public function __construct()
     {
+    }
+    
+    /**
+    * 编辑
+    * 
+    * @param  string $name
+    * @param  string $value
+    * @return array $ajaxRes       
+    */
+    public function edit($name, $value)
+    {
+        //website config
+        try{
+            $config_path = WebsiteManager::PATH_BASIC_WEBSITE_CONFIG;
+            $config = include $config_path;
+            $config[$name] = $value;
+            $writer = new \Zend\Config\Writer\PhpArray();
+            $writer->toFile(WebsiteManager::PATH_BASIC_WEBSITE_CONFIG, $config);
+            $res = [
+                MyAjax::SUBMIT_SUCCESS=> true,
+            ];
+        }catch (\Exception $e ){
+            $res = [
+                MyAjax::SUBMIT_SUCCESS=> true,
+                MyAjax::SUBMIT_MSG => '保存失败',
+            ];
+        }
+        
+        return $res;
     }
 }
 
