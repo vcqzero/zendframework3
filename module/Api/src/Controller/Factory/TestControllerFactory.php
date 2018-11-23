@@ -6,6 +6,7 @@ use Zend\ServiceManager\Factory\FactoryInterface;
 use Api\Controller\TestController;
 use Api\Service\UserManager;
 use Zend\Session\SessionManager;
+use Api\Service\Auther;
 
 /**
  * This is the factory for IndexController. Its purpose is to instantiate the
@@ -16,12 +17,10 @@ class TestControllerFactory implements FactoryInterface
     public function __invoke(ContainerInterface $container, $requestedName, array $options = null)
     {
 //         $UserCache = $container->get('UserCache');
-        $filesystem= $container->get('main-cache');
+//         $filesystem= $container->get('main-cache');
         
         return new TestController(
-            $container->get(UserManager::class),
-            $container->get(SessionManager::class),
-            $container->get('mySession')
+            $container->get(Auther::class)
             );
     }
 }

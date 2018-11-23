@@ -3,6 +3,7 @@ namespace Application\View\Helper;
 
 use Zend\View\Helper\AbstractHelper;
 use Api\Service\UserManager;
+use Api\Service\RoleManager;
 
 class MenuHelper extends AbstractHelper
 {
@@ -71,7 +72,7 @@ class MenuHelper extends AbstractHelper
                                 'href' => '/',
                                 'title' => '首页',
                                 'allow' => [
-                                    UserManager::ROLE_GUEST
+                                    RoleManager::ROLE_GUEST
                                 ],
                             ],
                         ],//end submenus
@@ -91,7 +92,7 @@ class MenuHelper extends AbstractHelper
                                 'href' => '/user',
                                 'title' => '用户管理',
                                 'allow' => [
-                                    UserManager::ROLE_GUEST
+                                    RoleManager::ROLE_GUEST
                                 ],
                             ],
                         ],//end submenus
@@ -111,8 +112,8 @@ class MenuHelper extends AbstractHelper
                                 'href' => '/website',
                                 'title' => '站点设置',
                                 'allow' => [
-                                    UserManager::ROLE_GUEST,
-                                    UserManager::ROLE_SUPER_USER,
+                                    RoleManager::ROLE_GUEST,
+                                    RoleManager::ROLE_SUPER_USER,
                                 ],
                             ],
                         ],//end submenus
@@ -132,8 +133,8 @@ class MenuHelper extends AbstractHelper
                                 'href' => '/account',
                                 'title' => '个人中心',
                                 'allow' => [
-                                    UserManager::ROLE_SUPER_USER,
-                                    UserManager::ROLE_GUEST
+                                    RoleManager::ROLE_SUPER_USER,
+                                    RoleManager::ROLE_GUEST
                                 ],
                             ],
                             
@@ -142,8 +143,8 @@ class MenuHelper extends AbstractHelper
                                 'href' => '/account/password',
                                 'title' => '修改密码',
                                 'allow' => [
-                                    UserManager::ROLE_SUPER_USER,
-                                    UserManager::ROLE_GUEST,
+                                    RoleManager::ROLE_SUPER_USER,
+                                    RoleManager::ROLE_GUEST,
                                 ],
                             ],
                             

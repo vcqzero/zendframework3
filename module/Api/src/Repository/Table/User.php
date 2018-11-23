@@ -15,4 +15,5 @@ class User
     const FILED_STATUS          = 'status';
     const FILED_WORKYARD_ID     = 'workyard_id';
     const FILED_ROLE            = 'role';
+    const FILED_AVATAR          = 'avatar';
 }

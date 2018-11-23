@@ -1,8 +1,7 @@
 <?php
 /**
- * @link      http://github.com/zendframework/Web for the canonical source repository
- * @copyright Copyright (c) 2005-2016 Zend Technologies USA Inc. (http://www.zend.com)
- * @license   http://framework.zend.com/license/new-bsd New BSD License
+ * 系统启动入口文件
+ * 全部module均指向本module内容
  */
 
 namespace Api;
@@ -14,6 +13,8 @@ use Api\Service\Auther;
 use Api\Service\AclPermissioner;
 use Api\Controller\AuthController;
 use Zend\Cache\PatternFactory;
+use Zend\Session\Container;
+use Api\Service\RoleManager;
 
 class Module
 {
@@ -34,12 +35,11 @@ class Module
         $this->initHandleError($e);
         $this->initSession($e);
         $this->initMkdir($e);
-        $this->initUser($e);
+        $this->initSuperUser($e);
         $this->initPermission($e);
-        
     }
     
-    private function initUser(MvcEvent $e)
+    private function initSuperUser(MvcEvent $e)
     {
         $app        = $e->getApplication();
         $evt        = $app->getEventManager();
@@ -72,8 +72,9 @@ class Module
     private function initSession(MvcEvent $e)
     {
         $ServerManager  = $e->getApplication()->getServiceManager();
-        $sessionManager = $ServerManager->get(SessionManager::class);
-        $sessionManager->start();
+        $SessionManager = $ServerManager->get(SessionManager::class);
+        Container::setDefaultManager($SessionManager);
+        $SessionManager->start();
     }
     private function initMkdir(MvcEvent $e)
     {
@@ -136,8 +137,11 @@ class Module
         $Acl = $AclCached->getAclObject();
         
         //默认角色
-        $role       = UserManager::ROLE_GUEST;
+        $role       = RoleManager::ROLE_GUEST;
+        //请求的资源
         $controller = $routeMatch->getParam('controller');
+        //请求的module
+        $module = substr($controller, 0, strpos($controller, "\\"));
         
         $Auther = $container->get(Auther::class);
         //先判断默认角色是否有权限
@@ -149,7 +153,8 @@ class Module
         if (empty($Auther->isLogin())) {
             //go to login
             $routeMatch ->setParam('controller', AuthController::class)
-            ->setParam('action', 'loginPage');
+                        ->setParam('action', 'loginPage')
+                        ->setParam('module', $module);
             return ;
         }else {
             //已登录->获取角色->验证权限
@@ -162,7 +167,7 @@ class Module
             //is not allowed
             //go to no permission page
             $routeMatch ->setParam('controller', AuthController::class)
-            ->setParam('action', 'noPermissionPage');
+                        ->setParam('action', 'noPermissionPage');
             return ;
         }
     }

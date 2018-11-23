@@ -29,23 +29,21 @@ class UserHelper extends AbstractHelper
         return $paginator;
     }
     
-    public function formateRole($role)
-    {
-        
-    }
-    
-    public function getRoles()
-    {
-        return [
-           UserManager::ROLE_GUEST => '游客', 
-           UserManager::ROLE_SUPER_USER => '超级管理员', 
-        ];
-    }
-    
     public function getStatus()
     {
         return [
            UserManager::STATUS_ENABLED => '正常', 
         ];
+    }
+    
+    /**
+    * 获取用户
+    * 
+    * @param  int $id
+    * @return array $user        
+    */
+    public function getUser($id)
+    {
+        return $this->UserManager->MyTableGateway->selectOne($id);
     }
 }

@@ -80,6 +80,7 @@ return [
                 ],
             ],
         ],
+        
         'filters' => [
             [
                 'name' => StringTrim::class,//去掉首位空格
@@ -210,33 +211,33 @@ return [
         ],
     ],
     
-//     'avatar'=>[
-//         'name' => 'avatar',
-//         'required' => false,
-//         'validators' => [
-//             [
-//                 'name' => NotEmpty::class,
-//             ],
-//             [
-//                 'name' => StringLength::class,
-//                 'options' => [
-//                     'min' => 1,
-//                     'max' => 128,
-//                 ],
-//             ],
-//         ],
+    'avatar'=>[
+        'name' => 'avatar',
+        'required' => false,
+        'validators' => [
+            [
+                'name' => NotEmpty::class,
+            ],
+            [
+                'name' => StringLength::class,
+                'options' => [
+                    'min' => 1,
+                    'max' => 128,
+                ],
+            ],
+        ],
         
-//         'filters' => [
-//             [
-//                 'name' => StringTrim::class,//去掉首位空格
-//             ],
+        'filters' => [
+            [
+                'name' => StringTrim::class,//去掉首位空格
+            ],
             
-//             [
-//                 'name' => HtmlEntities::class,//html安全过滤
-//                 'options' =>[
-//                     'quotestyle' => ENT_NOQUOTES,//保留单引号和双引号
-//                 ],
-//             ],
-//         ],
-//     ],
+            [
+                'name' => HtmlEntities::class,//html安全过滤
+                'options' =>[
+                    'quotestyle' => ENT_NOQUOTES,//保留单引号和双引号
+                ],
+            ],
+        ],
+    ],
 ];

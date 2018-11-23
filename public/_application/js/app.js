@@ -995,8 +995,8 @@ define(function(require) {
 						keyboard: false,
 					})
 				},
-				
-				stop : function() {
+
+				stop: function() {
 					$('.modal-loading').modal('hide')
 				}
 			},
@@ -1261,97 +1261,101 @@ define(function(require) {
 
 				validate: function(page, config) {
 					require(['jqueryValidate'], function() {
-						var init_validate = function(form, rules, messages) {
-							var error2 = $('.alert-danger', form);
-							var success2 = $('.alert-success', form);
-							var validator = form.validate({
-								debug: false,
-								onsubmit: true, //当点击submit时进行验证
-								onfocusout: function(element) {
-									$(element).valid();
-								}, //对应input元素，当失去焦点时进行验证
-								onkeyup: function(element) {
-									$(element).valid();
-								}, //当键盘按键按下
-								onclick: false,
-								focusInvalid: false, // 
-								focusCleanup: true, //
-								errorElement: 'span', //default input error message container
-								errorClass: 'help-block help-block-error', // default input error message class
-								validClass: 'valid',
-								ignore: ":hidden", // validate all fields including form hidden input
-								rules: rules,
-								messages: messages,
-
-								invalidHandler: function(event, validator) { //display error alert on form submit              
-									success2.hide();
-									error2.show();
-									App.scrollTo(error2, -200);
-								},
-								errorPlacement: function(error, element) { // render error placement for each input type
-									var icon = $(element).parent('.input-icon').children('i');
-									icon.removeClass('fa-check').addClass("fa-warning");
-									icon.attr("data-original-title", error.text()).tooltip({
-										'container': 'body'
-									});
-								},
-								highlight: function(element) { // hightlight error inputs
-									$(element)
-										.closest('.form-group').removeClass("has-success").addClass('has-error'); // set error class to the control group   
-								},
-
-								unhighlight: function(element) { // revert the change done by hightlight
-
-								},
-								success: function(label, element) {
-									var icon = $(element).parent('.input-icon').children('i');
-									$(element).closest('.form-group').removeClass('has-error').addClass('has-success'); // set success class to the control group
-									icon.removeClass("fa-warning").addClass("fa-check");
-								},
-
-								submitHandler: function(form) {
-									success2.show();
-									error2.hide();
-									App.form.doAjaxSubmit($(form))
-								}
-							});
-
+						addMethod()
+						for(var form_id in config) {
+							var _option = config[form_id]
+							var form = $('#' + form_id)
+							if(form.length < 1) {
+								return false
+							}
+							var option = getOption(_option)
+							form.validate(option)
 							//将默认的ajax submit监听去掉
 							form.attr('data-igonre', 'ignore')
 							//将submit按钮enable
 							form.find('button').prop('disabled', false)
-							//						console.log('validate success', form, rules, messages)
+
+							//自动增加submit的result
+							initResultSumit(page, config)
 						}
-
-						if(config['enabled'] !== true) {
-							return
-						}
-
-						var forms = config['forms']
-						if(forms.length < 1) {
-							return false;
-						}
-						$.each(forms, function(form_id, formConfig) {
-							var form = $('#' + form_id)
-							var rules = formConfig['rules'] ? formConfig['rules'] : {}
-							var messages = formConfig['messages'] ? formConfig['messages'] : {}
-							if(form.length < 1) {
-								return false
-							}
-							if($.isEmptyObject(rules)) {
-								return false
-							}
-
-							init_validate(form, rules, messages)
-						});
-
 					})
+
+					var getOption = function(_option) {
+						var option = {
+							debug: false,
+							onsubmit: true, //当点击submit时进行验证
+							onfocusout: function(element) {
+								$(element).valid();
+							},
+							//对应input元素，当失去焦点时进行验证
+							onkeyup: function(element) {
+								$(element).valid();
+							},
+							//当键盘按键按下
+							onclick: false,
+							focusInvalid: false, // 
+							focusCleanup: true, // clean error on focus
+							errorElement: 'span', //default input error message container
+							errorClass: 'help-block help-block-error', // default input error message class
+							ignore: ":hidden", // validate all fields including form hidden input
+
+							invalidHandler: function(event, validator) { //display error alert on form submit
+								//当验证错误时触发此动作
+							},
+
+							highlight: function(element) { // hightlight error inputs
+								$(element).closest('.form-group').removeClass("has-success").addClass('has-error'); // set error class to the control group   
+							},
+
+							unhighlight: function(element) { // revert the change done by hightlight
+								$(element).closest('.form-group').removeClass('has-error');
+							},
+
+							success: function(label, element) {},
+
+							submitHandler: function(form) {
+								App.form.doAjaxSubmit($(form))
+							}
+						}
+
+						$.extend(true, option, _option)
+						return option
+					}
+
+					var initResultSumit = function(page, config) {
+						App.form.submitResult(page, config)
+					}
+
+					var addMethod = function() {
+						
+						jQuery.validator.addMethod("phone", function(value, element, param) {
+							var reg = /^[1][3,4,5,7,8][0-9]{9}$/
+							var res = reg.test(value)
+							return this.optional(element) || res;
+						}, $.validator.format("请输入正确手机号"));
+						
+						jQuery.validator.addMethod("username", function(value, element, param) {
+							var reg = /^[a-zA-Z]{1}([a-zA-Z0-9]|[._-]){3,19}$/
+							var res = reg.test(value)
+							return this.optional(element) || res;
+						}, $.validator.format("字母开头，可包含（._-），4~20个字符"));
+						
+						jQuery.validator.addMethod("myPassword", function(value, element, param) {
+							var reg = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[^]{6,100}$/
+							var res = reg.test(value)
+							return this.optional(element) || res;
+						}, $.validator.format("至少6个字符，至少1个大写字母，1个小写字母和1个数字"));
+						
+						jQuery.validator.addMethod("differ", function(value, element, param) {
+							var selector = param[0]
+							var _value = $(selector).val()
+							return this.optional(element) || _value != value;
+						}, $.validator.format("输入内容必须和{0}不同"));
+						
+					}
 				},
 
 				submitResult: function(page, config) {
-					if(config['enabled'] !== true) {
-						return
-					}
 					var isModal = function(page) {
 						return page.hasClass('modal')
 					}
@@ -1360,9 +1364,9 @@ define(function(require) {
 						var success = resObj['success']
 						var callback
 						if(success) {
-							callback = _config['success']
+							callback = _config['resultSuccess']
 						} else {
-							callback = _config['error']
+							callback = _config['resultError']
 						}
 						if($.isFunction(callback)) {
 							callback(resObj)
@@ -1374,7 +1378,7 @@ define(function(require) {
 						var resObj = arguments[1]['resObj']
 						var form = $(e.currentTarget)
 						var form_id = form.attr('id')
-						var _config = config['forms'][form_id]
+						var _config = config[form_id]
 						if(_config) {
 							doResult(resObj, _config)
 						} else {
@@ -1506,17 +1510,9 @@ define(function(require) {
 					if(typeof config === 'undefined') {
 						return
 					}
-					for(var table_id in config) {
-						var table = page.find('#' + table_id)
-						var _config = config[table_id]
-						var mode = _config['mode'] ? _config['mode'] : 'inline'
-						var _url = _config['url']
-						if(table.length < 1) {
-							continue
-						}
-						table.find('.editable').editable({
-							mode: mode,
-							url: _url,
+					var getOption = function(_option) {
+						var option = {
+							mode: 'inline',
 							emptytext: '未设置',
 							success: function(response, newValue) {
 								var success = response.success
@@ -1537,7 +1533,17 @@ define(function(require) {
 									return '不可为空';
 								}
 							},
-						})
+						}
+
+						$.extend(true, option, _option);
+
+						return option
+					}
+					for(var id in config) {
+						var _dom = page.find('#' + id)
+						var _option = config[id]
+						var option = getOption(_option)
+						_dom.editable(option)
 					}
 				})
 			},

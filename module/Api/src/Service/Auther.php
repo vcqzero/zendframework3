@@ -12,6 +12,7 @@ class Auther
     public $AuthAdapter;
     public $AuthService;
     private $SessionManager;
+    private $UserManager;
     private $error;
     
     /**
@@ -47,12 +48,14 @@ class Auther
     
     public function __construct(
         AuthAdapter    $AuthAdapter,
-        SessionManager $SessionManager
+        SessionManager $SessionManager,
+        UserManager $UserManager
         )
     {
         $this->setAuthAdapter($AuthAdapter);
         $this->SessionManager= $SessionManager;
         $this->AuthService   = new AuthenticationService();
+        $this->UserManager   = $UserManager;
     }
     
     
@@ -85,14 +88,25 @@ class Auther
         
         //如果登录成功重新生成sessionid
         if ($valid) {
-            $user = $AuthAdapter->getResultRowObject(['id', 'username', 'status', 'role']);
-            //默认情况下，identity为username，、
+            $identity = $AuthAdapter->getResultRowObject(null, ['password']);
             //这里增加以上信息到identity中，方便以后获取
-            $AuthService->getStorage()->write($user);
+            //仅保存id 和 username 其他项是变量，不可保存
+            $this->setIdentity($identity);
             $this->SessionManager->regenerateId();
         }
         return $valid;
-        
+    }
+    
+    /**
+    * 非username和password方式验证
+    * 
+    * @param mixed $identity 可以将任何信息存入，只有保证有内容即可表示登录了 
+    */
+    public function setIdentity($identity)
+    {
+        if (is_array($identity)) $identity = (object) $identity;
+        $this->AuthService->clearIdentity();
+        $this->AuthService->getStorage()->write($identity);
     }
     
     public function remember($ttl)
@@ -131,29 +145,37 @@ class Auther
     
     /**
      * 全局判断用户是否登录的唯一入口
+     * 该方法直接访问session中的数据
+     * 非常可靠
      * 
      * @return boolean
      */
     public function isLogin()
     {
-        return $this->AuthService->hasIdentity();
-    }
-    
-    /**
-    * get current user info
-    * 
-    * @param  void
-    * @return \stdClass 
-    */
-    public function getUser()
-    {
-        return $this->AuthService->getIdentity();
+        if (!$this->AuthService->hasIdentity()) return false;
+        $isLogin =  !empty($this->AuthService->getIdentity());
+        //每次验证成功之后刷新identity
+        if ($isLogin) $this->refreshIdentity();
+        return $isLogin;
     }
     
     public function getRole()
     {
-        $user = $this->AuthService->getIdentity();
-        return $user->role;
+        $identity = $this->AuthService->getIdentity();
+        return $identity->role;
+    }
+    
+    /**
+    * 重新刷新缓存中的identity
+    * 
+    * @return array $identity       
+    */
+    public function refreshIdentity()
+    {
+        $identity = $this->AuthService->getIdentity();
+        $id = $identity->id;
+        $identity = $this->UserManager->MyTableGateway->selectOne($id);
+        $this->setIdentity($identity);
     }
     
     /**

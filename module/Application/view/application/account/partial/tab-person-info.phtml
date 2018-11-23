@@ -1,0 +1,38 @@
+<?php 
+$identity = $this->identity();
+$realname = $identity->realname;
+$tel      = $identity->tel;
+?>
+<div class="tab-pane active table-responsive" id="tab_1_1">
+<table id="table-account-info" class="table  table-striped">
+	<tbody>
+		<tr>
+			<td class="th_15">姓名</td>
+			<td >
+			<a 
+			href="javascript:;" 
+			class="editable editable-click"
+			id="realname"
+			data-pk="1"
+			data-type="text" 
+			data-original-title="站点标题"
+			tabindex="-1"
+			style="display: inline;width: 90%"><?=$realname?></a>
+			</td>
+		</tr>
+		<tr>
+			<td class="th_15">手机号</td>
+			<td>
+			<a 
+			href="javascript:;" 
+			data-pk="1"
+			id="tel"
+			data-type="tel" 
+			data-original-title="手机号"
+			class="editable editable-click" tabindex="-1"
+			style="display: inline;width: 90%"><?=$tel?></a>
+			</td>
+		</tr>
+	</tbody>
+</table>
+</div>

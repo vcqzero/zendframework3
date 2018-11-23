@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50720
 File Encoding         : 65001
 
-Date: 2018-11-19 17:31:25
+Date: 2018-11-23 17:38:46
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -27,11 +27,41 @@ CREATE TABLE `users` (
   `tel` varchar(24) NOT NULL DEFAULT '' COMMENT '用户电话',
   `status` varchar(255) NOT NULL DEFAULT '',
   `role` varchar(255) NOT NULL DEFAULT '',
+  `avatar` varchar(255) NOT NULL DEFAULT '',
   PRIMARY KEY (`id`),
   UNIQUE KEY `name` (`username`)
-) ENGINE=InnoDB AUTO_INCREMENT=105 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=140 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of users
 -- ----------------------------
-INSERT INTO `users` VALUES ('104', 'admin', '$2y$10$TwH89xXBgXVIYanoGZsz7.d28J38m74ZLqjT4ZqiG3ROMuN/PlA16', '', '', 'ENABLED', 'SUPER_USER');
+INSERT INTO `users` VALUES ('105', '阿德民', 'c', 'sd-test', 'sd', '', '', '');
+INSERT INTO `users` VALUES ('106', '3', '', '', '', '', '', '');
+INSERT INTO `users` VALUES ('108', '3e', '', '', '', '', '', '');
+INSERT INTO `users` VALUES ('109', 'we', '', '', '', '', '', '');
+INSERT INTO `users` VALUES ('110', 'wt', '', '', '', '', '', '');
+INSERT INTO `users` VALUES ('111', 'twet', '', '', '', '', '', '');
+INSERT INTO `users` VALUES ('112', '23', '', '', '', '', '', '');
+INSERT INTO `users` VALUES ('113', 'gre', '', '', '', '', '', '');
+INSERT INTO `users` VALUES ('114', 'gg34', '', '', '', '', '', '');
+INSERT INTO `users` VALUES ('115', '34', '', '', '', '', '', '');
+INSERT INTO `users` VALUES ('116', '343', '', '', '', '', '', '');
+INSERT INTO `users` VALUES ('117', '34r', '', '', '', '', '', '');
+INSERT INTO `users` VALUES ('118', '34rt3', '', '', '', '', '', '');
+INSERT INTO `users` VALUES ('119', '34r3', '', '', '', '', '', '');
+INSERT INTO `users` VALUES ('120', '34r4', '', '', '', '', '', '');
+INSERT INTO `users` VALUES ('121', 'sfs', '', '', '', '', '', '');
+INSERT INTO `users` VALUES ('122', '34r34', '', '', '', '', '', '');
+INSERT INTO `users` VALUES ('124', '34r34dg', '', '', '', '', '', '');
+INSERT INTO `users` VALUES ('125', 'dfgfd', '', '', '', '', '', '');
+INSERT INTO `users` VALUES ('126', 'dfgdf', '', '', '', '', '', '');
+INSERT INTO `users` VALUES ('127', 'dfgd', '', '', '', '', '', '');
+INSERT INTO `users` VALUES ('128', 'dgd', '', '', '', '', '', '');
+INSERT INTO `users` VALUES ('129', 'dfgdfgd', '', '', '', '', '', '');
+INSERT INTO `users` VALUES ('130', 'dgfd', '', '', '', '', '', '');
+INSERT INTO `users` VALUES ('131', 'wf', '', '', '', '', '', '');
+INSERT INTO `users` VALUES ('133', 'we23', '', '', '', '', '', '');
+INSERT INTO `users` VALUES ('134', '23f', '', '', '', '', '', '');
+INSERT INTO `users` VALUES ('135', '2fg', '', '', '', '', '', '');
+INSERT INTO `users` VALUES ('136', 'wfw', '', '', '', '', '', '');
+INSERT INTO `users` VALUES ('139', 'admin', '$2y$10$JZaWRbXEVKPeHabGQPqrtO0z7XsB6M28irJgc1nKjMExek4UBSaRy', '', '', 'ENABLED', 'SUPER_USER', '');

@@ -1,0 +1,21 @@
+<?php 
+$identity = $this->identity();
+$username = $identity->username;
+$role     = $identity->role;
+$roleDesc = $this->Role()->renderRole($role);
+$avatar   = $identity->avatar;
+?>
+<div class="portlet light profile-sidebar-portlet bordered">
+	<!-- SIDEBAR USERPIC -->
+	<div class="profile-userpic">
+		<img src="<?=$avatar?>"class="img-responsive" alt="个人头像">
+	</div>
+	<!-- END SIDEBAR USERPIC -->
+	<!-- SIDEBAR USER TITLE -->
+	<div class="profile-usertitle">
+		<div class="profile-usertitle-name"><?=$username?></div>
+		<div class="profile-usertitle-job"><?=$roleDesc?></div>
+	</div>
+	<!-- END SIDEBAR USER TITLE -->
+</div>
+<!-- END PORTLET MAIN -->

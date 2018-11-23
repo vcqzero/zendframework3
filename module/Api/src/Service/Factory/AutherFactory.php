@@ -7,6 +7,7 @@ use Zend\Db\Adapter\Adapter;
 use Zend\Authentication\Adapter\DbTable\CallbackCheckAdapter;
 use Api\Service\Auther;
 use Zend\Session\SessionManager;
+use Api\Service\UserManager;
 
 /**
  * This is the factory for IndexController. Its purpose is to instantiate the
@@ -18,9 +19,11 @@ class AutherFactory implements FactoryInterface
     {
         $dbAdapter      = $container->get(Adapter::class);
         $SessionManager = $container->get(SessionManager::class);
+        $UserManager    = $container->get(UserManager::class);
         return new Auther(
             new CallbackCheckAdapter($dbAdapter),
-            $SessionManager
+            $SessionManager,
+            $UserManager
             );
     }
 }

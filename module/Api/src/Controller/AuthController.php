@@ -6,7 +6,6 @@ use Zend\View\Model\JsonModel;
 use Api\Tool\MyAjax;
 use Api\Controller\Plugin\TokenPlugin;
 use Api\Service\Auther;
-use Zend\Mvc\Console\View\ViewModel;
 
 class AuthController extends AbstractActionController
 {
@@ -61,8 +60,21 @@ class AuthController extends AbstractActionController
     
     public function loginPageAction()
     {
-        $this->redirect()->toRoute('auth');
-        return $this->getResponse();
+        $module = $this->params()->fromRoute('module');
+        if ($module == 'Application') {
+            return $this->redirect()->toRoute('auth');
+        }
+        
+        // DEBUG INFORMATION START
+        echo '------debug start------<br/>';
+        echo "<pre>";
+        var_dump(__METHOD__ . ' on line: ' . __LINE__);
+        var_dump($module);
+        var_dump('未指定该module下登录页面');
+        echo "</pre>";
+        exit('------debug end------');
+        // DEBUG INFORMATION END
+        
     }
     
     public function noPermissionPageAction()

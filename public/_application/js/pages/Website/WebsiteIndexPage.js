@@ -4,7 +4,6 @@ define(
 		var editableConfig = {
 			"websiteTable": {
 				url: '/api/website/edit',
-				mode: 'inline',
 			}
 		}
 

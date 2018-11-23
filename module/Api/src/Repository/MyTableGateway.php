@@ -13,6 +13,19 @@ class MyTableGateway extends TableGateway
     const ITEM_COUNT_PER_PAGE = 10;
     
     /**
+    * 通过id更新数据
+    * 
+    * @param array $set 
+    * @param int $id 
+    * @return bool       
+    */
+    public function updateById($set, $id)
+    {
+        $where = ['id'=>$id];
+        $affect_rows = $this->update($set, $where);
+        return $affect_rows > 0;
+    }
+    /**
     * 从本数据表中查询一条数据
     * 
     * @param int|array|Where $id_or_where 
@@ -28,6 +41,9 @@ class MyTableGateway extends TableGateway
             $id = $id_or_where;
             $where = ['id' => $id ];
         }
+        //set wehere
+        $select->where($where);
+        
         //do select
         $res = $this->selectWith($select);
         //get the first as array

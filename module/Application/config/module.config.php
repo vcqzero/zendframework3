@@ -11,6 +11,7 @@ use Zend\Router\Http\Literal;
 use Zend\Router\Http\Segment;
 use Zend\ServiceManager\Factory\InvokableFactory;
 use Api\Service\UserManager;
+use Api\Service\RoleManager;
 
 return [
     'router' => [
@@ -85,27 +86,27 @@ return [
     'permission'=> [
         Controller\IndexController::class => [
             'allow' => [
-                UserManager::ROLE_SUPER_USER,
+                RoleManager::ROLE_SUPER_USER,
             ]
         ],
         Controller\AuthController::class => [
             'allow' => [
-                UserManager::ROLE_GUEST,
+                RoleManager::ROLE_GUEST,
             ]
         ],
         Controller\UserController::class => [
             'allow' => [
-                UserManager::ROLE_SUPER_USER,
+                RoleManager::ROLE_SUPER_USER,
             ]
         ],
         Controller\WebsiteController::class => [
             'allow' => [
-                UserManager::ROLE_SUPER_USER,
+                RoleManager::ROLE_SUPER_USER,
             ]
         ],
         Controller\AccountController::class => [
             'allow' => [
-                UserManager::ROLE_SUPER_USER,
+                RoleManager::ROLE_SUPER_USER,
             ]
         ],
     ],
