@@ -85,7 +85,7 @@ class Auther
         
         //如果登录成功重新生成sessionid
         if ($valid) {
-            $user = $AuthAdapter->getResultRowObject(['username', 'status', 'role']);
+            $user = $AuthAdapter->getResultRowObject(['id', 'username', 'status', 'role']);
             //默认情况下，identity为username，、
             //这里增加以上信息到identity中，方便以后获取
             $AuthService->getStorage()->write($user);
