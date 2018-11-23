@@ -13,13 +13,17 @@ class AclPermissioner
     private $Acl;
     private $resources;
     private $permission;
+    private $RoleManager;
     
     public function __construct(
         $resources, 
-        $permission)
+        $permission,
+        RoleManager $RoleManager
+        )
     {
         $this->resources = $resources;
         $this->permission= $permission;
+        $this->RoleManager=$RoleManager;
     }
     
     /**
@@ -61,11 +65,7 @@ class AclPermissioner
     }
     private function getRoles()
     {
-        $roles = [
-            UserManager::ROLE_GUEST,
-            UserManager::ROLE_SUPER_USER,
-        ];
-        return $roles;
+        return $this->RoleManager->getRoles();
     }
     private function allow()
     {

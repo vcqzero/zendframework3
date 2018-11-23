@@ -18,9 +18,6 @@ class UserManager
     
     const STATUS_ENABLED    = 'ENABLED';
     
-    const ROLE_SUPER_USER = 'SUPER_USER';
-    const ROLE_GUEST      = 'GUEST';
-
     public function __construct(
         FormFilter $FormFilter,
         MyTableGateway $MyTableGateway,
@@ -30,6 +27,21 @@ class UserManager
         $this->FormFilter       = $FormFilter;
         $this->MyTableGateway   = $MyTableGateway;
         $this->super_user       = $super_user;
+    }
+    
+    /**
+    * 获取用户数据，可以提供filed
+    * 如未提供返回全部数据
+    * 
+    * @param  int $id
+    * @param  string $filed
+    * @return array || value       
+    */
+    public function getUser($id, $filed=null)
+    {
+        $user = $this->MyTableGateway->selectOne($id);
+        if (empty($filed)) return $user;
+        return $user[$filed];
     }
     
     /**
@@ -70,14 +82,12 @@ class UserManager
     /**
     * 验证用户名密码是否正确
     * 
-    * @param  string $password
-    * @param  string $username
+    * @param  string $password 明文
+    * @param  string $hash 密文
     * @return bool        
     */
-    public function validPassword($password, $username)
+    public function validPassword($password, $hash)
     {
-        $user = $this->findUserByIdentity($username);
-        $hash = $user->getPassword();
         return password_verify($password, $hash);
     }
     
@@ -102,7 +112,7 @@ class UserManager
             User::FILED_USERNAME => $username,
             User::FILED_PASSWORD => $password,
             User::FILED_STATUS   => self::STATUS_ENABLED,
-            User::FILED_ROLE     => self::ROLE_SUPER_USER,
+            User::FILED_ROLE     => RoleManager::ROLE_SUPER_USER,
         ];
         $this->MyTableGateway->insert($values);
     }

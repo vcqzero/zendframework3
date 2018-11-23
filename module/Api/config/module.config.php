@@ -4,6 +4,7 @@ namespace Api;
 use Zend\Router\Http\Segment;
 use Api\Service\UserManager;
 use Zend\ServiceManager\Factory\InvokableFactory;
+use Api\Service\RoleManager;
 // use Zend\Router\Http\Literal;
 // use Zend\Router\Http\Hostname;
 
@@ -78,6 +79,19 @@ return [
                 ],
             ],
             
+            //account
+            'api/account' => [
+                'type'    => Segment::class,
+                'options' => [
+                    'route'    => '/api/account[/:action][/:id]',
+                    'defaults' => [
+                        'controller' => Controller\AccountController::class,
+                        'action'     => 'index',
+                        'id'         => '0',
+                    ],
+                ],
+            ],
+            
             'api/website' => [
                 'type'    => Segment::class,
                 'options' => [
@@ -111,6 +125,7 @@ return [
         'factories' => [
             Controller\TestController::class => Controller\Factory\TestControllerFactory::class,
             Controller\UserController::class => Controller\Factory\UserControllerFactory::class,
+            Controller\AccountController::class => Controller\Factory\AccountControllerFactory::class,
             Controller\AuthController::class => Controller\Factory\AuthControllerFactory::class,
             Controller\WebsiteController::class => Controller\Factory\WebsiteControllerFactory::class,
             Controller\WeixinController::class => Controller\Factory\WeixinControllerFactory::class,
@@ -119,28 +134,33 @@ return [
     'permission' => [
         Controller\TestController::class => [
             'allow'=> [
-                UserManager::ROLE_GUEST,
+                RoleManager::ROLE_GUEST,
             ],
         ],
         Controller\UserController::class => [
             'allow'=> [
-                UserManager::ROLE_SUPER_USER,
+                RoleManager::ROLE_SUPER_USER,
+            ],
+        ],
+        Controller\AccountController::class => [
+            'allow'=> [
+                RoleManager::ROLE_SUPER_USER,
             ],
         ],
         Controller\AuthController::class => [
             'allow'=> [
-                UserManager::ROLE_SUPER_USER,
-                UserManager::ROLE_GUEST,
+                RoleManager::ROLE_SUPER_USER,
+                RoleManager::ROLE_GUEST,
             ],
         ],
         Controller\WebsiteController::class => [
             'allow'=> [
-                UserManager::ROLE_SUPER_USER,
+                RoleManager::ROLE_SUPER_USER,
             ],
         ],
         Controller\WeixinController::class => [
             'allow'=> [
-                UserManager::ROLE_SUPER_USER,
+                RoleManager::ROLE_SUPER_USER,
             ],
         ],
     ],
@@ -166,6 +186,7 @@ return [
             Service\AclPermissioner::class => Service\Factory\AclPermissionerFactory::class,
             Service\Auther::class => Service\Factory\AutherFactory::class,
             //TableManager
+            Service\RoleManager::class      => InvokableFactory::class,
             Service\UserManager::class      => Service\Factory\UserManagerFactory::class,
             Service\WebsiteManager::class   => Service\Factory\WebsiteManagerFactory::class,
         ],
@@ -177,12 +198,14 @@ return [
     
     'view_helpers' => [
         'factories' => [
+            View\Helper\RoleHelper::class => View\Helper\Factory\RoleHelperFactory::class,
             View\Helper\UserHelper::class => View\Helper\Factory\UserHelperFactory::class,
             View\Helper\WebsiteHelper::class => View\Helper\Factory\WebsiteHelperFactory::class,
             View\Helper\TokenHelper::class => View\Helper\Factory\TokenHelperFactory::class,
         ],
         
         'aliases' => [
+            'Role'      => View\Helper\RoleHelper::class,
             'User'      => View\Helper\UserHelper::class,
             'Website'   => View\Helper\WebsiteHelper::class,
             'Token'     => View\Helper\TokenHelper::class,

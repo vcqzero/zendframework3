@@ -3,24 +3,20 @@ namespace Api\Controller\Factory;
 
 use Interop\Container\ContainerInterface;
 use Zend\ServiceManager\Factory\FactoryInterface;
-use Api\Controller\TestController;
+use Api\Controller\IndexController;
 use Api\Service\UserManager;
-use Zend\Session\SessionManager;
-use Api\Service\Auther;
+use Api\Controller\AccountController;
 
 /**
  * This is the factory for IndexController. Its purpose is to instantiate the
  * controller and inject dependencies into it.
  */
-class TestControllerFactory implements FactoryInterface
+class AccountControllerFactory implements FactoryInterface
 {
     public function __invoke(ContainerInterface $container, $requestedName, array $options = null)
     {
-//         $UserCache = $container->get('UserCache');
-//         $filesystem= $container->get('main-cache');
-        
-        return new TestController(
-            $container->get(Auther::class)
-            );
+        return new AccountController(
+            $container->get(UserManager::class)
+           );
     }
 }
