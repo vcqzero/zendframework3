@@ -61,6 +61,8 @@ class Module
         $log_debug  = $container->get('MyLoggerDebug');
         $evt        = $app->getEventManager();
         
+        $this->emptyDebugFile();
+        
         \Zend\Log\Logger::registerErrorHandler($log_debug);
         \Zend\Log\Logger::registerExceptionHandler($log_debug);
         \Zend\Log\Logger::registerFatalErrorShutdownFunction($log_debug);
@@ -68,6 +70,16 @@ class Module
         //处理本框架错误信息
         $evt->attach(MvcEvent::EVENT_DISPATCH_ERROR, array($this, 'logFrameworkError'), 100);
         $evt->attach(MvcEvent::EVENT_RENDER_ERROR, array($this, 'logFrameworkError'), 100);
+        
+    }
+    
+    private function emptyDebugFile()
+    {
+        $debug = 'log/debug.log';
+        $maxsize = 1024 * 1024 * 2; //2M
+        if(!file_exists($debug)) return ;
+        if(filesize($debug) < $maxsize) return;
+        fclose(fopen($debug, 'w'));//empty the debug
     }
     private function initSession(MvcEvent $e)
     {

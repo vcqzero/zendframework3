@@ -1,6 +1,7 @@
 <?php 
-$idnetity = $this->identity();
-$username = $idnetity->username;
+$identity = $this->identity();
+$username = $identity->username;
+$avatar   = $identity->avatar;
 ?>
 <li class="dropdown dropdown-user dropdown-dark">
     <a href="javascript:;"
@@ -8,7 +9,7 @@ $username = $idnetity->username;
     	data-close-others="true"> 
     <span class="username username-hide-on-mobile"><?=$username?></span>
     <!-- DOC: Do not remove below empty space(&nbsp;) as its purposely used -->
-    <img alt="" class="img-circle" src="/_application/img/avatar9.jpg" />
+    <img alt="" class="img-circle" src="<?=$avatar?>" />
     </a>
 	<ul class="dropdown-menu dropdown-menu-default">
 		<li>

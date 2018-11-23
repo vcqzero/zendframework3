@@ -3,24 +3,32 @@ namespace Api\Controller;
 
 use Zend\Mvc\Controller\AbstractActionController;
 // use Zend\View\Model\JsonModel;
-use Zend\View\Model\ViewModel;
-use Api\Service\Auther;
-use Zend\Stdlib\ArrayObject;
 use Zend\View\Model\JsonModel;
+use Zend\Log\Logger;
 
 class TestController extends AbstractActionController
 {
-    private $Auther;
-    public function __construct(Auther $Auther)
+    private $Logger;
+    public function __construct(Logger $Logger)
     {
-        $this->Auther = $Auther;
+        
+        $this->Logger= $Logger;
     }
     
     //index
     public function indexAction()
     {
-        echo json_encode(true);
+        $image_url = 'test.jpg';
+        $res = file_get_contents($image_url);
+        $file_name = 'test.jpg';
+        $file = fopen($file_name, 'w');
+        fwrite($file, $res);
+        fclose($file);
+        
         exit();
+        
+        
+        
         $view = new JsonModel();
         return $view;
     }

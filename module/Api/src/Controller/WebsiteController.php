@@ -4,8 +4,6 @@ namespace Api\Controller;
 use Zend\Mvc\Controller\AbstractActionController;
 use Api\Service\WebsiteManager;
 use Zend\View\Model\JsonModel;
-use Zend\Config\Config;
-use Api\Tool\MyAjax;
 use Api\Uploader\ImageUploader;
 
 class WebsiteController extends AbstractActionController

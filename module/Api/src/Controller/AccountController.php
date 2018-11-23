@@ -6,6 +6,7 @@ use Api\Service\UserManager;
 use Api\Tool\MyAjax;
 use Zend\View\Model\JsonModel;
 use Api\Repository\Table\User;
+use Api\Uploader\ImageUploader;
 
 class AccountController extends AbstractActionController
 {
@@ -53,16 +54,6 @@ class AccountController extends AbstractActionController
     
     public function passwordAction()
     {
-        
-        // DEBUG INFORMATION START
-        echo '------debug start------<br/>';
-        echo "<pre>";
-        var_dump(__METHOD__ . ' on line: ' . __LINE__);
-        var_dump();
-        echo "</pre>";
-        exit('------debug end------');
-        // DEBUG INFORMATION END
-        
         //get id
         $identity = $this->identity();
         $id       = $identity->id;
@@ -77,5 +68,32 @@ class AccountController extends AbstractActionController
             MyAjax::SUBMIT_MSG => '数据库错误',
         ];
         return new JsonModel($res);
+    }
+    
+    //上传avatar
+    public function avatarAction()
+    {
+        //get id
+        $identity = $this->identity();
+        $id       = $identity->id;
+        
+        //upload avatar
+        $files = $this->params()->fromFiles();
+        $target = 'public/_application/upload/avatar/'. $id . '_avatar';
+        $Uploader = new ImageUploader();
+        $Uploader->upload($files, $target, true);
+        $url = $Uploader->getUrl();
+        
+        //update mysql
+        $set = [
+            User::FILED_AVATAR => $url
+        ];
+        $res  = $this->UserManager->MyTableGateway->updateById($set, $id);
+        $res  = [
+            MyAjax::SUBMIT_SUCCESS => $res,
+            'url' => $url
+        ];
+        $view = new JsonModel($res);
+        return $view;
     }
 }

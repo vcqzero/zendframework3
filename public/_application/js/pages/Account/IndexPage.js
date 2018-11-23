@@ -62,21 +62,68 @@ define(
 
 				//submit success
 				resultSuccess: function() {
-					//					App.pageLoaging.start(true)
-					//					location = '/'
+					var resObj = arguments[0]
+					var form   = arguments[1]
+					App.toastr('success', '操作成功')
+//					App.pageLoaging.start(true)
+					location.reload()
 				},
 
 				//submit error
 				resultError: function() {
-
+					var resObj = arguments[0]
+					var form   = arguments[1]
+					var msg    =resObj['msg']
+					App.alert({
+						container : form,
+						place : 'prepend',
+						type : 'danger',
+						message :msg,
+					})
 				}
 			},
 		}
+		
+		var avatarUpload = [{
+			target: $('.dropzone'),
+			option: {
+				url: '/api/account/avatar',
+				paramName : 'avatar',
+				maxFilesize: '2',//以m为单位
+				acceptedFiles : 'image/*',//image
+				dictInvalidFileType: '请上传图片文件',
+				createImageThumbnails: true,
+				clickable: '.upload-file',
+				resizeWidth : 300,//将图片截取为300 300 大小
+				resizeHeight : 300,
+				resizeMethod : 'crop',//已裁剪的方式处理图片
+//				params : {'type' : 'ico'},
+				success : function() {
+					var file = arguments[0]
+					var res  = arguments[1]
+					var success = res['success']
+					var url     = res['url']
+					if (url) {
+						App.toastr('success', '上传成功')
+						location.reload()
+					}else {
+						App.toastr('error', '上传失败')
+					}
+				},
+				
+//				transformFile : function(file, done) {
+//					file.width = 200
+//					console.log(file)
+//					done(file)
+//				}
+			}
+		}, ]
 
 		return {
 			init: function(pageName, page) {
 				App.editable(page, editable)
 				App.form.validate(page, validate)
+				App.upload.dropzone(avatarUpload)
 			}
 		}
 	})

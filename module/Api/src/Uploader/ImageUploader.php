@@ -34,13 +34,18 @@ class ImageUploader
     }
     
     /**
-    * 执行验证和过滤
-    * 
-    * @param  array $formConfig 验证时所用规则
-    * @param  array $values 待验证或过滤数据
-    * @param  bool  $deleteEmpty 是否删除表单中 value='' 的数据
-    * @return        
-    */
+     * 验证文件是否是图片格式，文件大小是否合法
+     * 如果验证成功则执行move操作，从临时文件移动到正式文件
+     * 如果验证失败，返回false不进行move
+     * 
+     * @param array   $fileData
+     * @param string  $target
+     * @param bool    $overwrite
+     * @param string $randomize
+     * @param int $size 验证文件大小，默认为2M
+     * @throws \Exception
+     * @return boolean
+     */
     public function upload($fileData, $target, $overwrite, $randomize=false, $size=null)
     {
         if (count($fileData) > 1) 

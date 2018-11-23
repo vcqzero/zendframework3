@@ -1011,7 +1011,7 @@ define(function(require) {
 				options = $.extend(true, {
 					container: "", // alerts parent container(by default placed after the page breadcrumbs)
 					place: "append", // "append" or "prepend" in container 
-					type: 'success', // alert's type
+					type: 'success', // success danger warnig info
 					message: "", // alert's message
 					close: true, // make alert closable
 					reset: true, // close all previouse alerts first
@@ -1347,7 +1347,7 @@ define(function(require) {
 						}, $.validator.format("至少6个字符，至少1个大写字母，1个小写字母和1个数字"));
 						
 						jQuery.validator.addMethod("differ", function(value, element, param) {
-							var selector = param[0]
+							var selector = param
 							var _value = $(selector).val()
 							return this.optional(element) || _value != value;
 						}, $.validator.format("输入内容必须和{0}不同"));
@@ -1360,7 +1360,7 @@ define(function(require) {
 						return page.hasClass('modal')
 					}
 
-					var doResult = function(resObj, _config) {
+					var doResult = function(resObj, _config, form) {
 						var success = resObj['success']
 						var callback
 						if(success) {
@@ -1369,7 +1369,7 @@ define(function(require) {
 							callback = _config['resultError']
 						}
 						if($.isFunction(callback)) {
-							callback(resObj)
+							callback(resObj, form)
 							return
 						}
 					}
@@ -1380,7 +1380,7 @@ define(function(require) {
 						var form_id = form.attr('id')
 						var _config = config[form_id]
 						if(_config) {
-							doResult(resObj, _config)
+							doResult(resObj, _config, form)
 						} else {
 							console.log('ERROR 未找到表单提交之后执行的配置文件信息，请确保已配置')
 						}
@@ -1586,8 +1586,12 @@ define(function(require) {
 									App.toastr('error', msg)
 									this.removeFile(file)
 								})
+								this.on("sending", function(file, res) {
+									App.pageLoaging.start()
+								})
 								this.on("success", function(file, res) {
 									if($.isFunction(success)) {
+										App.pageLoaging.stop()
 										success(file, res)
 									}
 								})

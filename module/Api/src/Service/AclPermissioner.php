@@ -2,7 +2,6 @@
 namespace Api\Service;
 
 use Zend\Permissions\Acl\Acl;
-use Api\Service\UserManager;
 
 class AclPermissioner
 {

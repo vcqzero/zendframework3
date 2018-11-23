@@ -138,16 +138,6 @@ class MenuHelper extends AbstractHelper
                                 ],
                             ],
                             
-                            'submenu-2'=>[
-                                'icon' => '',
-                                'href' => '/account/password',
-                                'title' => '修改密码',
-                                'allow' => [
-                                    RoleManager::ROLE_SUPER_USER,
-                                    RoleManager::ROLE_GUEST,
-                                ],
-                            ],
-                            
                         ],//end submenus
                     ],
                 ],//end menus

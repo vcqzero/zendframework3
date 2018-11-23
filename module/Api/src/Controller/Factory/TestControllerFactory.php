@@ -4,8 +4,6 @@ namespace Api\Controller\Factory;
 use Interop\Container\ContainerInterface;
 use Zend\ServiceManager\Factory\FactoryInterface;
 use Api\Controller\TestController;
-use Api\Service\UserManager;
-use Zend\Session\SessionManager;
 use Api\Service\Auther;
 
 /**
@@ -18,9 +16,9 @@ class TestControllerFactory implements FactoryInterface
     {
 //         $UserCache = $container->get('UserCache');
 //         $filesystem= $container->get('main-cache');
-        
+        $log_debug  = $container->get('MyLoggerDebug');
         return new TestController(
-            $container->get(Auther::class)
+            $log_debug
             );
     }
 }
