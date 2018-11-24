@@ -39,4 +39,24 @@
 	width: 20%;
 }
 
-/*dropzone*/
+/*cropper*/
+/*img.my-avatar {
+	max-width:100% !important;
+}*/
+.cropper-container {
+	/*max-height: 500px;*/
+	max-width: 100%;
+}
+
+img.my-avatar , .img-preview img{
+	max-width: 100%;
+}
+.docs-preview {
+    margin-right: -1rem;
+}
+.img-preview {
+    float: left;
+    margin-bottom: .5rem;
+    margin-right: .5rem;
+    overflow: hidden;
+}

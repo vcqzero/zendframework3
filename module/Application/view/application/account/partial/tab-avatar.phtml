@@ -3,12 +3,29 @@ $identity = $this->identity();
 $avatar   = $identity->avatar;
 ?>
 <div class="tab-pane" id="tab_1_2">
-	<p>请上传个人头像，(可以是png jpg jpeg等图片格式，2M以内)</p>
-	<p>最好是300 x 300 像素</p>
-	<div 
-	class="thumbnail dropzone-previews" >
-	<a href="javascript:;" class="btn red btn-outline upload-file">选择文件</a>
-	<img src="<?=$avatar?>" alt="avatar" id="img_avatar" style=" margin: 10px 0 0 0 ">
-	</div>
-	<div class="dropzone hide"></div>
+
+<div class="util-btn-margin-bottom-5">
+<?=$this->partial('partial/application/button/outline/select-file.phtml', [
+    'input_id' => 'select-file'
+])?>
+<?=$this->partial('partial/application/button/outline/upload-file.phtml', [
+    'id'=> 'upload-avatar',
+    'class'=> 'hide'
+])?>
+</div>
+    <div class="row" >
+        <div class="col-md-8">
+        <img id="avatar" src="" class="">
+        </div>
+        <div class="col-md-4">
+            <div class="docs-preview clearfix">
+              <div class="img-preview preview-lg hide" style="width: 60%; height: auto;">
+               <img  src="<?=$avatar?>" >
+              </div>
+              <div class="img-preview preview-md img-circle hide" style="width: 60%; height: auto;">
+               <img  src="<?=$avatar?>" class="img-circle">
+              </div>
+            </div>
+        </div>
+    </div>
 </div>

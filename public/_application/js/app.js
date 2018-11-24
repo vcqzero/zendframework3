@@ -638,6 +638,12 @@ define(function(require) {
 				init_page(page)
 			})
 		}
+
+		var handleFileSelectButton = function() {
+			$('body').on('click', '.btn-select-file', function() {
+				$(this).next('input').click()
+			})
+		}
 		//* END:CORE HANDLERS *//
 
 		return {
@@ -676,6 +682,8 @@ define(function(require) {
 				handleFixInputPlaceholderForIE(); //IE8 & IE9 input placeholder issue fix
 				//handle page
 				handlePage()
+				//handleFileSelectButton
+				handleFileSelectButton()
 			},
 
 			//main function to initiate core javascript after ajax complete
@@ -1327,31 +1335,31 @@ define(function(require) {
 					}
 
 					var addMethod = function() {
-						
+
 						jQuery.validator.addMethod("phone", function(value, element, param) {
 							var reg = /^[1][3,4,5,7,8][0-9]{9}$/
 							var res = reg.test(value)
 							return this.optional(element) || res;
 						}, $.validator.format("请输入正确手机号"));
-						
+
 						jQuery.validator.addMethod("username", function(value, element, param) {
 							var reg = /^[a-zA-Z]{1}([a-zA-Z0-9]|[._-]){3,19}$/
 							var res = reg.test(value)
 							return this.optional(element) || res;
 						}, $.validator.format("字母开头，可包含（._-），4~20个字符"));
-						
+
 						jQuery.validator.addMethod("myPassword", function(value, element, param) {
 							var reg = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[^]{6,100}$/
 							var res = reg.test(value)
 							return this.optional(element) || res;
 						}, $.validator.format("至少6个字符，至少1个大写字母，1个小写字母和1个数字"));
-						
+
 						jQuery.validator.addMethod("differ", function(value, element, param) {
 							var selector = param
 							var _value = $(selector).val()
 							return this.optional(element) || _value != value;
 						}, $.validator.format("输入内容必须和{0}不同"));
-						
+
 					}
 				},
 

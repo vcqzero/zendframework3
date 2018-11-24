@@ -76,12 +76,17 @@ class AccountController extends AbstractActionController
         //get id
         $identity = $this->identity();
         $id       = $identity->id;
+        $avatar   = $identity->avatar;
+        //delete old avatar
+        $avatar   = str_replace('active', '', $avatar);
+        if (file_exists($avatar)) unlink($avatar);
         
         //upload avatar
         $files = $this->params()->fromFiles();
-        $target = 'public/_application/upload/avatar/'. $id . '_avatar';
+        
+        $target = 'public/_application/upload/avatar/'. $id . '_';
         $Uploader = new ImageUploader();
-        $Uploader->upload($files, $target, true);
+        $Uploader->upload($files, $target, true, true);
         $url = $Uploader->getUrl();
         
         //update mysql

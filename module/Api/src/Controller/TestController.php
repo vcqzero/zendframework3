@@ -18,16 +18,15 @@ class TestController extends AbstractActionController
     //index
     public function indexAction()
     {
-        $image_url = 'test.jpg';
-        $res = file_get_contents($image_url);
-        $file_name = 'test.jpg';
-        $file = fopen($file_name, 'w');
-        fwrite($file, $res);
-        fclose($file);
         
-        exit();
-        
-        
+        // DEBUG INFORMATION START
+        echo '------debug start------<br/>';
+        echo "<pre>";
+        var_dump(__METHOD__ . ' on line: ' . __LINE__);
+        var_dump('ok');
+        echo "</pre>";
+        exit('------debug end------');
+        // DEBUG INFORMATION END
         
         $view = new JsonModel();
         return $view;
