@@ -11,6 +11,10 @@ $itemCount = $users->getTotalItemCount();
 <table>
 	<tbody data-item-count="<?=$itemCount?>">
     		<?php foreach ($users as $user):?>
+    		<?php 
+    		$role = $user[User::FILED_ROLE];
+    		$role =$this->Role()->renderRole($role);
+    		?>
     		<tr>
 			<td><label class="mt-checkbox mt-checkbox-single mt-checkbox-outline">
 					<input type="checkbox" class="group-checkable" data-set="" /> <span></span>
@@ -19,11 +23,13 @@ $itemCount = $users->getTotalItemCount();
 			<td><?=$user[User::FILED_REALNAME]?></td>
 			<td><?=$user[User::FILED_TEL]?></td>
 			<td><?=$user[User::FILED_STATUS]?></td>
-			<td><?=$user[User::FILED_ROLE]?></td>
+			<td><?=$role?></td>
 			<td>
+			<div class="util-btn-margin-bottom-5">
 			<?=$this->partial('partial/application/button/outline-sm/view.phtml')?>
 			<?=$this->partial('partial/application/button/outline-sm/edit.phtml')?>
 			<?=$this->partial('partial/application/button/outline-sm/delete.phtml')?>
+			</div>
 			</td>
 		</tr>
     		<?php endforeach;?>

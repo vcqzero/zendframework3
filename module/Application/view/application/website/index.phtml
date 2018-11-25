@@ -1,57 +1,30 @@
-<?php 
-$title  = $this->Website()->getTitle();
-$record = $this->Website()->getRecord();
-$ico    = $this->Website()->getIco();
-?>
-<?php $this->placeholder('table')->captureStart();?>
-<table id="websiteTable" class="table table-bordered table-striped">
-	<tbody>
-		<tr>
-			<td style="width: 10%">站点标题</td>
-			<td style="width: 90%">
-			<a 
-			href="javascript:;" 
-			id="website_title"
-			data-pk="1"
-			data-type="text" 
-			data-original-title="站点标题"
-			data-emptytext="未设置"
-			class="editable editable-click" tabindex="-1"
-			style="display: inline;width: 90%"><?=$title?></a>
-			</td>
-		</tr>
-		<tr>
-			<td>备案信息</td>
-			<td>
-			<a href="javascript:;" 
-			data-name="website_record"
-			data-type="text"
-			data-pk="1"
-			data-placement="right" 
-			data-placeholder="请输入站点备案信息"
-			data-original-title="备案信息"
-			class="editable editable-click" tabindex="-1"><?=$record?></a>
-			</td>
-		</tr>
-		<tr>
-			<td>ico</td>
-			<td>
-    		<div class="thumbnail dropzone-previews" style="width: 120px; height: 120px; margin-bottom: 10px">
-    		<img src="<?=$ico?>" alt="ico" id="img_ico">
-    		</div>
-    		<a href="javascript:;" class="btn red btn-outline upload-file">选择文件</a>
-    		<span>请上传ico图标文件，100k以内</span>
-			<div class="dropzone hide"></div>
-			</td>
-		</tr>
-	</tbody>
-</table>
-<?php $this->placeholder('table')->captureEnd() ?>
-
-<?=$this->partial('partial/application/page/page/table-page.phtml', [
+<?php $this->placeholder('pageContent')->captureStart();?>
+<div class="portlet light">
+	<div class="portlet-title tabbable-line">
+		<div class="caption">
+			<i class="icon-settings"></i> 
+			<span
+			class="caption-subject bold uppercase"> 站点设置 </span>
+		</div>
+		<ul class="nav nav-tabs">
+			<li class="active"><a href="#tab-basic-info" data-toggle="tab">基本信息</a></li>
+			<li><a href="#tab-email-setting" data-toggle="tab">邮箱配置</a></li>
+<!-- 			<li><a href="#portlet_tab1" data-toggle="tab"> Tab 1 </a></li> -->
+		</ul>
+	</div>
+	<div class="portlet-body">
+        <div class="tab-content">
+        <!-- tab-basic-info -->
+        <?=$this->partial('application/website/partial/tab-basic-info.phtml')?>
+        <!-- tab-email-setting -->
+        <?=$this->partial('application/website/partial/tab-email-setting.phtml')?>
+        </div>
+    </div>
+</div>
+<?php $this->placeholder('pageContent')->captureEnd() ?>
+<?=$this->partial('partial/application/page/page/basic-page.phtml', [
     'pageGroup' => 'Website',
     'pageName' => 'WebsiteIndexPage',
     'pageTitle' => '站点设置',
-    'tableToolbar' => false,
-    'table' => $this->placeholder('table'),
+    'pageContent' => $this->placeholder('pageContent'),
 ])?>

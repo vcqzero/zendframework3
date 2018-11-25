@@ -2,24 +2,29 @@ define(
 	['jquery', 'App', 'cropper'],
 	function($, App, Cropper) {
 		var edit_url = '/api/account/edit'
-		var editable = {
-			"realname": {
-				url: edit_url,
-				validate: function(value) {
-					if(value.length > 10) return '不可超过10个字符'
-					if(value.length < 1) return '不可为空'
-				}
+		var editable = [
+			{
+				target: $('#realname'),
+				option: {
+					url: edit_url,
+					validate: function(value) {
+						if(value.length > 10) return '不可超过10个字符'
+						if(value.length < 1) return '不可为空'
+					}
+				},
 			},
-
-			"tel": {
-				url: edit_url,
-				validate: function(value) {
-					var reg = /^[1][3,4,5,7,8][0-9]{9}$/
-					if(!reg.test(value)) return '请输入正确手机号'
-					if(value.length < 1) return '不可为空'
-				}
+			{
+				target: $('#tel'),
+				option: {
+					url: edit_url,
+					validate: function(value) {
+						var reg = /^[1][3,4,5,7,8][0-9]{9}$/
+						if(!reg.test(value)) return '请输入正确手机号'
+						if(value.length < 1) return '不可为空'
+					}
+				},
 			},
-		}
+		]
 
 		var validate = {
 

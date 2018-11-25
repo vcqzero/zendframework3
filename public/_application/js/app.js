@@ -1547,11 +1547,12 @@ define(function(require) {
 
 						return option
 					}
-					for(var id in config) {
-						var _dom = page.find('#' + id)
-						var _option = config[id]
+					for(var key in config) {
+						var _config = config[key]
+						var target  = _config['target']
+						var _option = _config['option']
 						var option = getOption(_option)
-						_dom.editable(option)
+						target.editable(option)
 					}
 				})
 			},

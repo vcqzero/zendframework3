@@ -41,4 +41,8 @@ class RoleHelper extends AbstractHelper
         return $desc;
     }
     
+    public function getRoles()
+    {
+        return $this->RoleManager->getRoles();
+    }
 }

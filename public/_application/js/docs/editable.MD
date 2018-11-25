@@ -2,39 +2,28 @@
 GitHub(https://www.bootcdn.cn/x-editable/)
 doc(http://vitalets.github.io/x-editable/docs.html)
 
-#介绍
-可将某一dom元素设置为可编辑
-也可设置一组元素
-
-#配置说明
-App.editable: function(page, config)
-其他的设置通过data属性
+##快速入门
+将以下配置文件传入App.editable: function(page, config)中即可完成
 https://www.bootcdn.cn/x-editable/
 
-##快速入门
-指定以下内容
-id  
-type : text textarea selec 等
-
-config = {
-	table_id: {
-		url : '/api/website/edit',
-		mode:'inline',
+config = [
+{
+	target: $('#realname'),//$元素
+	option: {
+		url: edit_url,
+		...可配置其他选项
 	},
-	//more table goes here
-	//example
-	"websiteTable" : {
-		url : '/api/website/edit',
-		mode:'inline',
-	},
-}
+},
+...
+]
 
 #post数据
 以ajax post 的形式向服务器发生数据
 
-name : name-value
-pk : pk-value	1
-value:value-value
+name : value //来自元素的id或data-name
+pk : vaule//来自元素中的data-pk或option中的pk
+value:vaule//元素值，text select 等元素的内容
 
 #服务器返回JSON
 需要服务器返回json{success:true/false, msg: ''}
+如果返回false则msg会被显示

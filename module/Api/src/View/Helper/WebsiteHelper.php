@@ -44,6 +44,11 @@ class WebsiteHelper extends AbstractHelper
         return $this->WebsiteManager->getEmailParam('host');
     }
     
+    public function getEmailePort()
+    {
+        return $this->WebsiteManager->getEmailParam('port');
+    }
+    
     public function getEmaileUsername()
     {
         return $this->WebsiteManager->getEmailParam('username');
@@ -54,13 +59,8 @@ class WebsiteHelper extends AbstractHelper
         return $this->WebsiteManager->getEmailParam('password');
     }
     
-    public function getEmailePort()
+    public function getTestEmaile()
     {
-        return $this->WebsiteManager->getEmailParam('port');
-    }
-    
-    public function getEmaileTestAddress()
-    {
-        return $this->WebsiteManager->getEmailParam('test_address');
+        return $this->WebsiteManager->getEmailParam('test_email');
     }
 }

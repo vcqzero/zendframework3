@@ -54,15 +54,19 @@ class WebsiteManager
     * @param  string $value
     * @return array $ajaxRes       
     */
-    public function edit($name, $value)
+    public function edit($name, $value, $type="basic")
     {
         //website config
         try{
-            $config_path = WebsiteManager::PATH_BASIC_WEBSITE_CONFIG;
+            if ($type == 'basic') {
+                $config_path = WebsiteManager::PATH_BASIC_WEBSITE_CONFIG;
+            }else {
+                $config_path = WebsiteManager::PATH_EMAIL_WEBSITE_CONFIG;
+            }
             $config = include $config_path;
             $config[$name] = $value;
             $writer = new \Zend\Config\Writer\PhpArray();
-            $writer->toFile(WebsiteManager::PATH_BASIC_WEBSITE_CONFIG, $config);
+            $writer->toFile($config_path, $config);
             $res = [
                 MyAjax::SUBMIT_SUCCESS=> true,
             ];

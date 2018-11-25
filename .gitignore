@@ -10,3 +10,4 @@ phpcs.xml
 .buildpath
 log/*
 *.bak
+module/Api/config/website.config/email.website.config.php

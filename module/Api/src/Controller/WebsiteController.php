@@ -22,7 +22,8 @@ class WebsiteController extends AbstractActionController
         //获取用户提交表单
         $name  = $this->params()->fromPost('name');
         $value = $this->params()->fromPost('value');
-        $res   = $this->WebsiteManager->edit($name, $value);
+        $type  = $this->params()->fromQuery('type');
+        $res   = $this->WebsiteManager->edit($name, $value, $type);
         $view = new JsonModel($res);
         return $view;
     }

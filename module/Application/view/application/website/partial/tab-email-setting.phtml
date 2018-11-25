@@ -1,0 +1,101 @@
+<?php 
+$name  = $this->Website()->getEmaileName();
+$host = $this->Website()->getEmaileHost();
+$port    = $this->Website()->getEmailePort();
+$username    = $this->Website()->getEmaileUsername();
+$password    = $this->Website()->getEmailePassword();
+$testEmail   = $this->Website()->getTestEmaile();
+?>
+<div class="tab-pane active" id="tab-email-setting">
+<button
+class="btn green btn-outline btn-select-file"
+style="margin-bottom: 10px"
+>
+<span>
+<i class="fa fa-location-arrow"></i> 发送测试邮件</span>
+</button>
+
+<table class="table table-bordered table-striped">
+	<tbody>
+		<tr>
+			<td style="width: 10%">邮箱名称</td>
+			<td style="width: 90%">
+			<a 
+			href="javascript:;" 
+			data-pk="1"
+			data-type="text" 
+			data-name="name"
+			data-original-title="邮件名称"
+			data-emptytext="未设置"
+			class="editable editable-click editable-email" tabindex="-1"
+			style="display: inline;width: 90%"><?=$name?></a>
+			</td>
+		</tr>
+		<tr>
+			<td>主机地址</td>
+			<td>
+			<a href="javascript:;" 
+			data-name="host"
+			data-type="text"
+			data-pk="1"
+			data-placement="right" 
+			data-placeholder="邮件服务器主机地址"
+			data-original-title="主机地址"
+			class="editable editable-click editable-email" tabindex="-1"><?=$host?></a>
+			</td>
+		</tr>
+		<tr>
+			<td>端口</td>
+			<td>
+			<a href="javascript:;" 
+			data-name="port"
+			data-type="number"
+			data-pk="1"
+			data-placement="right" 
+			data-placeholder="邮件服务器端口号"
+			data-original-title="邮件服务器端口号"
+			class="editable editable-click editable-email" tabindex="-1"><?=$port?></a>
+			</td>
+		</tr>
+		<tr>
+			<td>账户名称</td>
+			<td>
+			<a href="javascript:;" 
+			data-name="username"
+			data-type="text"
+			data-pk="1"
+			data-placement="right" 
+			data-placeholder="邮箱名称"
+			data-original-title="邮箱名称"
+			class="editable editable-click editable-email" tabindex="-1"><?=$username?></a>
+			</td>
+		</tr>
+		<tr>
+			<td>密码</td>
+			<td>
+			<a href="javascript:;" 
+			data-name="password"
+			data-type="text"
+			data-pk="1"
+			data-placement="right" 
+			data-placeholder="邮箱密码"
+			data-original-title="邮箱密码"
+			class="editable editable-click editable-email" tabindex="-1"><?=$password?></a>
+			</td>
+		</tr>
+		<tr>
+			<td>测试邮箱</td>
+			<td>
+			<a href="javascript:;" 
+			data-name="test_email"
+			data-type="email"
+			data-pk="1"
+			data-placement="right" 
+			data-placeholder="测试邮箱"
+			data-original-title="测试邮箱"
+			class="editable editable-click editable-email" tabindex="-1"><?=$testEmail?></a>
+			</td>
+		</tr>
+	</tbody>
+</table>
+</div>

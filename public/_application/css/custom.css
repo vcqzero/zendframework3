@@ -60,3 +60,7 @@ img.my-avatar , .img-preview img{
     margin-right: .5rem;
     overflow: hidden;
 }
+
+.editable-input input{
+	min-width: 300px;
+}
