@@ -19,7 +19,8 @@ class Mailer
 
     public function __construct()
     {
-        $config=include WebsiteManager::PATH_EMAIL_CONFIG;
+        $config=include WebsiteManager::PATH_API_CONFIG;
+        $config= $config[WebsiteManager::API_MAIL];
         $this->name = $config['name'];
         $this->host = $config['host'];
         $this->port = $config['port'];

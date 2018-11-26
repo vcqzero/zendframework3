@@ -1,0 +1,15 @@
+<?php
+return array(
+    'mail' => array(
+        'name' => 'smtp.exmail.qq.com',
+        'host' => 'smtp.exmail.qq.com',
+        'port' => '25',
+        'username' => 'test@tanhansi.com',
+        'password' => 'QINCHONG_admin_888_1',
+    ),
+    'weixin' => array(
+        'name' => '我的测试号we',
+        'appid' => 'wx78bd13a5f8852cf0',
+        'secret' => '167246adc5d5c98968247fa58cb8961d',
+    ),
+);

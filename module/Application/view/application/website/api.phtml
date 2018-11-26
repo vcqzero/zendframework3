@@ -1,0 +1,33 @@
+<?php $this->placeholder('pageContent')->captureStart();?>
+<div class="note note-info">
+            <h4 class="block">可设置本邮箱、微信api等内容</h4>
+        </div>
+<div class="portlet light">
+	<div class="portlet-title tabbable-line">
+		<div class="caption">
+			<i class="icon-settings"></i> 
+			<span
+			class="caption-subject bold uppercase"> API设置 </span>
+		</div>
+		<ul class="nav nav-tabs">
+			<li class="active"><a href="#tab-api-email-settings" data-toggle="tab">邮箱配置</a></li>
+			<li class=""><a href="#tab-api-weixin-settings" data-toggle="tab">微信公众号</a></li>
+		</ul>
+	</div>
+	<div class="portlet-body">
+		
+        <div class="tab-content">
+        <!-- tab-api-email-settings -->
+        <?=$this->partial('application/website/partial/tab-api-email-settings.phtml')?>
+        <!-- tab-api-weixin-settings -->
+        <?=$this->partial('application/website/partial/tab-api-weixin-settings.phtml')?>
+        </div>
+    </div>
+</div>
+<?php $this->placeholder('pageContent')->captureEnd() ?>
+<?=$this->partial('partial/application/page/page/basic-page.phtml', [
+    'pageGroup' => 'Website',
+    'pageName' => 'ApiSettingPage',
+    'pageTitle' => 'API设置',
+    'pageContent' => $this->placeholder('pageContent'),
+])?>

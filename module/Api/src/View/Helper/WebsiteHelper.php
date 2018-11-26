@@ -28,23 +28,23 @@ class WebsiteHelper extends AbstractHelper
     */
     public function getWebsiteConfig($website, $param)
     {
-        $config = $this->WebsiteManager->getWebsiteConfig($website);
-        if(!empty($config[$param]))
-        {
-            return $config[$param];
-        }else {
-            return '';
+        $config = include WebsiteManager::PATH_WEBSITES_CONFIG;
+        if (isset($config[$website])) {
+            if(isset($config[$website][$param])) {
+                return $config[$website][$param];
+            }
         }
+        return '';
     }
     
-    public function getEmailConfig($param)
+    public function getApiConfig($api, $param)
     {
-        $config = $this->WebsiteManager->getWebsiteConfig(WebsiteManager::WEBSITE_EMAIL);
-        if(!empty($config[$param]))
-        {
-            return $config[$param];
-        }else {
-            return '';
+        $config = include WebsiteManager::PATH_API_CONFIG;
+        if (isset($config[$api])) {
+            if(isset($config[$api][$param])) {
+                return $config[$api][$param];
+            }
         }
+        return '';
     }
 }

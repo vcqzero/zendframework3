@@ -1,0 +1,65 @@
+<?php 
+use Api\Service\WebsiteManager;
+
+$name      = $this->Website()->getApiConfig(WebsiteManager::API_WEIXIN, 'name');
+$appID     = $this->Website()->getApiConfig(WebsiteManager::API_WEIXIN, 'appid');
+$appsecret = $this->Website()->getApiConfig(WebsiteManager::API_WEIXIN, 'secret');
+?>
+<div class="tab-pane" id="tab-api-weixin-settings">
+
+<div class="alert alert-warning alert-dismissable">
+<button type="button" class="close" data-dismiss="alert" aria-hidden="true"></button>
+<strong>注意!</strong> 请确保和微信公众号中设置一致</div>
+<button
+class="btn green btn-outline btn-select-file test-weixin"
+style="margin-bottom: 10px"
+>
+<span>
+<i class="fa fa-location-arrow"></i> 测试微信</span>
+</button>
+<table class="table table-bordered table-striped">
+	<tbody>
+		<tr>
+			<td style="width: 10%">微信公众号</td>
+			<td style="width: 90%">
+			<a 
+			href="javascript:;" 
+			data-pk="1"
+			data-type="text" 
+			data-name="name"
+			data-original-title="appID"
+			data-emptytext="appID"
+			class="editable editable-click api-edit-weixin" tabindex="-1"
+			style="display: inline;width: 90%"><?=$name?></a>
+			</td>
+		</tr>
+		<tr>
+			<td style="width: 10%">appID</td>
+			<td style="width: 90%">
+			<a 
+			href="javascript:;" 
+			data-pk="1"
+			data-type="text" 
+			data-name="appid"
+			data-original-title="appID"
+			data-emptytext="appID"
+			class="editable editable-click api-edit-weixin" tabindex="-1"
+			style="display: inline;width: 90%"><?=$appID?></a>
+			</td>
+		</tr>
+		<tr>
+			<td>appsecret</td>
+			<td>
+			<a href="javascript:;" 
+			data-name="secret"
+			data-type="text"
+			data-pk="1"
+			data-placement="right" 
+			data-placeholder="appsecret"
+			data-original-title="appsecret"
+			class="editable editable-click api-edit-weixin" tabindex="-1"><?=$appsecret?></a>
+			</td>
+		</tr>
+	</tbody>
+</table>
+</div>

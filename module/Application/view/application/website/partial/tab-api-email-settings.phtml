@@ -1,12 +1,14 @@
 <?php 
-$name  = $this->Website()->getEmailConfig('name');
-$host = $this->Website()->getEmailConfig('host');
-$port    = $this->Website()->getEmailConfig('port');
-$username    = $this->Website()->getEmailConfig('username');
-$password    = $this->Website()->getEmailConfig('password');
-$testEmail   = $this->Website()->getEmailConfig('test_email');
+use Api\Service\WebsiteManager;
+
+$name  = $this->Website()->getApiConfig(WebsiteManager::API_MAIL, 'name');
+$host = $this->Website()->getApiConfig(WebsiteManager::API_MAIL, 'host');
+$port    = $this->Website()->getApiConfig(WebsiteManager::API_MAIL, 'port');
+$username    = $this->Website()->getApiConfig(WebsiteManager::API_MAIL, 'username');
+$password    = $this->Website()->getApiConfig(WebsiteManager::API_MAIL, 'password');
+$testEmail   = $this->Website()->getApiConfig(WebsiteManager::API_MAIL, 'test_email');
 ?>
-<div class="tab-pane" id="tab-email-setting">
+<div class="tab-pane active" id="tab-api-email-settings">
 <button
 class="btn green btn-outline btn-select-file send-test-email"
 style="margin-bottom: 10px"
@@ -27,7 +29,7 @@ style="margin-bottom: 10px"
 			data-name="name"
 			data-original-title="邮件名称"
 			data-emptytext="未设置"
-			class="editable editable-click editable-email" tabindex="-1"
+			class="editable editable-click edit-api-mail" tabindex="-1"
 			style="display: inline;width: 90%"><?=$name?></a>
 			</td>
 		</tr>
@@ -41,7 +43,7 @@ style="margin-bottom: 10px"
 			data-placement="right" 
 			data-placeholder="邮件服务器主机地址"
 			data-original-title="主机地址"
-			class="editable editable-click editable-email" tabindex="-1"><?=$host?></a>
+			class="editable editable-click edit-api-mail" tabindex="-1"><?=$host?></a>
 			</td>
 		</tr>
 		<tr>
@@ -54,7 +56,7 @@ style="margin-bottom: 10px"
 			data-placement="right" 
 			data-placeholder="邮件服务器端口号"
 			data-original-title="邮件服务器端口号"
-			class="editable editable-click editable-email" tabindex="-1"><?=$port?></a>
+			class="editable editable-click edit-api-mail" tabindex="-1"><?=$port?></a>
 			</td>
 		</tr>
 		<tr>
@@ -67,7 +69,7 @@ style="margin-bottom: 10px"
 			data-placement="right" 
 			data-placeholder="邮箱名称"
 			data-original-title="邮箱名称"
-			class="editable editable-click editable-email" tabindex="-1"><?=$username?></a>
+			class="editable editable-click edit-api-mail" tabindex="-1"><?=$username?></a>
 			</td>
 		</tr>
 		<tr>
@@ -80,7 +82,7 @@ style="margin-bottom: 10px"
 			data-placement="right" 
 			data-placeholder="邮箱密码"
 			data-original-title="邮箱密码"
-			class="editable editable-click editable-email" tabindex="-1"><?=$password?></a>
+			class="editable editable-click edit-api-mail" tabindex="-1"><?=$password?></a>
 			</td>
 		</tr>
 	</tbody>

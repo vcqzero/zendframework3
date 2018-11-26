@@ -14,8 +14,8 @@ class WebsiteController extends AbstractActionController
         return new ViewModel();
     }
     
-//     public function emailAction()
-//     {
-//         return new ViewModel();
-//     }
+    public function apiAction()
+    {
+        return new ViewModel();
+    }
 }

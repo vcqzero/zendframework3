@@ -116,6 +116,16 @@ class MenuHelper extends AbstractHelper
                                     RoleManager::ROLE_SUPER_USER,
                                 ],
                             ],
+                            
+                            'submenu-2'=>[
+                                'icon' => '',
+                                'href' => '/website/api',
+                                'title' => 'API设置',
+                                'allow' => [
+                                    RoleManager::ROLE_GUEST,
+                                    RoleManager::ROLE_SUPER_USER,
+                                ],
+                            ],
                         ],//end submenus
                     ],
                 ],//end menus

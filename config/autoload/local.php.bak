@@ -22,9 +22,4 @@ return [
         'username' =>'',
         'password' => ''
     ],
-    //设置绑定的微信信息
-    'weixin' =>[
-        'appid'     => '',
-        'secret'    => '',
-    ],
 ];

@@ -11,47 +11,23 @@ use Zend\Mail\Transport\Smtp;
 */
 class WebsiteManager
 {
-    //config path 
-    const PATH_ADMIN_WEBSITE_CONFIG = 'config/custom/website/admin.website.config.php';
-    const PATH_EMAIL_CONFIG = 'config/custom/email.config.php';
+    //website config path 
+    const PATH_WEBSITES_CONFIG = 'config/custom/websites.config.php';
+    //api config path
+    const PATH_API_CONFIG = 'config/custom/api.config.php';
     
     //img path in public
     const PATH_IMG_BASIC = 'public/img/website';
     //website
     const WEBSITE_ADMIN = 'admin';//admin
-    const WEBSITE_EMAIL = 'email';//email 为全站公用和站点性质不同
+    //api
+    const API_MAIL = 'mail';//email 为全站公用和站点性质不同
+    const API_WEIXIN = 'weixin';//weixin 为全站公用和站点性质不同
     
     private $smtp;
     public function __construct(Smtp $smtp)
     {
         $this->smtp= $smtp;
-    }
-    /**
-    * get the website config
-    * @param  string $website
-    * @return array       
-    */
-    public function getWebsiteConfig($website)
-    {
-        $path = $this->getPathConfig($website);
-        if(empty($path)) return [];
-        return include $path;
-    }
-    
-    public function getPathConfig($website)
-    {
-        switch ($website)
-        {
-            case self::WEBSITE_ADMIN:
-                $path = self::PATH_ADMIN_WEBSITE_CONFIG;
-                break;
-            case self::WEBSITE_EMAIL:
-                $path= self::PATH_EMAIL_CONFIG;
-                break;
-            default:
-                $path = false;
-        }
-        return $path;
     }
     
     /**
@@ -75,13 +51,13 @@ class WebsiteManager
     * @param  string $value
     * @return array $ajaxRes       
     */
-    public function edit($name, $value, $website)
+    public function editWebsite($name, $value, $website)
     {
         //website config
         try{
-            $config = $this->getWebsiteConfig($website);
-            $config_path = $this->getPathConfig($website);
-            $config[$name] = $value;
+            $config_path = self::PATH_WEBSITES_CONFIG;
+            $config = include $config_path;
+            $config[$website][$name] = $value;
             $writer = new \Zend\Config\Writer\PhpArray();
             $writer->toFile($config_path, $config);
             $res = [
@@ -93,7 +69,35 @@ class WebsiteManager
                 MyAjax::SUBMIT_MSG => '保存失败',
             ];
         }
-        
+        return $res;
+    }
+    
+    /**
+    * 编辑 api
+    * 
+    * @param  string $name
+    * @param  string $value
+    * @param  string $api
+    * @return array $ajaxRes       
+    */
+    public function editApi($name, $value, $api)
+    {
+        //website config
+        try{
+            $config_path = self::PATH_API_CONFIG;
+            $config = include $config_path;
+            $config[$api][$name] = $value;
+            $writer = new \Zend\Config\Writer\PhpArray();
+            $writer->toFile($config_path, $config);
+            $res = [
+                MyAjax::SUBMIT_SUCCESS=> true,
+            ];
+        }catch (\Exception $e ){
+            $res = [
+                MyAjax::SUBMIT_SUCCESS=> true,
+                MyAjax::SUBMIT_MSG => '保存失败',
+            ];
+        }
         return $res;
     }
     

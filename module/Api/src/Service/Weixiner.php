@@ -27,16 +27,16 @@ class Weixiner
     /**
      * fetch the access_token array 
      *
-     * @param            
+     * @param  bool $force           
      * @return string $access_token
      */
-    public function getAccessToken()
+    public function getAccessToken($force=false)
     {
         $Cache = $this->Cache;
         $Cache->getOptions()->setTtl(self::EXPIRES_IN - 20);
         
         $access_token = $Cache->getItem(self::CACHE_KEY_WEIXIN_TOKEN);
-        if (empty($access_token))
+        if ($force || empty($access_token))
         {
             //需要重新获取token
             $url = 'https://api.weixin.qq.com/cgi-bin/token';
@@ -63,6 +63,12 @@ class Weixiner
         return $access_token;
     }
     
+    /**
+    * 获取微信签名，用于调用sdk
+    * 
+    * @param  string $url 
+    * @return array $config        
+    */
     public function getWxConfig($url)
     {
         $str="abcdrrlljokoptldiektldlyuiopasdfghjklzxcvbnm";
