@@ -19,48 +19,32 @@ class WebsiteHelper extends AbstractHelper
         $this->WebsiteManager = $WebsiteManager;
     }
     
-    public function getRecord()
+    /**
+    * 获取站点配置信息
+    * 
+    * @param  string $website the website need
+    * @param  string $param the param
+    * @return string || '' return '' if not find    
+    */
+    public function getWebsiteConfig($website, $param)
     {
-        return $this->WebsiteManager->getBasicParam('website_record');
+        $config = $this->WebsiteManager->getWebsiteConfig($website);
+        if(!empty($config[$param]))
+        {
+            return $config[$param];
+        }else {
+            return '';
+        }
     }
     
-    public function getIco()
+    public function getEmailConfig($param)
     {
-         return $this->WebsiteManager->getBasicParam('ico');
-    }
-    
-    public function getTitle()
-    {
-        return $this->WebsiteManager->getBasicParam('website_title');
-    }
-    
-    public function getEmaileName()
-    {
-        return $this->WebsiteManager->getEmailParam('name');
-    }
-    
-    public function getEmaileHost()
-    {
-        return $this->WebsiteManager->getEmailParam('host');
-    }
-    
-    public function getEmailePort()
-    {
-        return $this->WebsiteManager->getEmailParam('port');
-    }
-    
-    public function getEmaileUsername()
-    {
-        return $this->WebsiteManager->getEmailParam('username');
-    }
-    
-    public function getEmailePassword()
-    {
-        return $this->WebsiteManager->getEmailParam('password');
-    }
-    
-    public function getTestEmaile()
-    {
-        return $this->WebsiteManager->getEmailParam('test_email');
+        $config = $this->WebsiteManager->getWebsiteConfig(WebsiteManager::WEBSITE_EMAIL);
+        if(!empty($config[$param]))
+        {
+            return $config[$param];
+        }else {
+            return '';
+        }
     }
 }

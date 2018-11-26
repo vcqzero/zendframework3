@@ -1,6 +1,8 @@
 <?php
-$title = $this->Website()->getTitle();
-$ico   = $this->Website()->getIco();
+use Api\Service\WebsiteManager;
+
+$title  = $this->Website()->getWebsiteConfig(WebsiteManager::WEBSITE_ADMIN, 'title');
+$ico    = $this->Website()->getWebsiteConfig(WebsiteManager::WEBSITE_ADMIN, 'ico');
 ?>
 <meta charset="utf-8" />
 <?= $this->headTitle($title)->setSeparator(' - ')->setAutoEscape(false) ?>

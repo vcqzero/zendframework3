@@ -1,7 +1,9 @@
 <?php 
-$title  = $this->Website()->getTitle();
-$record = $this->Website()->getRecord();
-$ico    = $this->Website()->getIco();
+use Api\Service\WebsiteManager;
+
+$record = $this->Website()->getWebsiteConfig(WebsiteManager::WEBSITE_ADMIN, 'record');
+$title  = $this->Website()->getWebsiteConfig(WebsiteManager::WEBSITE_ADMIN, 'title');
+$ico    = $this->Website()->getWebsiteConfig(WebsiteManager::WEBSITE_ADMIN, 'ico');
 ?>
 <div class="tab-pane active" id="tab-basic-info">
 <table id="websiteTable" class="table table-bordered table-striped">
@@ -11,7 +13,7 @@ $ico    = $this->Website()->getIco();
 			<td style="width: 90%">
 			<a 
 			href="javascript:;" 
-			id="website_title"
+			id="title"
 			data-pk="1"
 			data-type="text" 
 			data-original-title="站点标题"
@@ -24,8 +26,7 @@ $ico    = $this->Website()->getIco();
 			<td>备案信息</td>
 			<td>
 			<a href="javascript:;" 
-			id="website_record"
-			data-name="website_record"
+			data-name="record"
 			data-type="text"
 			data-pk="1"
 			data-placement="right" 
@@ -42,7 +43,7 @@ $ico    = $this->Website()->getIco();
     		</div>
     		<a href="javascript:;" class="btn red btn-outline upload-file">选择文件</a>
     		<span>请上传ico图标文件，100k以内</span>
-			<div class="dropzone hide"></div>
+			<div class="dropzone hide upload-ico"></div>
 			</td>
 		</tr>
 	</tbody>

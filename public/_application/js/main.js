@@ -36,6 +36,8 @@ requirejs.config({
 		dropzone : 'https://cdn.bootcss.com/dropzone/5.5.1/min/dropzone.min',
 		//cropper 图片裁剪
 		cropper : 'https://cdn.bootcss.com/cropperjs/1.4.3/cropper.min',
+		//bootbox dialog
+		bootbox : 'https://cdn.bootcss.com/bootbox.js/4.4.0/bootbox.min',
 	},
 
 	map: { //map告诉RequireJS在任何模块之前，都先载入这个模块

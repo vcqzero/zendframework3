@@ -1,14 +1,14 @@
 <?php 
-$name  = $this->Website()->getEmaileName();
-$host = $this->Website()->getEmaileHost();
-$port    = $this->Website()->getEmailePort();
-$username    = $this->Website()->getEmaileUsername();
-$password    = $this->Website()->getEmailePassword();
-$testEmail   = $this->Website()->getTestEmaile();
+$name  = $this->Website()->getEmailConfig('name');
+$host = $this->Website()->getEmailConfig('host');
+$port    = $this->Website()->getEmailConfig('port');
+$username    = $this->Website()->getEmailConfig('username');
+$password    = $this->Website()->getEmailConfig('password');
+$testEmail   = $this->Website()->getEmailConfig('test_email');
 ?>
-<div class="tab-pane active" id="tab-email-setting">
+<div class="tab-pane" id="tab-email-setting">
 <button
-class="btn green btn-outline btn-select-file"
+class="btn green btn-outline btn-select-file send-test-email"
 style="margin-bottom: 10px"
 >
 <span>
@@ -81,19 +81,6 @@ style="margin-bottom: 10px"
 			data-placeholder="邮箱密码"
 			data-original-title="邮箱密码"
 			class="editable editable-click editable-email" tabindex="-1"><?=$password?></a>
-			</td>
-		</tr>
-		<tr>
-			<td>测试邮箱</td>
-			<td>
-			<a href="javascript:;" 
-			data-name="test_email"
-			data-type="email"
-			data-pk="1"
-			data-placement="right" 
-			data-placeholder="测试邮箱"
-			data-original-title="测试邮箱"
-			class="editable editable-click editable-email" tabindex="-1"><?=$testEmail?></a>
 			</td>
 		</tr>
 	</tbody>

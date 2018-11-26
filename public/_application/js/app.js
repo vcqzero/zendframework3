@@ -1018,7 +1018,7 @@ define(function(require) {
 
 				options = $.extend(true, {
 					container: "", // alerts parent container(by default placed after the page breadcrumbs)
-					place: "append", // "append" or "prepend" in container 
+					place: "prepend", // "append" or "prepend" in container 
 					type: 'success', // success danger warnig info
 					message: "", // alert's message
 					close: true, // make alert closable

@@ -5,6 +5,7 @@ use Zend\Mvc\Controller\AbstractActionController;
 use Api\Service\WebsiteManager;
 use Zend\View\Model\JsonModel;
 use Api\Uploader\ImageUploader;
+use Api\Tool\MyAjax;
 
 class WebsiteController extends AbstractActionController
 {
@@ -22,8 +23,8 @@ class WebsiteController extends AbstractActionController
         //获取用户提交表单
         $name  = $this->params()->fromPost('name');
         $value = $this->params()->fromPost('value');
-        $type  = $this->params()->fromQuery('type');
-        $res   = $this->WebsiteManager->edit($name, $value, $type);
+        $website  = $this->params()->fromQuery('website');
+        $res   = $this->WebsiteManager->edit($name, $value, $website);
         $view = new JsonModel($res);
         return $view;
     }
@@ -32,23 +33,28 @@ class WebsiteController extends AbstractActionController
     public function uploadAction()
     {
         $files = $this->params()->fromFiles();
-        $type  = $this->params()->fromPost('type');
-        switch ($type) {
-            case 'ico' :
-                $target = 'public/_application/upload/ico/ico';
-                break;
-            case 'logo' :
-                $target = 'public/_application/upload/logo/logo';
-                break;
-            default:
-                $target = '';
-        }
+        $name  = $this->params()->fromPost('name');
+        $website = $this->params()->fromPost('website');
+        $path_website = $this->WebsiteManager->getPathSaveImg($website);
+        $target  = $path_website . '/' . $name;
+        //upload
         $Uploader = new ImageUploader();
         $Uploader->upload($files, $target, true);
+        //update config
         $url = $Uploader->getUrl();
-        $res  = $this->WebsiteManager->edit($type, $url);
+        $res  = $this->WebsiteManager->edit($name, $url, $website);
         $res['url'] = $url;
         $view = new JsonModel($res);
         return $view;
+    }
+    
+    public function testEmailAction()
+    {
+        $email = $this->params()->fromPost('email');
+        $res = $this->WebsiteManager->testMail($email);
+        return new JsonModel([
+            MyAjax::SUBMIT_SUCCESS => $res === true,
+            MyAjax::SUBMIT_MSG => $res,
+        ]);
     }
 }

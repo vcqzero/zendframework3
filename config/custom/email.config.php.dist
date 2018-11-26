@@ -2,8 +2,7 @@
 return array(
     'name' => '',
     'host' => '',
-    'port' => '',
+    'port' => '25',
     'username' => '',
     'password' => '',
-    'test_email' => '',
 );

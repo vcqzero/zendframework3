@@ -1,5 +1,7 @@
 <?php 
-$record = $this->Website()->getRecord();
+use Api\Service\WebsiteManager;
+
+$record = $this->Website()->getWebsiteConfig(WebsiteManager::WEBSITE_ADMIN, 'record');
 ?>
 <!DOCTYPE html>
 <html lang="en">
