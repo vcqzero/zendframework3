@@ -104,6 +104,53 @@ return [
                 ],
             ],
         ],
+        
+        /**
+         * memcache
+         * 默认永久保存
+         * 
+         */
+        'memcache'=>[
+            'adapter' => [
+                'name'    => 'memcache',
+                'options' => [
+                    'servers' =>[
+                        ['127.0.0.1', 11211],
+                    ],//differnt from memcached
+                    
+                    'ttl' => 0,//store forever
+                    'namespace'=>'zend-memcache',
+                    //                     'lib_options' => [],//set for memcached
+                ],
+            ],
+            'plugins' => [
+                // Don't throw exceptions on cache errors
+                'exception_handler' => 
+                [
+                    'throw_exceptions' => false,
+                ],
+            ],
+        ],
+        //end memcache
+        'memcached'=>[
+            'adapter' => [
+                'name'    => 'memcached',
+                'options' => [
+                    'servers' =>['127.0.0.1', 11211],
+                    'ttl' => 0,//store forever
+                    'namespace'=>'zend-memcached',
+                    //                     'lib_options' => [],//set for memcached
+                ],
+            ],
+            'plugins' => [
+                // Don't throw exceptions on cache errors
+                'exception_handler' => 
+                [
+                    'throw_exceptions' => false,
+                ],
+            ],
+        ],
+        //end memcache
     ],
     
     //日志service

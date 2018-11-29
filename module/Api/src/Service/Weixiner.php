@@ -13,6 +13,15 @@ class Weixiner
     private $Cache;
     private $appid;
     private $secret;
+    private $accessTokenError;//获取access token error
+    
+    /**
+     * @return the $accessTokenError
+     */
+    public function getAccessTokenError()
+    {
+        return $this->accessTokenError;
+    }
 
     public function __construct(
         Filesystem $Cache,
@@ -55,9 +64,11 @@ class Weixiner
             {
                 $errcode = $res['errcode'];
                 $errmsg  = $res['errmsg'];
-                throw new \Exception("获取微信access_token 发生错误，错误代码为:$errcode, 错误信息：$errmsg");
+                $this->accessTokenError = "获取微信access_token 发生错误，错误代码为:$errcode, 错误信息：$errmsg";
+            }else {
+                $access_token = $res['access_token'];
             }
-            $access_token = $res['access_token'];
+            
             $Cache->setItem(self::CACHE_KEY_WEIXIN_TOKEN, $access_token);
         }
         return $access_token;

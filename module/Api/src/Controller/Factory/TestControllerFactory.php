@@ -4,7 +4,7 @@ namespace Api\Controller\Factory;
 use Interop\Container\ContainerInterface;
 use Zend\ServiceManager\Factory\FactoryInterface;
 use Api\Controller\TestController;
-use Api\Service\Auther;
+use Api\Service\TestManager;
 
 /**
  * This is the factory for IndexController. Its purpose is to instantiate the
@@ -16,9 +16,12 @@ class TestControllerFactory implements FactoryInterface
     {
 //         $UserCache = $container->get('UserCache');
 //         $filesystem= $container->get('main-cache');
+        
         $log_debug  = $container->get('MyLoggerDebug');
         return new TestController(
-            $log_debug
+            $log_debug,
+            $container->get('memcache'),
+            $container->get(TestManager::class)
             );
     }
 }

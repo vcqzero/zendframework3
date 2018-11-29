@@ -189,6 +189,7 @@ return [
             Service\RoleManager::class      => InvokableFactory::class,
             Service\UserManager::class      => Service\Factory\UserManagerFactory::class,
             Service\WebsiteManager::class   => Service\Factory\WebsiteManagerFactory::class,
+            Service\TestManager::class   => InvokableFactory::class,
         ],
         
         'shared' => [

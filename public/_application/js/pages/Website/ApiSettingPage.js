@@ -97,6 +97,8 @@ define(
 				}).done(function(res) {
 					App.pageLoaging.stop()
 					container = $('#tab-api-weixin-settings')
+					var success = res.success
+					var msg     = res.msg
 					if(res.success) {
 						App.alert({
 							container: container,
@@ -106,7 +108,7 @@ define(
 					} else {
 						App.alert({
 							container: container,
-							message: '测试失败，请检查配置是否正确',
+							message: msg,
 							type: 'danger'
 						})
 					}

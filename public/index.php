@@ -2,6 +2,7 @@
 
 use Zend\Mvc\Application;
 use Zend\Stdlib\ArrayUtils;
+use Zend\Cache\PatternFactory;
 
 /**
  * This makes our life easier when dealing with paths. Everything is relative
@@ -21,6 +22,11 @@ if (php_sapi_name() === 'cli-server') {
 // Composer autoloading
 include __DIR__ . '/../vendor/autoload.php';
 
+//cache
+$capture = Zend\Cache\PatternFactory::factory('capture', [
+    'public_dir' => 'data/cache/page',
+]);
+
 if (! class_exists(Application::class)) {
     throw new RuntimeException(
         "Unable to load application.\n"
@@ -38,3 +44,4 @@ if (file_exists(__DIR__ . '/../config/development.config.php')) {
 
 // Run the application!
 Application::init($appConfig)->run();
+

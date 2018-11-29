@@ -79,7 +79,7 @@ class WebsiteController extends AbstractActionController
         $res = $this->Weixiner->getAccessToken(true);
         return new JsonModel([
             MyAjax::SUBMIT_SUCCESS => is_string($res),
-            MyAjax::SUBMIT_MSG => '',
+            MyAjax::SUBMIT_MSG => $this->Weixiner->getAccessTokenError(),
         ]);
     }
 }
